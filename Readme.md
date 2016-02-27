@@ -1,7 +1,7 @@
 # Dulces para mi amor
-Dulces para mi amor  es una aplicación movil para smartphones Android con arquitectura SOA, que hace parte de una solución para la distribución de dulces para esa persona especial.
+Dulces para mi amor  es una aplicación para smartphones Android con arquitectura SOA, que hace parte de una solución para la distribución de dulces para esa persona especial.
 
-La aplicación hace uso de reconocimiento  facial y  de gestos e integraciones con apliaciones como Facebook y Whatsapp.
+La aplicación hace uso de reconocimiento  facial y  de gestos e integraciones con aplicaciones como Facebook y Whatsapp.
 
 # Como probar la aplicación
 ### Clonar el proyecto
