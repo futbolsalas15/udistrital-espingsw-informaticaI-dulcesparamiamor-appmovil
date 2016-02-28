@@ -22,7 +22,7 @@ Importar proyecto  con Android Studio y ejecutar en un simulador o dispositivo a
 
 
 #### Integrantes
-* Julio César Saldaña Báez
+* -
 
 
  
