@@ -12,6 +12,9 @@ git clone https://github.com/futbolsalas15/udistrital-espingsw-informaticaI-dulc
 Importar proyecto  con Android Studio y ejecutar en un simulador o dispositivo android. 
 
 
+### Facebook login
+ Para el login con facebook cambiar  el valor de "facebook_app_id" en el archivo strings.xml por el id de su aplicación
+
 
 ### TODO
 * Autenticación
@@ -20,9 +23,6 @@ Importar proyecto  con Android Studio y ejecutar en un simulador o dispositivo a
 * Envío de mensajes a través de sms, facebook y whatsapp
 * Consumo de web services
 
-
-#### Integrantes
-* Julio César Saldaña Báez
 
 
  
