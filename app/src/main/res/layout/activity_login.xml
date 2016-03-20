@@ -44,6 +44,7 @@
             android:id="@+id/lblpassword"
             android:layout_below="@+id/txtemail"
             android:text="Password"
+            android:inputType="textPassword"
             android:textColor="@color/textorIcons"
             />
         <EditText
