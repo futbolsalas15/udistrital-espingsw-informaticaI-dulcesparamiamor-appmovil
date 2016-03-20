@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">DulcesParaMiAmor</string>
+    <string name="app_name">Candies For My Love</string>
+    <string name="logintext">LOGIN</string>
+    <string name="singuptext">New User? Sing Up</string>
+    <string name="btnsingup">SING UP</string>
+    <string name="btnsingupfirst">NEXT</string>
 </resources>
