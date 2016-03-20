@@ -27,7 +27,7 @@
             android:layout_marginTop="15dp"
             android:gravity="center"
             android:textStyle="bold"
-            android:text="Register"
+            android:text="@string/btnsingup"
             ></TextView>
         <RelativeLayout
             android:layout_width="match_parent"
@@ -39,7 +39,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Name"
+                android:text="@string/lblname"
                 android:id="@+id/lblname"
                 android:textColor="@color/textorIcons"
                 />
@@ -54,7 +54,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Email"
+                android:text="@string/lblemail"
                 android:layout_below="@id/txtname"
                 android:id="@+id/lblemail"
                 android:textColor="@color/textorIcons"
@@ -72,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/lblpassword"
                 android:layout_below="@+id/txtemail"
-                android:text="Password"
+                android:text="@string/lblpassword"
                 android:textColor="@color/textorIcons"
                 />
             <EditText
@@ -89,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/lblpasswordconfirm"
                 android:layout_below="@+id/txtpassword"
-                android:text="Confirm Password"
+                android:text="@string/lblpasswordconfirm"
                 android:textColor="@color/textorIcons"
                 />
             <EditText

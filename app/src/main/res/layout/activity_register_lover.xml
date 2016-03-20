@@ -27,7 +27,7 @@
             android:layout_marginTop="15dp"
             android:gravity="center"
             android:textStyle="bold"
-            android:text="Your Love"
+            android:text="@string/lblyourlove"
             ></TextView>
         <RelativeLayout
             android:layout_width="match_parent"
@@ -39,7 +39,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Name"
+                android:text="@string/lblname"
                 android:id="@+id/lblname"
                 android:textColor="@color/textorIcons"
                 />
@@ -47,14 +47,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/lblname"
-
                 android:id="@+id/txtname"
                 android:textColor="@color/textorIcons"
                 />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Phone"
+                android:text="@string/lblphone"
                 android:id="@+id/lblphone"
                 android:layout_below="@+id/txtname"
                 android:textColor="@color/textorIcons"
@@ -70,7 +69,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Email"
+                android:text="@string/lblemail"
                 android:layout_below="@id/txtphone"
                 android:id="@+id/lblemail"
                 android:textColor="@color/textorIcons"

@@ -27,7 +27,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Email"
+            android:text="@string/lblemail"
             android:id="@+id/lblemail"
             android:textColor="@color/textorIcons"
             />
@@ -43,8 +43,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/lblpassword"
             android:layout_below="@+id/txtemail"
-            android:text="Password"
-            android:inputType="textPassword"
+            android:text="@string/lblpassword"
             android:textColor="@color/textorIcons"
             />
         <EditText

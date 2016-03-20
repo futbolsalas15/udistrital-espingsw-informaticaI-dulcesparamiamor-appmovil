@@ -1,13 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Candies For My Love</string>
-    <string name="logintext">LOGIN</string>
-    <string name="singuptext">New User? Sing Up</string>
     <string name="btnsingup">SING UP</string>
     <string name="btnsingupfirst">NEXT</string>
+    <string name="logintext">LOGIN</string>
+    <string name="singuptext">New User? Sing Up</string>
     <string name="lblemail">Email</string>
+    <string name="lblname">Name</string>
     <string name="lblpassword">Password</string>
     <string name="lblpasswordconfirm">Confirm Password</string>
-    <string name="lblname">Name</string>
     <string name="lblphone">Phone</string>
     <string name="lblyourlove">Your Love</string>
 </resources>
