@@ -90,16 +90,16 @@ public class BackgroundTask extends AsyncTask<String,Void,String> {
 
                 }
                 httpURLConnection.disconnect();
-                Thread.sleep(5000);
+                //Thread.sleep(5000);
                 return stringBuilder.toString().trim();
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            }// catch (InterruptedException e) {
+             //   e.printStackTrace();
+           // }
 
 
         }
@@ -149,7 +149,7 @@ public class BackgroundTask extends AsyncTask<String,Void,String> {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
-                    activity.finish();
+                    //activity.finish();
                 }
             });
 
