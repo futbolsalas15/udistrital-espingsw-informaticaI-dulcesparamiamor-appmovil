@@ -11,4 +11,10 @@
     <string name="lblpasswordconfirm">Confirmar Contraseña</string>
     <string name="lblphone">Telefono</string>
     <string name="lblyourlove">Tu Amor</string>
+    <string name="loginfailed">¡Intente de Nuevo!</string>
+    <string name="loginsuccess">¡Bienvenido!</string>
+    <string name="logintittlefailed">Fallo Inicio de Sesión</string>
+    <string name="logintittlesuccess">Inicio de Sesión Exitoso</string>
+    <string name="connectiontoserver">Conectando al servidor</string>
+    <string name="pleasewait">¡Por favor espera!</string>
 </resources>

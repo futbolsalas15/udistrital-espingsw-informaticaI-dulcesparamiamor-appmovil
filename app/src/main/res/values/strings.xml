@@ -9,5 +9,13 @@
     <string name="lblpasswordconfirm">Confirm Password</string>
     <string name="lblname">Name</string>
     <string name="lblphone">Phone</string>
+
     <string name="lblyourlove">Your Love</string>
+    <string name="loginsuccess">Welcome!</string>
+    <string name="logintittlesuccess">Login Success</string>
+    <string name="loginfailed">Try Again!</string>
+    <string name="logintittlefailed">Login Failed</string>
+    <string name="pleasewait">Please Wait</string>
+    <string name="connectiontoserver">Connecting to Server</string>
+
 </resources>
