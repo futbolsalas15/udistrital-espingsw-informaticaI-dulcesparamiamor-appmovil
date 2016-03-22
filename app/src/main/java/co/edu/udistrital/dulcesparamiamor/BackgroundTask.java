@@ -44,8 +44,8 @@ public class BackgroundTask extends AsyncTask<String,Void,String> {
     protected void onPreExecute() {
         builder = new AlertDialog.Builder(activity);
         progressDialog = new ProgressDialog(ctx);
-        progressDialog.setTitle("Please Wait");
-        progressDialog.setMessage("Connecting to Server");
+        progressDialog.setTitle(activity.getString(R.string.pleasewait));
+        progressDialog.setMessage(activity.getString(R.string.connectiontoserver));
         progressDialog.setIndeterminate(true);
         progressDialog.setCancelable(false);
         progressDialog.show();
@@ -125,11 +125,11 @@ public class BackgroundTask extends AsyncTask<String,Void,String> {
             String message = JO.getString("message");
             if(code.equals("login_true"))
             {
-            showDialog("Login Success ",message,code);
+            showDialog(activity.getString(R.string.logintittlesuccess),activity.getString(R.string.loginsuccess),code);
             }
             else if (code.equals("login_false"))
             {
-                showDialog("Login Failed",message,code);
+                showDialog(activity.getString(R.string.logintittlefailed),activity.getString(R.string.loginfailed),code);
             }
 
         } catch (JSONException e) {
