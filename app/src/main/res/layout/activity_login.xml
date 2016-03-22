@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorPrimary"
+    tools:context="co.edu.udistrital.dulcesparamiamor.LoginActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textSize="20dp"
+        android:textColor="@color/textorIcons"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:textStyle="bold"
+        />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/lblemail"
+            android:id="@+id/lblemail"
+            android:textColor="@color/textorIcons"
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/lblemail"
+            android:id="@+id/txtemail"
+            android:text="jeisontriananr14@hotmail.com"
+            android:textColor="@color/textorIcons"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/lblpassword"
+            android:layout_below="@+id/txtemail"
+            android:text="@string/lblpassword"
+            android:textColor="@color/textorIcons"
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtpassword"
+            android:inputType="textPassword"
+            android:layout_below="@id/lblpassword"
+            android:text="123456"
+            android:textColor="@color/textorIcons"
+            >
+        </EditText>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/logintext"
+            android:id="@+id/button"
+            android:gravity="center"
+            android:layout_below="@+id/txtpassword"
+            android:background="@drawable/button_selecter"
+            android:textColor="@color/textorIcons"
+            />
+    </RelativeLayout>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/singuptext"
+        android:textColor="@color/textorIcons"
+        android:gravity="center"
+        android:id="@+id/lblsingup"
+        android:layout_marginTop="20dp"
+        ></TextView>
+
+
+</LinearLayout>

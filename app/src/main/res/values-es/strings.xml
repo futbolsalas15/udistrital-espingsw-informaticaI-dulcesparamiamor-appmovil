@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Dulces Para Mi Amor</string>
+    <string name="btnsingup">REGISTRAR</string>
+    <string name="btnsingupfirst">SIGUIENTE</string>
+    <string name="logintext">INICIAR SESIÓN</string>
+    <string name="singuptext">¿Nuevo Usuario? , Registrar</string>
+    <string name="lblemail">Correo</string>
+    <string name="lblname">Nombre</string>
+    <string name="lblpassword">Contraseña</string>
+    <string name="lblpasswordconfirm">Confirmar Contraseña</string>
+    <string name="lblphone">Telefono</string>
+    <string name="lblyourlove">Tu Amor</string>
+</resources>
