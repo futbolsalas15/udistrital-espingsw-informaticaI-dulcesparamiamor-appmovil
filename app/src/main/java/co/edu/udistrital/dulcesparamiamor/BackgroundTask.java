@@ -5,7 +5,11 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,11 +27,14 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
+import Model.UserProfile;
+
 /**
  * Created by Jeison on 21/03/2016.
  */
 public class BackgroundTask extends AsyncTask<String,Void,String> {
    String login_url = "http://webappjasontiw.azurewebsites.net/login.php";
+    SharedPreferences mPrefs;
 
 
     Context ctx;
@@ -36,6 +43,8 @@ public class BackgroundTask extends AsyncTask<String,Void,String> {
     AlertDialog.Builder builder;
 
     public BackgroundTask(Context ctx){
+        //mPrefs =  ctx.getSharedPreferences("UserProfile",ctx.MODE_WORLD_READABLE);
+        mPrefs =   PreferenceManager.getDefaultSharedPreferences(ctx);
         this.ctx = ctx;
         activity = (Activity)ctx;
 
@@ -61,7 +70,7 @@ public class BackgroundTask extends AsyncTask<String,Void,String> {
 
         if(method.equals("login"))
         {
-            try {
+        try {
                 URL url = new URL(login_url);
 
                 HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
@@ -117,7 +126,6 @@ public class BackgroundTask extends AsyncTask<String,Void,String> {
         try {
             progressDialog.dismiss();
             JSONObject jsonObject = new JSONObject(json);
-
             JSONArray jsonArray = jsonObject.getJSONArray("server_response");
 
             JSONObject JO = jsonArray.getJSONObject(0);
@@ -125,7 +133,13 @@ public class BackgroundTask extends AsyncTask<String,Void,String> {
             String message = JO.getString("message");
             if(code.equals("login_true"))
             {
-            showDialog(activity.getString(R.string.logintittlesuccess),activity.getString(R.string.loginsuccess),code);
+            //showDialog(activity.getString(R.string.logintittlesuccess),activity.getString(R.string.loginsuccess),code);
+                SharedPreferences.Editor prefsEditor = mPrefs.edit();
+                prefsEditor.putString("UserProfile", JO.getJSONArray("object").getJSONObject(0).toString());
+                prefsEditor.commit();
+
+                Intent intent = new Intent (activity,HomeActivity.class);
+                activity.startActivity(intent);
             }
             else if (code.equals("login_false"))
             {
