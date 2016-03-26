@@ -1,15 +1,9 @@
 package co.edu.udistrital.dulcesparamiamor;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 
 import java.io.ByteArrayOutputStream;
-import java.io.UnsupportedEncodingException;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -25,28 +19,16 @@ import android.provider.MediaStore;
 import android.util.Base64;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
+
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import cz.msebera.android.httpclient.Header;
 
-public class RegisterLoverActivity extends AppCompatActivity {
-String Name ,Email,Password; //info user
-
-
-    Button buttonsingup;
-    EditText LoverName,LoverPhone,LoverEmail,LoverFacebook;
-    TextView ImageSelector;
-    AlertDialog.Builder builder;
-
-    String registerurl = "http://192.168.0.14/servicephp/register.php";
+@SuppressLint("NewApi")
+public class UploadActivity extends AppCompatActivity {
     ProgressDialog prgDialog;
     String encodedString;
     RequestParams params = new RequestParams();
@@ -54,76 +36,17 @@ String Name ,Email,Password; //info user
     Bitmap bitmap;
     private static int RESULT_LOAD_IMG = 1;
 
+    String uploadimageurl = "http://192.168.0.14/servicephp/upload_image.php";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register_lover);
-
-        Bundle bundle = getIntent().getExtras();
-        LoverName = (EditText)findViewById(R.id.txtname);
-        buttonsingup = (Button)findViewById(R.id.button);
-        Name = bundle.get("name").toString();
-        Email = bundle.get("email").toString();
-        Password = bundle.get("password").toString();
-
-        ImageSelector =  (TextView)findViewById(R.id.image_selector);
+        setContentView(R.layout.activity_upload);
 
         prgDialog = new ProgressDialog(this);
         // Set Cancelable as False
         prgDialog.setCancelable(false);
-
-        buttonsingup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LoverName = (EditText)findViewById(R.id.txtname);
-                LoverPhone = (EditText)findViewById(R.id.txtphone);
-                LoverEmail= (EditText)findViewById(R.id.txtemail);
-                LoverFacebook =(EditText)findViewById(R.id.txtfacebook);
-
-                if(LoverName.getText().toString().equals("") || LoverPhone.getText().toString().equals("")
-                        || LoverEmail.getText().toString().equals("") || LoverFacebook.getText().toString().equals(""))
-                {
-                    builder = new AlertDialog.Builder(RegisterLoverActivity.this);
-                    builder.setTitle(RegisterLoverActivity.this.getString(R.string.somethingwentwrong));
-                    builder.setMessage(RegisterLoverActivity.this.getString(R.string.pleasefillallthefields));
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    AlertDialog alertDialog = builder.create();
-                    alertDialog.show();
-                }
-                else if (ImageSelector.getText().equals(""))
-                {
-                    builder = new AlertDialog.Builder(RegisterLoverActivity.this);
-                    builder.setTitle(RegisterLoverActivity.this.getString(R.string.somethingwentwrong));
-                    builder.setMessage(RegisterLoverActivity.this.getString(R.string.pleaseselectanimage));
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    AlertDialog alertDialog = builder.create();
-                    alertDialog.show();
-                }
-                else
-                {
-                    params.put("name",Name);
-                    params.put("email",Email);
-                    params.put("password",Password);
-                    params.put("lovename",LoverName.getText());
-                    params.put("loveemail",LoverEmail.getText());
-                    params.put("lovephone",LoverPhone.getText());
-                    params.put("lovefacebook",LoverFacebook.getText());
-                    uploadImage(v);
-                }
-            }
-        });
     }
-
     public void loadImagefromGallery(View view) {
         // Create intent to Open Image applications like Gallery, Google Photos
         Intent galleryIntent = new Intent(Intent.ACTION_PICK,
@@ -154,15 +77,14 @@ String Name ,Email,Password; //info user
                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                 imgPath = cursor.getString(columnIndex);
                 cursor.close();
-                //ImageView imgView = (ImageView) findViewById(R.id.imgView);
+                ImageView imgView = (ImageView) findViewById(R.id.imgView);
                 // Set the Image in ImageView
-                //imgView.setImageBitmap(BitmapFactory.decodeFile(imgPath));
-
+                imgView.setImageBitmap(BitmapFactory
+                        .decodeFile(imgPath));
                 // Get the Image's file name
                 String fileNameSegments[] = imgPath.split("/");
                 fileName = fileNameSegments[fileNameSegments.length - 1];
                 // Put file name in Async Http Post Param which will used in Php web app
-                ImageSelector.setText("select");
                 params.put("filename", fileName);
 
             } else {
@@ -206,7 +128,8 @@ String Name ,Email,Password; //info user
                 BitmapFactory.Options options = null;
                 options = new BitmapFactory.Options();
                 options.inSampleSize = 3;
-                bitmap = BitmapFactory.decodeFile(imgPath, options);
+                bitmap = BitmapFactory.decodeFile(imgPath,
+                        options);
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 // Must compress the Image to reduce image size to make upload easy
                 bitmap.compress(Bitmap.CompressFormat.PNG, 50, stream);
@@ -233,28 +156,18 @@ String Name ,Email,Password; //info user
 
     // Make Http call to upload Image to Php server
     public void makeHTTPCall() {
-        prgDialog.setMessage(RegisterLoverActivity.this.getString(R.string.recording));
+        prgDialog.setMessage("Invoking Php");
         AsyncHttpClient client = new AsyncHttpClient();
-
         // Don't forget to change the IP address to your LAN address. Port no as well.
-        client.post(registerurl,
+        client.post(uploadimageurl,
                 params, new AsyncHttpResponseHandler() {
 
                     // When the response returned by REST has Http
                     // response code '200'
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-
-                        try {
-                            prgDialog.hide();
-                            String str = new String(responseBody, "UTF-8");
-                            JsonObject(str);
-
-                            //Toast.makeText(getApplicationContext(), "Upload Success", Toast.LENGTH_LONG).show();
-                        } catch (UnsupportedEncodingException e) {
-                            e.printStackTrace();
-                        }
-
+                        prgDialog.hide();
+                        Toast.makeText(getApplicationContext(), "Upload Success", Toast.LENGTH_LONG).show();
                     }
 
                     // When the response returned by REST has Http
@@ -288,44 +201,6 @@ String Name ,Email,Password; //info user
                     }
                 });
     }
-
-    public void JsonObject(String json){
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = new JSONObject(json);
-            JSONArray jsonArray = jsonObject.getJSONArray("server_response");
-
-            JSONObject JO = jsonArray.getJSONObject(0);
-            String code = JO.getString("code");
-            String message = JO.getString("message");
-            showDialog(RegisterLoverActivity.this.getString(R.string.notification),message,code);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void showDialog(String tittle, String message ,String code)
-    {
-       if(code.equals("reg_true") || code.equals("reg_false")) {
-           if(code.equals("reg_true"))
-               message = RegisterLoverActivity.this.getString(R.string.registersucces);
-           else
-               message = RegisterLoverActivity.this.getString(R.string.registerfailed);
-
-           builder = new AlertDialog.Builder(RegisterLoverActivity.this);
-           builder.setTitle(tittle);
-           builder.setMessage(message);
-           builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-               @Override
-               public void onClick(DialogInterface dialog, int which) {
-                   dialog.dismiss();
-               }
-           });
-           AlertDialog alertDialog = builder.create();
-           alertDialog.show();
-       }
-    }
-
 
     @Override
     protected void onDestroy() {
