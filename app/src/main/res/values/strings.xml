@@ -18,4 +18,16 @@
     <string name="pleasewait">Please Wait</string>
     <string name="connectiontoserver">Connecting to Server</string>
 
+    <string name="somethingwentwrong">Something went wrong</string>
+    <string name="pleasefillallthefields">Please fill all the fields</string>
+    <string name="confirmpasswordnotequal">Confirm password not equal</string>
+    <string name="btnuploadimage">Upload Image</string>
+    <string name="pleaseselectanimage">Please Select an Image</string>
+
+    <string name="notification">Notification</string>
+    <string name="recording">Recording</string>
+    <string name="registersucces">Register Success</string>
+    <string name="registerfailed">Register Failed, User alredy Exists</string>
+
+
 </resources>
