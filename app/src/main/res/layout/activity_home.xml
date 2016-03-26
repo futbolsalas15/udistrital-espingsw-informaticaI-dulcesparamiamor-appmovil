@@ -14,6 +14,14 @@
     android:textSize="30dp"
     android:textColor="@color/textorIcons"
     >
-
 </TextView>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="subirimagentest"
+        android:textColor="@color/textorIcons"
+        android:background="@drawable/button_selecter"
+        android:onClick="loadImagefromGallery"
+        ></Button>
 </LinearLayout>

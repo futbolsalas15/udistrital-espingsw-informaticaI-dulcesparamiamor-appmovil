@@ -47,6 +47,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/lblname"
+                android:text="Jeison"
                 android:id="@+id/txtname"
                 android:textColor="@color/textorIcons"
                 />
@@ -64,6 +65,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/lblemail"
                 android:id="@+id/txtemail"
+                android:text="jeisontriananr11@gmail.com"
                 android:textColor="@color/textorIcons"
                 android:inputType="textEmailAddress"
                 />
@@ -81,6 +83,7 @@
                 android:id="@+id/txtpassword"
                 android:layout_below="@id/lblpassword"
                 android:textColor="@color/textorIcons"
+                android:text="123456"
                 android:inputType="textPassword"
                 >
             </EditText>
@@ -96,6 +99,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/txtpasswordconfirm"
+                android:text="123456"
                 android:layout_below="@id/lblpasswordconfirm"
                 android:textColor="@color/textorIcons"
                 android:inputType="textPassword"
