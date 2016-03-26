@@ -48,6 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/lblname"
                 android:id="@+id/txtname"
+                android:text="Andrea"
                 android:textColor="@color/textorIcons"
                 />
             <TextView
@@ -63,6 +64,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/lblphone"
                 android:id="@+id/txtphone"
+                android:text="3124606233"
                 android:inputType="phone"
                 android:textColor="@color/textorIcons"
                 />
@@ -78,6 +80,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/lblemail"
+                android:text="andrea2007@hotmail.com"
                 android:id="@+id/txtemail"
                 android:inputType="textEmailAddress"
                 android:textColor="@color/textorIcons"
@@ -93,8 +96,9 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/txtpassword"
+                android:id="@+id/txtfacebook"
                 android:layout_below="@id/lblfacebook"
+                android:text="andrea2007@hotmail.com"
                 android:textColor="@color/textorIcons"
                 android:inputType="textEmailAddress"
                 >
@@ -102,11 +106,29 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@string/btnuploadimage"
+                android:id="@+id/btnuploadimage"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/txtfacebook"
+                android:background="@drawable/button_selecter"
+                android:textColor="@color/textorIcons"
+                android:onClick="loadImagefromGallery"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/image_selector"
+                android:textColor="@color/textorIcons"
+                android:layout_below="@+id/btnuploadimage"
+                />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:text="@string/btnsingup"
                 android:id="@+id/button"
                 android:gravity="center"
-                android:layout_marginTop="10dp"
-                android:layout_below="@+id/txtpassword"
+                android:layout_below="@+id/image_selector"
                 android:background="@drawable/button_selecter"
                 android:textColor="@color/textorIcons"
                 />
