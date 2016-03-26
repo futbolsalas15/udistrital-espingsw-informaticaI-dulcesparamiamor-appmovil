@@ -46,7 +46,8 @@ String Name ,Email,Password; //info user
     TextView ImageSelector;
     AlertDialog.Builder builder;
 
-    String registerurl = "http://192.168.0.14/servicephp/register.php";
+   // String registerurl = "http://192.168.0.14/servicephp/register.php";
+   String registerurl = "http://webappjasontiw.azurewebsites.net/register.php";
     ProgressDialog prgDialog;
     String encodedString;
     RequestParams params = new RequestParams();
