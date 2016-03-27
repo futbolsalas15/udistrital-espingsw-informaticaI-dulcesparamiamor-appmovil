@@ -13,6 +13,8 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
     }
 
+
+
     public void loadImagefromGallery(View view)
     {
         startActivity(new Intent(HomeActivity.this, UploadActivity.class));
