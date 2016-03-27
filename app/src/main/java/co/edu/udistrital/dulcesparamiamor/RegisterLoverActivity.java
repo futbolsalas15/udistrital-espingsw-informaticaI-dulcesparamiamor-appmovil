@@ -237,25 +237,20 @@ String Name ,Email,Password; //info user
         prgDialog.setMessage(RegisterLoverActivity.this.getString(R.string.recording));
         AsyncHttpClient client = new AsyncHttpClient();
 
-        // Don't forget to change the IP address to your LAN address. Port no as well.
         client.post(registerurl,
                 params, new AsyncHttpResponseHandler() {
-
                     // When the response returned by REST has Http
                     // response code '200'
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-
                         try {
                             prgDialog.hide();
                             String str = new String(responseBody, "UTF-8");
-                            JsonObject(str);
-
+                            JsonObject(str); //Convierte respuesta en JSON y lo convierte a notificación.
                             //Toast.makeText(getApplicationContext(), "Upload Success", Toast.LENGTH_LONG).show();
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
-
                     }
 
                     // When the response returned by REST has Http
@@ -273,7 +268,6 @@ String Name ,Email,Password; //info user
                         }
                         // When Http response code is '500'
                         else if (statusCode == 500) {
-
                             Toast.makeText(getApplicationContext(),
                                     "Something went wrong at server end",
                                     Toast.LENGTH_LONG).show();
@@ -282,7 +276,7 @@ String Name ,Email,Password; //info user
                         else {
                             Toast.makeText(
                                     getApplicationContext(),
-                                    "Error Occured n Most Common Error: n1. Device not connected to Internetn2. Web App is not deployed in App servern3. App server is not runningn HTTP Status code : "
+                                    "Device not connected to Internet. HTTP Status code : "
                                             + statusCode, Toast.LENGTH_LONG)
                                     .show();
                         }

@@ -11,6 +11,7 @@
     <string name="lblphone">Phone</string>
 
     <string name="lblyourlove">Your Love</string>
+    <string name="login">Login</string>
     <string name="loginsuccess">Welcome!</string>
     <string name="logintittlesuccess">Login Success</string>
     <string name="loginfailed">Try Again!</string>
