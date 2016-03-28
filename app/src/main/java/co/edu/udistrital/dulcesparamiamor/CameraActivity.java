@@ -1,9 +1,12 @@
 package co.edu.udistrital.dulcesparamiamor;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.List;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
@@ -38,8 +41,11 @@ import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.JavaCameraView;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Core;
+import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
+import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
@@ -95,6 +101,8 @@ public final class CameraActivity extends ActionBarActivity
     // If so, menu interaction should be disabled.
     private boolean mIsMenuLocked;
     private boolean managerConneted;
+    private CascadeClassifier cascadeClassifier;
+    private Mat grayscaleImage;
     // The OpenCV loader callback.
     private BaseLoaderCallback mLoaderCallback =
             new BaseLoaderCallback(this) {
@@ -104,6 +112,7 @@ public final class CameraActivity extends ActionBarActivity
                         case LoaderCallbackInterface.SUCCESS:
                             Log.d(TAG, "OpenCV loaded successfully");
                             managerConneted = true;
+                            initializeOpenCVDependencies();
                             mBgr = new Mat();
                             break;
                         default:
@@ -112,6 +121,64 @@ public final class CameraActivity extends ActionBarActivity
                     }
                 }
             };
+
+
+
+    private void initializeOpenCVDependencies() {
+
+
+        try {
+            // Copy the resource into a temp file so OpenCV can load it
+          /*  InputStream is = getResources().openRawResource(R.raw.palm);
+            File cascadeDir = getDir("cascade", Context.MODE_PRIVATE);
+            File mCascadeFile = new File(cascadeDir, "palm.xml");
+            FileOutputStream os = new FileOutputStream(mCascadeFile);*/
+            if (cascadeClassifier == null) {
+                File cascadeDir = getDir("cascade", Context.MODE_PRIVATE);
+
+                InputStream is = getResources().openRawResource(R.raw.palm);
+                File mCascadeFile = new File(cascadeDir, "palm.xml");
+
+
+                if(!mCascadeFile.exists()){
+                    //handler error here
+                    Log.e("OpenCVActivity", "No existe" + mCascadeFile.getAbsolutePath());
+                }else{
+                    Log.e("OpenCVActivity", "OK Path existe : " + mCascadeFile.getAbsolutePath().toString());
+                }
+
+
+                FileOutputStream os = new FileOutputStream(mCascadeFile);
+                byte[] buffer = new byte[4096];
+                int bytesRead;
+                while ((bytesRead = is.read(buffer)) != -1) {
+                    os.write(buffer, 0, bytesRead);
+                }
+                is.close();
+                os.close();
+
+
+                // cascadeDir.delete();
+
+                cascadeClassifier = new CascadeClassifier(mCascadeFile.getAbsolutePath());
+                cascadeClassifier.load(mCascadeFile.getAbsolutePath());
+                // Load the cascade classifier
+                if (cascadeClassifier.empty()) {
+                    //handler error here
+                    Log.e("OpenCVActivity", "No Classifier path" + mCascadeFile.getAbsolutePath().toString());
+                }else{
+                    Log.e("OpenCVActivity", "OK Path: " + mCascadeFile.getAbsolutePath().toString());
+                }
+
+                // cascadeClassifier = new CascadeClassifier(mCascadeFile.getAbsolutePath());
+            }
+
+
+        } catch (Exception e) {
+            Log.e("OpenCVActivity", "Error loading cascade", e);
+        }
+
+    }
 
     // Suppress backward incompatibility errors because we provide
     // backward-compatible fallbacks.
@@ -295,8 +362,8 @@ public final class CameraActivity extends ActionBarActivity
 
 
     @Override
-    public void onCameraViewStarted(final int width,
-                                    final int height) {
+    public void onCameraViewStarted(int width, int height) {
+        grayscaleImage = new Mat(height, width, CvType.CV_8UC4);
     }
 
     @Override
@@ -306,12 +373,28 @@ public final class CameraActivity extends ActionBarActivity
     @Override
     public Mat onCameraFrame(final CvCameraViewFrame inputFrame) {
         final Mat rgba = inputFrame.rgba();
-        MatOfRect hands = new MatOfRect() ;
 
-        /*String cascade_name="/home/ismailkaratepe/AndroidStudioProjects/FaceDetectionApp/app/src/main/res/haarcascade_frontalface_alt.xml";
-        CascadeClassifier faceDetector = new CascadeClassifier(cascade_name);
-        faceDetector.load(cascade_name);
-        faceDetector.detectMultiScale(rgba, hands);*/
+        // Create a grayscale image
+        Imgproc.cvtColor(rgba, grayscaleImage, Imgproc.COLOR_RGBA2RGB);
+        MatOfRect hands = new MatOfRect();
+
+
+        // Use the classifier to detect hands
+        if (cascadeClassifier != null && !cascadeClassifier.empty()) {
+            cascadeClassifier.detectMultiScale(grayscaleImage, hands, 1.1, 2, 2,
+                    //  new Size(absoluteHandSize, absoluteHandSize), new Size());
+                    new org.opencv.core.Size(200 , 200), new org.opencv.core.Size());
+
+        }
+
+
+        // If there are any hands found, draw a rectangle around it
+        Rect[] handsArray = hands.toArray();
+        for (int i = 0; i < handsArray.length; i++) {
+            Log.e("OpenCVActivity", "Palms" + handsArray.toString());
+            Imgproc.rectangle(rgba, handsArray[i].tl(), handsArray[i].br(), new Scalar(0, 255, 0, 255), 3);
+        }
+
         if (mIsCameraFrontFacing) {
             // Mirror (horizontally flip) the preview.
             Core.flip(rgba, rgba, 1);

@@ -31,6 +31,7 @@
     <string name="registerfailed">Register Failed, User alredy Exists</string>
     <string name="upload_photo">Subir foto</string>
     <string name="start_validation">Iniciar Validación</string>
+    <string name="welcome_message">Bienvenido</string>
 
 
 </resources>
