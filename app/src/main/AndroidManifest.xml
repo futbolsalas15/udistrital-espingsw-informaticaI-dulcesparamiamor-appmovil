@@ -36,6 +36,9 @@
         <activity android:name=".UploadActivity" />
         <activity android:name=".CameraActivity">
         </activity>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="d151faadc8e2c9ff8714e7c49d8ecfb2fba050b5" />
     </application>
 
 </manifest>
