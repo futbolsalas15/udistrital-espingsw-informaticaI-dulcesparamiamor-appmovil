@@ -403,4 +403,49 @@ public final class CameraActivity extends ActionBarActivity
         return rgba;
     }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        Log.e(TAG, "////// Create Menu ////////");
+        getMenuInflater().inflate(R.menu.activity_camera, menu);
+        if (mNumCameras < 2) {
+            // Remove the option to switch cameras, since there is
+            // only 1.
+            menu.removeItem(R.id.menu_next_camera);
+        }
+        return true;
+    }
+
+    // Suppress backward incompatibility errors because we provide
+    // backward-compatible fallbacks (for recreate).
+    @SuppressLint("NewApi")
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        if (mIsMenuLocked) {
+            return true;
+        }
+        if (item.getGroupId() == MENU_GROUP_ID_SIZE) {
+            mImageSizeIndex = item.getItemId();
+            recreate();
+
+            return true;
+        }
+        switch (item.getItemId()) {
+            case R.id.menu_next_camera:
+                mIsMenuLocked = true;
+
+                // With another camera index, recreate the activity.
+                mCameraIndex++;
+                if (mCameraIndex == mNumCameras) {
+                    mCameraIndex = 0;
+                }
+                mImageSizeIndex = 0;
+                recreate();
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 }
