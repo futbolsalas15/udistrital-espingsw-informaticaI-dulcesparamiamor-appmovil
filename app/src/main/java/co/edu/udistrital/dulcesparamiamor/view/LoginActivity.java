@@ -1,11 +1,10 @@
-package co.edu.udistrital.dulcesparamiamor;
+package co.edu.udistrital.dulcesparamiamor.view;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.preference.DialogPreference;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,7 +25,8 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 
-import Model.UserProfile;
+import co.edu.udistrital.dulcesparamiamor.R;
+import co.edu.udistrital.dulcesparamiamor.model.UserProfile;
 import cz.msebera.android.httpclient.Header;
 import com.crashlytics.android.Crashlytics;
 import io.fabric.sdk.android.Fabric;

@@ -1,4 +1,4 @@
-package co.edu.udistrital.dulcesparamiamor;
+package co.edu.udistrital.dulcesparamiamor.view;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,6 +25,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import co.edu.udistrital.dulcesparamiamor.R;
 import cz.msebera.android.httpclient.Header;
 
 @SuppressLint("NewApi")

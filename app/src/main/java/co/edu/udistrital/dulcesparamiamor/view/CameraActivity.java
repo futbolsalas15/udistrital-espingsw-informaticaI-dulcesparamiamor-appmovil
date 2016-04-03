@@ -1,4 +1,4 @@
-package co.edu.udistrital.dulcesparamiamor;
+package co.edu.udistrital.dulcesparamiamor.view;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -8,15 +8,9 @@ import java.util.List;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.provider.MediaStore.Images;
 import android.annotation.SuppressLint;
-import android.content.ContentValues;
-import android.content.Intent;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
 import android.hardware.Camera.Parameters;
@@ -24,14 +18,11 @@ import android.hardware.Camera.Size;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
@@ -46,9 +37,10 @@ import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
-import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
+
+import co.edu.udistrital.dulcesparamiamor.R;
 
 
 // Use the deprecated Camera class.

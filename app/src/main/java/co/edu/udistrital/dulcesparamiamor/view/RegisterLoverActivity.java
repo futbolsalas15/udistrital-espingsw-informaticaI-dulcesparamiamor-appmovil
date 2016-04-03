@@ -1,4 +1,4 @@
-package co.edu.udistrital.dulcesparamiamor;
+package co.edu.udistrital.dulcesparamiamor.view;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -11,8 +11,6 @@ import android.widget.EditText;
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
@@ -20,11 +18,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.loopj.android.http.AsyncHttpClient;
@@ -35,6 +30,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import co.edu.udistrital.dulcesparamiamor.R;
 import cz.msebera.android.httpclient.Header;
 
 public class RegisterLoverActivity extends AppCompatActivity {
