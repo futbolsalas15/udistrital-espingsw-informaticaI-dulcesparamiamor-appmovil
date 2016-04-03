@@ -28,6 +28,8 @@ import java.io.UnsupportedEncodingException;
 
 import Model.UserProfile;
 import cz.msebera.android.httpclient.Header;
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
 
 public class LoginActivity extends AppCompatActivity {
     TextView lblsingup ;
@@ -46,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_login);
         lblsingup = (TextView)findViewById(R.id.lblsingup);
 

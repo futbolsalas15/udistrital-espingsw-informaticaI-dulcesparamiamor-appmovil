@@ -10,7 +10,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center"
-    android:text="Hello World!!"
+    android:text="@string/welcome_message"
     android:textSize="30dp"
     android:textColor="@color/textorIcons"
     >
@@ -19,9 +19,22 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="subirimagentest"
+        android:text="@string/upload_photo"
         android:textColor="@color/textorIcons"
         android:background="@drawable/button_selecter"
         android:onClick="loadImagefromGallery"
         ></Button>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/start_validation"
+        android:textColor="@color/textorIcons"
+        android:background="@drawable/button_selecter"
+        android:onClick="startValidation"
+        ></Button>
+
+
+
+    startValidation
 </LinearLayout>
