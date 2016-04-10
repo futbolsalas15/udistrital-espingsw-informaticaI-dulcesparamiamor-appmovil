@@ -16,9 +16,12 @@ import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 import org.opencv.objdetect.Objdetect;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class ServiceClient  {
+import co.edu.udistrital.dulcesparamiamor.services.Response;
+
+public class ServiceClient implements Serializable {
 
     private static final boolean DEBUG_SOAP_REQUEST_RESPONSE = true;
     private static String SESSION_ID;
@@ -39,27 +42,34 @@ public class ServiceClient  {
         }
     }
 
-    public SoapPrimitive request(HashMap<String, Objdetect> properties) {
+    public SoapObject request(HashMap<String, Object> properties) {
 
         SoapObject request = new SoapObject(this.namespace, this.methodName);
 
-        for(String key : properties.keySet()){
+        /*for(String key : properties.keySet()){
             request.addProperty(key, properties.get(key));
-        }
+        }*/
+
+        request.addProperty("token", "987654321");
+        request.addProperty("foto1", "dfasdfasdf");
+
         // SoapSerializationEnvelope envelope = getSoapSerializationEnvelope(request);
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
 
         envelope.implicitTypes = true;
         envelope.encodingStyle = SoapSerializationEnvelope.XSD;
         /*MarshalFloat md = new MarshalFloat();
-        md.register(envelope);
-        envelope.setOutputSoapObject(request);*/
+        md.register(envelope);*/
 
+        envelope.setOutputSoapObject(request);
+        //envelope.addMapping(this.namespace, "response", new Response().getClass());
         HttpTransportSE ht = new HttpTransportSE(this.requestURL);
-        SoapPrimitive response = null;
+        SoapObject response = null;
+        Log.e("validar",  "nuevo 3" + this.namespace + this.methodName);
         try {
+            testResponse(ht);
             ht.call(this.namespace + this.methodName, envelope);
-            response = (SoapPrimitive)envelope.getResponse();
+            response = (SoapObject)envelope.getResponse();
 
         } catch (Exception e) {
             e.printStackTrace();

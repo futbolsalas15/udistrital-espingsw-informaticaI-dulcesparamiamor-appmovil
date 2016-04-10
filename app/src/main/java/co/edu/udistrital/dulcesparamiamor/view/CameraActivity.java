@@ -41,6 +41,7 @@ import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 
 import co.edu.udistrital.dulcesparamiamor.R;
+import co.edu.udistrital.dulcesparamiamor.services.ValidarAmorClient;
 
 
 // Use the deprecated Camera class.
@@ -52,7 +53,7 @@ public final class CameraActivity extends ActionBarActivity
     // A tag for log output.
     private static final String TAG =
             CameraActivity.class.getSimpleName();
-
+    private boolean sendingImage = false;
     // A key for storing the index of the active camera.
     private static final String STATE_CAMERA_INDEX = "cameraIndex";
     private static final int CAMERA_PERMISSION_GRANTED = 1;
@@ -95,6 +96,7 @@ public final class CameraActivity extends ActionBarActivity
     private boolean managerConneted;
     private CascadeClassifier cascadeClassifier;
     private Mat grayscaleImage;
+    private ValidarAmorClient validarAmorClient;
     // The OpenCV loader callback.
     private BaseLoaderCallback mLoaderCallback =
             new BaseLoaderCallback(this) {
@@ -106,6 +108,7 @@ public final class CameraActivity extends ActionBarActivity
                             managerConneted = true;
                             initializeOpenCVDependencies();
                             mBgr = new Mat();
+
                             break;
                         default:
                             super.onManagerConnected(status);
@@ -178,7 +181,7 @@ public final class CameraActivity extends ActionBarActivity
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        validarAmorClient = new ValidarAmorClient(this.getBaseContext());
         if (savedInstanceState != null) {
             mCameraIndex = savedInstanceState.getInt(
                     STATE_CAMERA_INDEX, 0);
@@ -210,21 +213,15 @@ public final class CameraActivity extends ActionBarActivity
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-
                    cameraLoad();
 
                 } else {
 
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
+                    // No hay permisos
                 }
                 return;
             }
 
-            // other 'case' lines to check for other
-            // permissions this app might request
         }
     }
 
@@ -234,8 +231,6 @@ public final class CameraActivity extends ActionBarActivity
         final Window window = getWindow();
         window.addFlags(
                 WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
-
 
         final Camera camera;
         if (Build.VERSION.SDK_INT >=
@@ -375,16 +370,23 @@ public final class CameraActivity extends ActionBarActivity
         if (cascadeClassifier != null && !cascadeClassifier.empty()) {
             cascadeClassifier.detectMultiScale(grayscaleImage, hands, 1.1, 2, 2,
                     //  new Size(absoluteHandSize, absoluteHandSize), new Size());
-                    new org.opencv.core.Size(200 , 200), new org.opencv.core.Size());
-
+                    new org.opencv.core.Size(200 , 200), new org.opencv.core.Size(300,300));
         }
 
 
-        // If there are any hands found, draw a rectangle around it
         Rect[] handsArray = hands.toArray();
+        //if there are any hands validate love
+        if(handsArray.length > 0 && validarAmorClient != null && sendingImage == false){
+            sendingImage = true;
+            validarAmorClient.execute(rgba);
+
+        }
+
+        // If there are any hands found, draw a rectangle around it
         for (int i = 0; i < handsArray.length; i++) {
             Log.e("OpenCVActivity", "Palms" + handsArray.toString());
             Imgproc.rectangle(rgba, handsArray[i].tl(), handsArray[i].br(), new Scalar(0, 255, 0, 255), 3);
+
         }
 
         if (mIsCameraFrontFacing) {
@@ -394,6 +396,7 @@ public final class CameraActivity extends ActionBarActivity
 
         return rgba;
     }
+
 
 
     @Override

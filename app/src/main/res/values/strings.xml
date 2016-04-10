@@ -32,6 +32,9 @@
     <string name="upload_photo">Subir foto</string>
     <string name="start_validation">Iniciar Validación</string>
     <string name="welcome_message">Bienvenido</string>
+    <string name="services_namespace">http://servicesImpl.service.udistrital.edu.co/</string>
+    <string name="validar_amor_url">http://dulces-para-mi-amor-ws.herokuapp.com/ValidarAmor?wsdl</string>
+    <string name="validar_amor_method">validar</string>
 
 
 </resources>
