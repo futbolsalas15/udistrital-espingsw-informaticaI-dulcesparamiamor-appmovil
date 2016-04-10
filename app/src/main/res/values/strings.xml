@@ -35,6 +35,11 @@
     <string name="services_namespace">http://servicesImpl.service.udistrital.edu.co/</string>
     <string name="validar_amor_url">http://dulces-para-mi-amor-ws.herokuapp.com/ValidarAmor?wsdl</string>
     <string name="validar_amor_method">validar</string>
+    <string name="ws_registrar_usuario_url">http://proyectoweb-5g07603u.cloudapp.net/ServiceWeb/registrarUsuario/ws_servidor_registrarUsuario.asmx?wsdl</string>
+    <string name="ws_namespace">http://tempuri.org/</string>
+    <string name="ws_registrar_usuario_method">agregarUsuario</string>
+    <string name="ws_autenticar_usuario_url">http://proyectoweb-5g07603u.cloudapp.net/ServiceWeb/autenticarUsuario/ws_servidor_autenticarUsuario.asmx?wsdl</string>
+    <string name="ws_autenticar_usuario_method">autenticarUsuario</string>
 
 
 </resources>

@@ -2,12 +2,15 @@ package co.edu.udistrital.dulcesparamiamor.view;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.nfc.Tag;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,12 +25,16 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.ksoap2.serialization.SoapObject;
+import org.opencv.objdetect.Objdetect;
 
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 
 import co.edu.udistrital.dulcesparamiamor.R;
 import co.edu.udistrital.dulcesparamiamor.model.UserProfile;
-import cz.msebera.android.httpclient.Header;
+import co.edu.udistrital.dulcesparamiamor.services.AutenticarUsuarioClient;
+import co.edu.udistrital.dulcesparamiamor.utils.WebServiceResponseListener;
 import com.crashlytics.android.Crashlytics;
 import io.fabric.sdk.android.Fabric;
 
@@ -39,17 +46,43 @@ public class LoginActivity extends AppCompatActivity {
 
     UserProfile userProfile;
     SharedPreferences mPrefs ;
-
-    String loginurl = "http://webappjasontiw.azurewebsites.net/login.php";
     ProgressDialog prgDialog;
-    RequestParams params = new RequestParams();
-
+    AutenticarUsuarioClient autenticarUsuarioClient;
+    Context currentContext;
+    WebServiceResponseListener webServiceResponseListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_login);
+        currentContext = this;
+
+
+        webServiceResponseListener  = new WebServiceResponseListener() {
+            @Override
+            public void onWebServiceResponse(SoapObject response) {
+                String code = response.getProperty(0).toString();
+                Log.e("Response",  code +  ", " + response.getProperty(1).toString() );
+                if(code.equals("1")) {
+                    Log.e("Response", "Autenticado " + code );
+                    //showDialog(activity.getString(R.string.logintittlesuccess),activity.getString(R.string.loginsuccess),code);
+                    SharedPreferences.Editor prefsEditor = mPrefs.edit();
+                    prefsEditor.putString("UserProfile", "");
+                    prefsEditor.commit();
+
+                    Intent intent = new Intent (LoginActivity.this,HomeActivity.class);
+                    LoginActivity.this.startActivity(intent);
+                } else if (code.equals("2")) {
+                    Log.e("Response", "No autenticado " + code );
+                    String message = response.getProperty(1).toString();
+                    showDialog(LoginActivity.this.getString(R.string.notification),message,code);
+                }
+            }
+        };
+
+
+
         lblsingup = (TextView)findViewById(R.id.lblsingup);
 
         Email = (EditText) findViewById(R.id.txtemail);
@@ -97,109 +130,23 @@ public class LoginActivity extends AppCompatActivity {
                     alertDialog.show();
                 }
                 else {
-                    //BackgroundTask backgroundTask = new BackgroundTask(LoginActivity.this);
-                    //backgroundTask.execute("login", Email.getText().toString(), Password.getText().toString());
 
-                    params.put("email", Email.getText().toString());
-                    params.put("password",Password.getText().toString());
-                    makeHTTPCall();
+                    HashMap<String, Object> params = new HashMap<String, Object>();
+                    params.put("correo", Email.getText().toString());
+                    params.put("clave", Password.getText().toString());
+                    autenticarUsuarioClient = new AutenticarUsuarioClient(currentContext);
+                    autenticarUsuarioClient.setListener(webServiceResponseListener);
+                    autenticarUsuarioClient.execute(params);
                 }
 
             }
         });
     }
 
-    // Make Http call to upload Image to Php server
-    public void makeHTTPCall() {
-        prgDialog.setMessage(LoginActivity.this.getString(R.string.login));
-        prgDialog.show();
-
-        AsyncHttpClient client = new AsyncHttpClient();
-
-        client.post(loginurl,
-                params, new AsyncHttpResponseHandler() {
-                    // When the response returned by REST has Http
-                    // response code '200'
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                        try {
-                            prgDialog.hide();
-                            String str = new String(responseBody, "UTF-8");
-                            JsonObject(str); //Convierte respuesta en JSON y lo convierte a notificación.
-                            //Toast.makeText(getApplicationContext(), "Upload Success", Toast.LENGTH_LONG).show();
-                        } catch (UnsupportedEncodingException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    // When the response returned by REST has Http
-                    // response code other than '200' such as '404',
-                    // '500' or '403' etc
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        // Hide Progress Dialog
-                        prgDialog.hide();
-                        // When Http response code is '404'
-                        if (statusCode == 404) {
-                            Toast.makeText(getApplicationContext(),
-                                    "Requested resource not found",
-                                    Toast.LENGTH_LONG).show();
-                        }
-                        // When Http response code is '500'
-                        else if (statusCode == 500) {
-                            Toast.makeText(getApplicationContext(),
-                                    "Something went wrong at server end",
-                                    Toast.LENGTH_LONG).show();
-                        }
-                        // When Http response code other than 404, 500
-                        else {
-                            Toast.makeText(
-                                    getApplicationContext(),
-                                    "Device not connected to Internet. HTTP Status code : "
-                                            + statusCode, Toast.LENGTH_LONG)
-                                    .show();
-                        }
-                    }
-                });
-    }
-
-    public void JsonObject(String json){
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = new JSONObject(json);
-            JSONArray jsonArray = jsonObject.getJSONArray("server_response");
-
-            JSONObject JO = jsonArray.getJSONObject(0);
-            String code = JO.getString("code");
-            String message = JO.getString("message");
-
-            if(code.equals("login_true"))
-            {
-                //showDialog(activity.getString(R.string.logintittlesuccess),activity.getString(R.string.loginsuccess),code);
-                SharedPreferences.Editor prefsEditor = mPrefs.edit();
-                prefsEditor.putString("UserProfile", JO.getJSONArray("object").getJSONObject(0).toString());
-                prefsEditor.commit();
-
-                Intent intent = new Intent (LoginActivity.this,HomeActivity.class);
-                LoginActivity.this.startActivity(intent);
-            }
-            else if (code.equals("login_false"))
-            {
-                showDialog(LoginActivity.this.getString(R.string.notification),message,code);
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void showDialog(String tittle, String message ,String code)
     {
-        if(code.equals("login_false")) {
-           // if(code.equals("reg_true"))
-           //     message = RegisterLoverActivity.this.getString(R.string.registersucces);
-           // else
-           //     message = RegisterLoverActivity.this.getString(R.string.registerfailed);
+        if(code.equals("2")) {
 
             builder = new AlertDialog.Builder(LoginActivity.this);
             builder.setTitle(tittle);

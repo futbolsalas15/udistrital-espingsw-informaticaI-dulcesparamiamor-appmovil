@@ -20,6 +20,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 import co.edu.udistrital.dulcesparamiamor.services.Response;
+import co.edu.udistrital.dulcesparamiamor.wsresponse.OSAutenticar;
 
 public class ServiceClient implements Serializable {
 
@@ -46,26 +47,20 @@ public class ServiceClient implements Serializable {
 
         SoapObject request = new SoapObject(this.namespace, this.methodName);
 
-        /*for(String key : properties.keySet()){
+        for(String key : properties.keySet()){
             request.addProperty(key, properties.get(key));
-        }*/
+        }
 
-        request.addProperty("token", "987654321");
-        request.addProperty("foto1", "dfasdfasdf");
-
-        // SoapSerializationEnvelope envelope = getSoapSerializationEnvelope(request);
-        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-
+        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER12);
+        envelope.dotNet = true;
         envelope.implicitTypes = true;
-        envelope.encodingStyle = SoapSerializationEnvelope.XSD;
-        /*MarshalFloat md = new MarshalFloat();
-        md.register(envelope);*/
-
+        envelope.setAddAdornments(false);
+        envelope.addMapping(this.namespace, "response", new OSAutenticar().getClass());
+        //envelope.encodingStyle = SoapSerializationEnvelope.XSD;
         envelope.setOutputSoapObject(request);
-        //envelope.addMapping(this.namespace, "response", new Response().getClass());
         HttpTransportSE ht = new HttpTransportSE(this.requestURL);
         SoapObject response = null;
-        Log.e("validar",  "nuevo 3" + this.namespace + this.methodName);
+;
         try {
             testResponse(ht);
             ht.call(this.namespace + this.methodName, envelope);
