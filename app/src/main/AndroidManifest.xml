@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SEND_SMS"/>
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature
         android:name="android.hardware.camera.autofocus"
@@ -34,13 +36,18 @@
         <activity android:name=".view.RegisterLoverActivity" />
         <activity android:name=".view.HomeActivity" />
         <activity android:name=".view.UploadActivity" />
-        <activity android:name=".view.CameraActivity"
+        <activity
+            android:name=".view.CameraActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/ActionBarAppTheme">
-        </activity>
+            android:theme="@style/ActionBarAppTheme"></activity>
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="d151faadc8e2c9ff8714e7c49d8ecfb2fba050b5" />
+
+        <activity android:name=".view.MessageActivity">
+
+        </activity>
     </application>
 
 </manifest>

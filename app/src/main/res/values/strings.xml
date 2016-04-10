@@ -9,7 +9,7 @@
     <string name="lblpasswordconfirm">Confirm Password</string>
     <string name="lblname">Name</string>
     <string name="lblphone">Phone</string>
-
+    <string name="lblmessage">Message </string>
     <string name="lblyourlove">Your Love</string>
     <string name="login">Login</string>
     <string name="loginsuccess">Welcome!</string>
@@ -18,7 +18,7 @@
     <string name="logintittlefailed">Login Failed</string>
     <string name="pleasewait">Please Wait</string>
     <string name="connectiontoserver">Connecting to Server</string>
-
+    <string name="sendtext">SEND</string>
     <string name="somethingwentwrong">Something went wrong</string>
     <string name="pleasefillallthefields">Please fill all the fields</string>
     <string name="confirmpasswordnotequal">Confirm password not equal</string>
