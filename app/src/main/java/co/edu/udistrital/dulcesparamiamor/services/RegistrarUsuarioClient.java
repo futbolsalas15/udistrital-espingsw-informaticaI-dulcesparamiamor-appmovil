@@ -45,7 +45,7 @@ public class RegistrarUsuarioClient  extends AsyncTask<HashMap<String, Object>, 
     @Override
     protected void onPostExecute(SoapObject response) {
         if(listener != null){
-            listener.onWebServiceResponse(response);
+         //   listener.onWebServiceResponse(response);
         }
     }
 }

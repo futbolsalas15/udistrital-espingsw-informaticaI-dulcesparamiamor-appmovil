@@ -10,13 +10,15 @@ import org.opencv.objdetect.Objdetect;
 import java.util.HashMap;
 
 import co.edu.udistrital.dulcesparamiamor.R;
+import co.edu.udistrital.dulcesparamiamor.services.autenticarusuario.OEAutenticar;
+import co.edu.udistrital.dulcesparamiamor.services.autenticarusuario.OSAutenticar;
 import co.edu.udistrital.dulcesparamiamor.utils.ServiceClient;
 import co.edu.udistrital.dulcesparamiamor.utils.WebServiceResponseListener;
 
 /**
  * Created by JulioS on 10/04/2016.
  */
-public class AutenticarUsuarioClient  extends AsyncTask<HashMap<String, Object>, Integer, SoapObject> {
+public class AutenticarUsuarioClient  extends AsyncTask<OEAutenticar, Integer, OSAutenticar> {
 
     WebServiceResponseListener listener;
     private ServiceClient serviceClient;
@@ -35,15 +37,16 @@ public class AutenticarUsuarioClient  extends AsyncTask<HashMap<String, Object>,
     }
 
     @Override
-    protected SoapObject doInBackground(HashMap<String, Object>... params) {
-        SoapObject response;
+    protected OSAutenticar doInBackground(OEAutenticar... params) {
+        OSAutenticar response;
         response = serviceClient.request(params[0]);
         return response;
     }
 
 
+
     @Override
-    protected void onPostExecute(SoapObject response) {
+    protected void onPostExecute(OSAutenticar response) {
         if(listener != null){
             listener.onWebServiceResponse(response);
         }

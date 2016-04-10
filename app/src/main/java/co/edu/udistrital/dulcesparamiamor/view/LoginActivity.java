@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.nfc.Tag;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -34,8 +35,14 @@ import java.util.HashMap;
 import co.edu.udistrital.dulcesparamiamor.R;
 import co.edu.udistrital.dulcesparamiamor.model.UserProfile;
 import co.edu.udistrital.dulcesparamiamor.services.AutenticarUsuarioClient;
+import co.edu.udistrital.dulcesparamiamor.services.autenticarusuario.IWsdl2CodeEvents;
+import co.edu.udistrital.dulcesparamiamor.services.autenticarusuario.OEAutenticar;
+import co.edu.udistrital.dulcesparamiamor.services.autenticarusuario.OSAutenticar;
+import co.edu.udistrital.dulcesparamiamor.services.autenticarusuario.WSAutenticarUsuario;
 import co.edu.udistrital.dulcesparamiamor.utils.WebServiceResponseListener;
 import com.crashlytics.android.Crashlytics;
+
+
 import io.fabric.sdk.android.Fabric;
 
 public class LoginActivity extends AppCompatActivity {
@@ -43,12 +50,12 @@ public class LoginActivity extends AppCompatActivity {
     EditText Email,Password;
     Button button;
     AlertDialog.Builder builder;
-
+    AutenticarUsuarioClient autenticarUsuarioClient;
     UserProfile userProfile;
     SharedPreferences mPrefs ;
     ProgressDialog prgDialog;
-    AutenticarUsuarioClient autenticarUsuarioClient;
     Context currentContext;
+    WSAutenticarUsuario wsAutenticarUsuario;
     WebServiceResponseListener webServiceResponseListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,27 +66,30 @@ public class LoginActivity extends AppCompatActivity {
         currentContext = this;
 
 
-        webServiceResponseListener  = new WebServiceResponseListener() {
-            @Override
-            public void onWebServiceResponse(SoapObject response) {
-                String code = response.getProperty(0).toString();
-                Log.e("Response",  code +  ", " + response.getProperty(1).toString() );
-                if(code.equals("1")) {
-                    Log.e("Response", "Autenticado " + code );
-                    //showDialog(activity.getString(R.string.logintittlesuccess),activity.getString(R.string.loginsuccess),code);
-                    SharedPreferences.Editor prefsEditor = mPrefs.edit();
-                    prefsEditor.putString("UserProfile", "");
-                    prefsEditor.commit();
 
-                    Intent intent = new Intent (LoginActivity.this,HomeActivity.class);
-                    LoginActivity.this.startActivity(intent);
-                } else if (code.equals("2")) {
-                    Log.e("Response", "No autenticado " + code );
-                    String message = response.getProperty(1).toString();
-                    showDialog(LoginActivity.this.getString(R.string.notification),message,code);
+        webServiceResponseListener = new WebServiceResponseListener() {
+            @Override
+            public void onWebServiceResponse(OSAutenticar response) {
+                Log.e("RES", response.getProperty(1).toString());
+                    if(response.getProperty(0).toString().equals("1")){
+                        Log.e("Response", "Autenticado " + response.getProperty(1));
+                        //showDialog(activity.getString(R.string.logintittlesuccess),activity.getString(R.string.loginsuccess),code);
+                        SharedPreferences.Editor prefsEditor = mPrefs.edit();
+                        prefsEditor.putString("UserProfile", "");
+                        prefsEditor.commit();
+
+                        Intent intent = new Intent (LoginActivity.this,HomeActivity.class);
+                        LoginActivity.this.startActivity(intent);
+                    }else if(response.getProperty(0).toString().equals("2")){
+                        showDialog(LoginActivity.this.getString(R.string.notification), response);
+                    }else{
+                        //show message   we get and unkown response from server
+                    }
                 }
-            }
+
         };
+
+
 
 
 
@@ -131,12 +141,19 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 else {
 
-                    HashMap<String, Object> params = new HashMap<String, Object>();
-                    params.put("correo", Email.getText().toString());
-                    params.put("clave", Password.getText().toString());
-                    autenticarUsuarioClient = new AutenticarUsuarioClient(currentContext);
+                    SoapObject soapObject = new SoapObject();
+                    soapObject.addProperty("correo", Email.getText().toString());
+                    soapObject.addProperty("clave", Password.getText().toString());
+                    OEAutenticar credentials = new OEAutenticar(soapObject);
+                    try {
+                      //  wsAutenticarUsuario.autenticarUsuarioAsync(credentials);
+                      autenticarUsuarioClient = new AutenticarUsuarioClient(currentContext);
                     autenticarUsuarioClient.setListener(webServiceResponseListener);
-                    autenticarUsuarioClient.execute(params);
+                    autenticarUsuarioClient.execute(credentials);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
                 }
 
             }
@@ -144,13 +161,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    public void showDialog(String tittle, String message ,String code)
+    public void showDialog(String tittle, OSAutenticar response)
     {
-        if(code.equals("2")) {
-
             builder = new AlertDialog.Builder(LoginActivity.this);
             builder.setTitle(tittle);
-            builder.setMessage(message);
+            builder.setMessage(response.getProperty(1).toString());
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -159,7 +174,6 @@ public class LoginActivity extends AppCompatActivity {
             });
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
-        }
     }
 
 
