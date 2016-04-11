@@ -34,6 +34,14 @@
         android:onClick="startValidation"
         ></Button>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="EnviarMensajeFacebook"
+        android:textColor="@color/textorIcons"
+        android:background="@drawable/button_selecter"
+        android:onClick="sendFacebookMessage"
+        android:id="@+id/button2" />
 
 
     startValidation

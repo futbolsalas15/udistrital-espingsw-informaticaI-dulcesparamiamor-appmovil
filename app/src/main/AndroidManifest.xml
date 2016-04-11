@@ -23,6 +23,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".LoginActivity">
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -41,5 +42,6 @@
             android:name="io.fabric.ApiKey"
             android:value="d151faadc8e2c9ff8714e7c49d8ecfb2fba050b5" />
     </application>
+
 
 </manifest>
