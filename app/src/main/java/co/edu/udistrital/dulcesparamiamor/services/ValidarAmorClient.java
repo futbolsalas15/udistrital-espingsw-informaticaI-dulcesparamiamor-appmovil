@@ -39,14 +39,15 @@ public class ValidarAmorClient extends AsyncTask<Mat, Integer, Response> {
 
     @Override
     protected Response doInBackground(Mat... params) {
+        //TODO call object
         SoapObject response;
         HashMap<String, Object> properties = new HashMap<String, Object>();
         properties.put("token", "12345678");
         //properties.put("foto1", matImageToString(params[0]));
         properties.put("foto1", "afdasfasdfasdf");
         properties.put("foto2", "");
-        response = serviceClient.request(properties);
-        Log.e("Validar", response.getProperty(0).toString() + response.getProperty(1).toString());
+        //response = serviceClient.request(properties);
+        //Log.e("Validar", response.getProperty(0).toString() + response.getProperty(1).toString());
         return new Response();
     }
 }

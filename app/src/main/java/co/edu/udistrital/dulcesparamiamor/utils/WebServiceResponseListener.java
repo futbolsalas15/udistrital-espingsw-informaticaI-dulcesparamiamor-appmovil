@@ -10,7 +10,7 @@ import co.edu.udistrital.dulcesparamiamor.services.autenticarusuario.OSAutentica
 public interface WebServiceResponseListener {
 
 
-        public void onWebServiceResponse(OSAutenticar response);
+        public void onWebServiceResponse(SoapObject result);
 
 
 }

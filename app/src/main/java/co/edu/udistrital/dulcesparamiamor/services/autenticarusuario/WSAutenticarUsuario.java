@@ -93,8 +93,8 @@ public class WSAutenticarUsuario {
         soapEnvelope.implicitTypes = true;
         soapEnvelope.dotNet = true;
         SoapObject soapReq = new SoapObject("http://tempuri.org/","autenticarUsuario");
-        soapEnvelope.addMapping("http://tempuri.org/","authenticationResponse",new OEAutenticar().getClass());
-        soapReq.addProperty("authenticationResponse",u);
+        soapEnvelope.addMapping("http://tempuri.org/","u",new OEAutenticar().getClass());
+        soapReq.addProperty("u",u);
         soapEnvelope.setOutputSoapObject(soapReq);
         HttpTransportSE httpTransport = new HttpTransportSE(url,timeOut);
         try{

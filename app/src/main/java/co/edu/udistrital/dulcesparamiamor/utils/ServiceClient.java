@@ -4,6 +4,7 @@ package co.edu.udistrital.dulcesparamiamor.utils;
  * Created by JulioS on 02/04/2016.
  */
 
+import android.os.AsyncTask;
 import android.util.Log;
 
 import org.ksoap2.HeaderProperty;
@@ -33,6 +34,27 @@ public class ServiceClient implements Serializable {
     private String requestURL;
     String namespace;
     String methodName;
+    boolean objectMapping = false;
+    boolean isDotNet = true;
+    String objectParameterName = "";
+    WebServiceResponseListener wsListener;
+
+    public WebServiceResponseListener getWsListener() {
+        return wsListener;
+    }
+
+    public boolean isDotNet() {
+        return isDotNet;
+    }
+
+    public void setIsDotNet(boolean isDotNet) {
+        this.isDotNet = isDotNet;
+    }
+
+    public void setWsListener(WebServiceResponseListener wsListener) {
+        this.wsListener = wsListener;
+
+    }
 
     public ServiceClient(String requestURL, String namespace, String methodName) {
         this.requestURL = requestURL;
@@ -40,7 +62,13 @@ public class ServiceClient implements Serializable {
         this.methodName = methodName;
     }
 
-    private final void testResponse(HttpTransportSE ht) {
+    public ServiceClient(String requestURL, String namespace, String methodName, String objectParameterName) {
+        this.requestURL = requestURL;
+        this.namespace = namespace;
+        this.methodName = methodName;
+        this.objectParameterName = objectParameterName;
+    }
+    private final void debug(HttpTransportSE ht) {
         ht.debug = DEBUG_SOAP_REQUEST_RESPONSE;
         if (DEBUG_SOAP_REQUEST_RESPONSE) {
             Log.v("SOAP RETURN", "Request XML:\n" + ht.requestDump);
@@ -49,22 +77,22 @@ public class ServiceClient implements Serializable {
     }
 
 
-    public OSAutenticar request(OEAutenticar parameters) {
+    public SoapObject request(Object objectInput) {
 
         SoapObject request = new SoapObject(this.namespace, this.methodName);
 
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER12);
-        envelope.dotNet = true;
+        envelope.dotNet = isDotNet;
         envelope.implicitTypes = true;
         envelope.setAddAdornments(false);
-        envelope.addMapping("http://tempuri.org/", "u", new OEAutenticar().getClass());
-        request.addProperty("u", parameters);
+        envelope.addMapping(this.namespace, this.objectParameterName, objectInput.getClass());
+        request.addProperty(objectParameterName, objectInput);
         //envelope.encodingStyle = SoapSerializationEnvelope.XSD;
         envelope.setOutputSoapObject(request);
         HttpTransportSE ht = new HttpTransportSE(this.requestURL);
         SoapObject response = null;
 
-        testResponse(ht);
+        debug(ht);
         try {
             ht.call(this.namespace + this.methodName, envelope);
 
@@ -79,10 +107,10 @@ public class ServiceClient implements Serializable {
                 SoapObject result = (SoapObject) retObj;
                 if (result.getPropertyCount() > 0) {
                     Object obj = result.getProperty(0);
-                    SoapObject j = (SoapObject) obj;
-                    OSAutenticar resultVariable = new OSAutenticar(j);
-                    return resultVariable;
-
+                    SoapObject soapObject = (SoapObject) obj;
+                    //OSAutenticar resultVariable = new OSAutenticar(j);
+                    //return resultVariable;
+                     return  soapObject;
                 }
             }
 
@@ -94,32 +122,28 @@ public class ServiceClient implements Serializable {
         return null;
     }
 
-    public SoapObject request(HashMap<String, Object> properties) {
 
-        SoapObject request = new SoapObject(this.namespace, this.methodName);
 
-        for (String key : properties.keySet()) {
-            request.addProperty(key, properties.get(key));
-        }
+    public  void requestAsync(final Object object){
+        new AsyncTask<Void, Void, SoapObject>(){
 
-        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER12);
-        envelope.dotNet = true;
-        envelope.implicitTypes = true;
-        envelope.setAddAdornments(false);
-        envelope.addMapping(this.namespace, "response", new OSAutenticar().getClass());
-        //envelope.encodingStyle = SoapSerializationEnvelope.XSD;
-        envelope.setOutputSoapObject(request);
-        HttpTransportSE ht = new HttpTransportSE(this.requestURL);
-        SoapObject response = null;
-        ;
-        try {
-            testResponse(ht);
-            ht.call(this.namespace + this.methodName, envelope);
-            response = (SoapObject) envelope.getResponse();
+            @Override
+            protected SoapObject doInBackground(Void... params) {
+                return request(object);
+            }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return response;
+
+            @Override
+            protected void onPostExecute(SoapObject result)
+            {
+                //eventHandler.Wsdl2CodeEndedRequest();
+                if (wsListener != null){
+                    wsListener.onWebServiceResponse(result);
+                }else{
+                    Log.e("serviceclient", "NO WSListener");
+                }
+            }
+        }.execute();
     }
+
 }

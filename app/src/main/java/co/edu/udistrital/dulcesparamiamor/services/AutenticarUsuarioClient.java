@@ -2,6 +2,7 @@ package co.edu.udistrital.dulcesparamiamor.services;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import org.ksoap2.serialization.SoapObject;
 import org.opencv.core.Mat;
@@ -18,13 +19,13 @@ import co.edu.udistrital.dulcesparamiamor.utils.WebServiceResponseListener;
 /**
  * Created by JulioS on 10/04/2016.
  */
-public class AutenticarUsuarioClient  extends AsyncTask<OEAutenticar, Integer, OSAutenticar> {
+public class AutenticarUsuarioClient{
 
     WebServiceResponseListener listener;
     private ServiceClient serviceClient;
 
     public AutenticarUsuarioClient(Context context){
-        serviceClient  = new ServiceClient(context.getString(R.string.ws_autenticar_usuario_url),context.getString(R.string.ws_namespace) ,context.getString(R.string.ws_autenticar_usuario_method) );
+        serviceClient  = new ServiceClient(context.getString(R.string.ws_autenticar_usuario_url),context.getString(R.string.ws_namespace) ,context.getString(R.string.ws_autenticar_usuario_method) , "u");
 
     }
 
@@ -33,22 +34,15 @@ public class AutenticarUsuarioClient  extends AsyncTask<OEAutenticar, Integer, O
     }
 
     public void setListener(WebServiceResponseListener listener) {
+        Log.e("Set listener","..");
         this.listener = listener;
+        serviceClient.setWsListener(listener);
     }
 
-    @Override
-    protected OSAutenticar doInBackground(OEAutenticar... params) {
-        OSAutenticar response;
-        response = serviceClient.request(params[0]);
-        return response;
+    public void autenticarUsuario(OEAutenticar autenticarInput){
+        Log.e("Asyncall ", "autenticar");
+        serviceClient.requestAsync(autenticarInput);
     }
 
 
-
-    @Override
-    protected void onPostExecute(OSAutenticar response) {
-        if(listener != null){
-            listener.onWebServiceResponse(response);
-        }
-    }
 }

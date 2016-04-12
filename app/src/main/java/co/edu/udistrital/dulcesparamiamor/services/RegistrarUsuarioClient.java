@@ -11,18 +11,20 @@ import org.opencv.objdetect.Objdetect;
 import java.util.HashMap;
 
 import co.edu.udistrital.dulcesparamiamor.R;
+import co.edu.udistrital.dulcesparamiamor.services.registrarusuario.OEUsuario;
+import co.edu.udistrital.dulcesparamiamor.services.registrarusuario.OSUsuario;
 import co.edu.udistrital.dulcesparamiamor.utils.ServiceClient;
 import co.edu.udistrital.dulcesparamiamor.utils.WebServiceResponseListener;
 
 /**
  * Created by JulioS on 10/04/2016.
  */
-public class RegistrarUsuarioClient  extends AsyncTask<HashMap<String, Object>, Integer, SoapObject> {
+public class RegistrarUsuarioClient  {
     WebServiceResponseListener listener;
 
     private ServiceClient serviceClient;
     public RegistrarUsuarioClient(Context context){
-        serviceClient  = new ServiceClient(context.getString(R.string.ws_registrar_usuario_url),context.getString(R.string.ws_namespace) ,context.getString(R.string.ws_registrar_usuario_method) );
+        serviceClient  = new ServiceClient(context.getString(R.string.ws_registrar_usuario_url),context.getString(R.string.ws_namespace) ,context.getString(R.string.ws_registrar_usuario_method), "u");
 
     }
 
@@ -32,20 +34,12 @@ public class RegistrarUsuarioClient  extends AsyncTask<HashMap<String, Object>, 
 
     public void setListener(WebServiceResponseListener listener) {
         this.listener = listener;
-    }
-
-    @Override
-    protected SoapObject doInBackground(HashMap<String, Object>... params) {
-        SoapObject response;
-        response = serviceClient.request(params[0]);
-        return response;
+        serviceClient.setWsListener(listener);
     }
 
 
-    @Override
-    protected void onPostExecute(SoapObject response) {
-        if(listener != null){
-         //   listener.onWebServiceResponse(response);
-        }
-    }
+  public void registrarUsuario(OEUsuario registarUsuarioInput){
+      serviceClient.requestAsync(registarUsuarioInput);
+  }
+
 }

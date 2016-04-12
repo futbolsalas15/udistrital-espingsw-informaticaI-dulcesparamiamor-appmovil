@@ -40,23 +40,25 @@ import co.edu.udistrital.dulcesparamiamor.services.autenticarusuario.OEAutentica
 import co.edu.udistrital.dulcesparamiamor.services.autenticarusuario.OSAutenticar;
 import co.edu.udistrital.dulcesparamiamor.services.autenticarusuario.WSAutenticarUsuario;
 import co.edu.udistrital.dulcesparamiamor.utils.WebServiceResponseListener;
+
 import com.crashlytics.android.Crashlytics;
 
 
 import io.fabric.sdk.android.Fabric;
 
 public class LoginActivity extends AppCompatActivity {
-    TextView lblsingup ;
-    EditText Email,Password;
+    TextView lblsingup;
+    EditText Email, Password;
     Button button;
     AlertDialog.Builder builder;
     AutenticarUsuarioClient autenticarUsuarioClient;
     UserProfile userProfile;
-    SharedPreferences mPrefs ;
+    SharedPreferences mPrefs;
     ProgressDialog prgDialog;
     Context currentContext;
     WSAutenticarUsuario wsAutenticarUsuario;
-    WebServiceResponseListener webServiceResponseListener;
+    WebServiceResponseListener wsAutenticarResponseListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -65,35 +67,30 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         currentContext = this;
 
-
-
-        webServiceResponseListener = new WebServiceResponseListener() {
+        autenticarUsuarioClient = new AutenticarUsuarioClient(currentContext);
+        autenticarUsuarioClient.setListener(new WebServiceResponseListener() {
             @Override
-            public void onWebServiceResponse(OSAutenticar response) {
+            public void onWebServiceResponse(SoapObject result) {
+                OSAutenticar response = new OSAutenticar(result);
                 Log.e("RES", response.getProperty(1).toString());
-                    if(response.getProperty(0).toString().equals("1")){
-                        Log.e("Response", "Autenticado " + response.getProperty(1));
-                        //showDialog(activity.getString(R.string.logintittlesuccess),activity.getString(R.string.loginsuccess),code);
-                        SharedPreferences.Editor prefsEditor = mPrefs.edit();
-                        prefsEditor.putString("UserProfile", "");
-                        prefsEditor.commit();
+                if (response.getProperty(0).toString().equals("1")) {
+                    Log.e("Response", "Autenticado " + response.getProperty(1));
+                    //showDialog(activity.getString(R.string.logintittlesuccess),activity.getString(R.string.loginsuccess),code);
+                    SharedPreferences.Editor prefsEditor = mPrefs.edit();
+                    prefsEditor.putString("UserProfile", "");
+                    prefsEditor.commit();
 
-                        Intent intent = new Intent (LoginActivity.this,HomeActivity.class);
-                        LoginActivity.this.startActivity(intent);
-                    }else if(response.getProperty(0).toString().equals("2")){
-                        showDialog(LoginActivity.this.getString(R.string.notification), response);
-                    }else{
-                        //show message   we get and unkown response from server
-                    }
+                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                    LoginActivity.this.startActivity(intent);
+                } else if (response.getProperty(0).toString().equals("2")) {
+                    showDialog(LoginActivity.this.getString(R.string.notification), response);
+                } else {
+                    //show message   we get and unkown response from server
                 }
+            }
+        });
 
-        };
-
-
-
-
-
-        lblsingup = (TextView)findViewById(R.id.lblsingup);
+        lblsingup = (TextView) findViewById(R.id.lblsingup);
 
         Email = (EditText) findViewById(R.id.txtemail);
         Password = (EditText) findViewById(R.id.txtpassword);
@@ -104,11 +101,10 @@ public class LoginActivity extends AppCompatActivity {
         prgDialog.setCancelable(false);
 
         mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-       //Linea valida las preferencias si el usuario ya se ha logueado se obtiene el json del usuario y se redirige al Home.
+        //Linea valida las preferencias si el usuario ya se ha logueado se obtiene el json del usuario y se redirige al Home.
         Gson gson = new Gson();
         String json = mPrefs.getString("UserProfile", "");
-        if(!json.equalsIgnoreCase(""))
-        {
+        if (!json.equalsIgnoreCase("")) {
             userProfile = gson.fromJson(json, UserProfile.class);
             startActivity(new Intent(LoginActivity.this, HomeActivity.class));
         }
@@ -124,9 +120,8 @@ public class LoginActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(Email.getText().toString().equals("") || Password.getText().toString().equals(""))
-                {
-                 builder = new AlertDialog.Builder(LoginActivity.this);
+                if (Email.getText().toString().equals("") || Password.getText().toString().equals("")) {
+                    builder = new AlertDialog.Builder(LoginActivity.this);
                     builder.setTitle("Something went wrong");
                     builder.setMessage("Please fill all the fields");
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -138,21 +133,14 @@ public class LoginActivity extends AppCompatActivity {
                     });
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();
-                }
-                else {
+                } else {
 
                     SoapObject soapObject = new SoapObject();
                     soapObject.addProperty("correo", Email.getText().toString());
                     soapObject.addProperty("clave", Password.getText().toString());
-                    OEAutenticar credentials = new OEAutenticar(soapObject);
-                    try {
-                      //  wsAutenticarUsuario.autenticarUsuarioAsync(credentials);
-                      autenticarUsuarioClient = new AutenticarUsuarioClient(currentContext);
-                    autenticarUsuarioClient.setListener(webServiceResponseListener);
-                    autenticarUsuarioClient.execute(credentials);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    OEAutenticar autenticarInput = new OEAutenticar(soapObject);
+                    Log.e("Autenticar usuario","..");
+                    autenticarUsuarioClient.autenticarUsuario(autenticarInput);
 
                 }
 
@@ -161,19 +149,18 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    public void showDialog(String tittle, OSAutenticar response)
-    {
-            builder = new AlertDialog.Builder(LoginActivity.this);
-            builder.setTitle(tittle);
-            builder.setMessage(response.getProperty(1).toString());
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            AlertDialog alertDialog = builder.create();
-            alertDialog.show();
+    public void showDialog(String tittle, OSAutenticar response) {
+        builder = new AlertDialog.Builder(LoginActivity.this);
+        builder.setTitle(tittle);
+        builder.setMessage(response.getProperty(1).toString());
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
 
