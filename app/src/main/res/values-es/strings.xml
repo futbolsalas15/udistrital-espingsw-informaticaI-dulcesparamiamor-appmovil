@@ -29,7 +29,7 @@
     <string name="confirmpasswordnotequal">Confirm password not equal</string>
     <string name="btnuploadimage">Upload Image</string>
     <string name="pleaseselectanimage">Please Select an Image</string>
-
+    <string name="lblmessage">Mensaje </string>
     <string name="notification">Notification</string>
     <string name="recording">Recording</string>
     <string name="registersucces">Register Success</string>
