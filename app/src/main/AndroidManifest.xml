@@ -13,8 +13,11 @@
         android:name="android.hardware.camera.flash"
         android:required="false" />
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- GCM Permissions -->
+    <permission android:name="co.edu.udistrital.dulcesparamiamor.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+    <uses-permission android:name="co.edu.udistrital.dulcesparamiamor.permission.C2D_MESSAGE" />
+    <!-- GCM Permissions -->
 
     <application
         android:allowBackup="true"
@@ -40,6 +43,32 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="d151faadc8e2c9ff8714e7c49d8ecfb2fba050b5" />
+
+
+
+        <!-- GCM Services -->
+        <receiver
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <category android:name="co.edu.udistrital.dulcesparamiamor.gcm" />
+            </intent-filter>
+        </receiver>
+        <service
+            android:name="co.edu.udistrital.dulcesparamiamor.gcm.MyInstanceIDListenerService"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
+        <service android:name="co.edu.udistrital.dulcesparamiamor.gcm.RegistrationIntentService"  android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.gms.iid.InstanceID" />
+            </intent-filter>
+        </service>
+        <!-- GCM Services -->
     </application>
 
 </manifest>
