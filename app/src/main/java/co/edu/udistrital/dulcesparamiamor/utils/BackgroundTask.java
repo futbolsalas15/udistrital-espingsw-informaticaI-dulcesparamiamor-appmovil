@@ -1,4 +1,4 @@
-package co.edu.udistrital.dulcesparamiamor;
+package co.edu.udistrital.dulcesparamiamor.utils;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,7 +26,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
-import Model.UserProfile;
+import co.edu.udistrital.dulcesparamiamor.view.HomeActivity;
+import co.edu.udistrital.dulcesparamiamor.R;
+import co.edu.udistrital.dulcesparamiamor.model.UserProfile;
 
 /**
  * Created by Jeison on 21/03/2016.

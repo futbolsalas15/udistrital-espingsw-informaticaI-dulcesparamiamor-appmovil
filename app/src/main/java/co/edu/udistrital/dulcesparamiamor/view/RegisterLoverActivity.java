@@ -1,9 +1,14 @@
-package co.edu.udistrital.dulcesparamiamor;
+package co.edu.udistrital.dulcesparamiamor.view;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,8 +16,6 @@ import android.widget.EditText;
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
@@ -20,11 +23,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.loopj.android.http.AsyncHttpClient;
@@ -34,7 +34,13 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.ksoap2.serialization.SoapObject;
 
+import co.edu.udistrital.dulcesparamiamor.R;
+import co.edu.udistrital.dulcesparamiamor.services.RegistrarUsuarioClient;
+import co.edu.udistrital.dulcesparamiamor.services.registrarusuario.OEUsuario;
+import co.edu.udistrital.dulcesparamiamor.services.registrarusuario.OSUsuario;
+import co.edu.udistrital.dulcesparamiamor.utils.WebServiceResponseListener;
 import cz.msebera.android.httpclient.Header;
 
 public class RegisterLoverActivity extends AppCompatActivity {
@@ -45,20 +51,53 @@ String Name ,Email,Password; //info user
     EditText LoverName,LoverPhone,LoverEmail,LoverFacebook;
     TextView ImageSelector;
     AlertDialog.Builder builder;
+    private static final int READ_EXTERNAL_STORAGE_PERMISSION_GRANTED = 1;
+
 
    // String registerurl = "http://192.168.0.14/servicephp/register.php";
    String registerurl = "http://webappjasontiw.azurewebsites.net/register.php";
     ProgressDialog prgDialog;
     String encodedString;
-    RequestParams params = new RequestParams();
+    RequestParams params;
     String imgPath, fileName;
     Bitmap bitmap;
     private static int RESULT_LOAD_IMG = 1;
-
+    SoapObject properties;
+    OEUsuario oeUsuario;
+    RegistrarUsuarioClient registrarUsuarioClient;
+    boolean imageSelected = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.e("Activity create", "");
+        imageSelected = false;
         setContentView(R.layout.activity_register_lover);
+
+         registrarUsuarioClient = new RegistrarUsuarioClient(this);
+         registrarUsuarioClient.setListener(new WebServiceResponseListener() {
+             @Override
+             public void onWebServiceResponse(SoapObject result) {
+                 OSUsuario response = new OSUsuario(result);
+                 if(response.getProperty(0).toString().equals("1")){
+                     startActivity(new Intent(RegisterLoverActivity.this, HomeActivity.class));
+                 }else if(response.getProperty(0).equals("2")){
+                     showDialog("Registro", response.getProperty(1).toString());
+                 }else{
+                     //unknown response
+                 }
+             }
+         });
+
+
+        int permissionCheck = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE);
+        checkAndRequestPermision();
+        if(PackageManager.PERMISSION_GRANTED == permissionCheck){
+            Log.e("Permission", "OK");
+        }else{
+            Log.e("Permission", "No permission");
+        }
+
 
         Bundle bundle = getIntent().getExtras();
         LoverName = (EditText)findViewById(R.id.txtname);
@@ -96,7 +135,7 @@ String Name ,Email,Password; //info user
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();
                 }
-                else if (ImageSelector.getText().equals(""))
+                else if (!imageSelected)
                 {
                     builder = new AlertDialog.Builder(RegisterLoverActivity.this);
                     builder.setTitle(RegisterLoverActivity.this.getString(R.string.somethingwentwrong));
@@ -112,14 +151,17 @@ String Name ,Email,Password; //info user
                 }
                 else
                 {
-                    params.put("name",Name);
-                    params.put("email",Email);
-                    params.put("password",Password);
-                    params.put("lovename",LoverName.getText());
-                    params.put("loveemail",LoverEmail.getText());
-                    params.put("lovephone",LoverPhone.getText());
-                    params.put("lovefacebook",LoverFacebook.getText());
-                    uploadImage(v);
+                    properties = new SoapObject();
+                    OEUsuario registrarUsuarioInput = new OEUsuario();
+                    properties.addProperty("nombre", Name);
+                     properties.addProperty("correo", Email);
+                     properties.addProperty("clave", Password);
+                     properties.addProperty("telefono", 123456);
+                     properties.addProperty("nombreAmor", LoverName.getText());
+                     properties.addProperty("correoAmor", LoverEmail.getText());
+                     properties.addProperty("telefonoAmor", LoverPhone.getText());
+                     properties.addProperty("faceAmor", LoverFacebook.getText());
+                     uploadImage(v);
                 }
             }
         });
@@ -133,10 +175,14 @@ String Name ,Email,Password; //info user
         startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
     }
 
+
+
+
     // When Image is selected from Gallery
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.e("Activity result", "");
         try {
             // When an Image is picked
             if (requestCode == RESULT_LOAD_IMG && resultCode == RESULT_OK
@@ -154,6 +200,8 @@ String Name ,Email,Password; //info user
 
                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                 imgPath = cursor.getString(columnIndex);
+                imageSelected = true;
+                Log.e("Image path", imgPath);
                 cursor.close();
                 //ImageView imgView = (ImageView) findViewById(R.id.imgView);
                 // Set the Image in ImageView
@@ -162,27 +210,28 @@ String Name ,Email,Password; //info user
                 // Get the Image's file name
                 String fileNameSegments[] = imgPath.split("/");
                 fileName = fileNameSegments[fileNameSegments.length - 1];
-                // Put file name in Async Http Post Param which will used in Php web app
-                ImageSelector.setText("select");
-                params.put("filename", fileName);
+                //ImageSelector.setText("select");
+
 
             } else {
                 Toast.makeText(this, "You haven't picked Image",
                         Toast.LENGTH_LONG).show();
             }
         } catch (Exception e) {
-            Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
+            Toast.makeText(this, "Something went wrong + e", Toast.LENGTH_LONG)
                     .show();
+            e.printStackTrace();
         }
 
     }
 
     // When Upload button is clicked
     public void uploadImage(View v) {
+        Log.e("Upload Image", "");
         // When Image is selected from Gallery
         if (imgPath != null && !imgPath.isEmpty()) {
-            prgDialog.setMessage("Converting Image to Binary Data");
-            prgDialog.show();
+           // prgDialog.setMessage("Converting Image to Binary Data");
+            //prgDialog.show();
             // Convert image to String using Base64
             encodeImagetoString();
             // When Image is not selected from Gallery
@@ -198,16 +247,23 @@ String Name ,Email,Password; //info user
     public void encodeImagetoString() {
         new AsyncTask<Void, Void, String>() {
 
-            protected void onPreExecute() {
-
-            };
 
             @Override
             protected String doInBackground(Void... params) {
-                BitmapFactory.Options options = null;
+                /*BitmapFactory.Options options = null;
                 options = new BitmapFactory.Options();
                 options.inSampleSize = 3;
-                bitmap = BitmapFactory.decodeFile(imgPath, options);
+
+                bitmap = BitmapFactory.decodeFile(imgPath, options);*/
+                BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+                Bitmap bitmap = BitmapFactory.decodeFile(imgPath, bmOptions);
+                if(bitmap != null){
+                    Log.e("Bitmap", bitmap.toString());
+
+                }else{
+                    Log.e("Bitmap null", "");
+                }
+                Log.e("Backgroud", imgPath);
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 // Must compress the Image to reduce image size to make upload easy
                 bitmap.compress(Bitmap.CompressFormat.PNG, 50, stream);
@@ -219,94 +275,70 @@ String Name ,Email,Password; //info user
 
             @Override
             protected void onPostExecute(String msg) {
-                prgDialog.setMessage("Calling Upload");
+            // prgDialog.setMessage("Calling Upload");
                 // Put converted Image string into Async Http Post param
-                params.put("image", encodedString);
+                properties.addProperty("image", encodedString);
+                oeUsuario = new OEUsuario(properties);
                 // Trigger Image upload
                 triggerImageUpload();
             }
         }.execute(null, null, null);
     }
 
+
+
+    private void checkAndRequestPermision() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+            } else {
+
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        // MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+                        READ_EXTERNAL_STORAGE_PERMISSION_GRANTED);
+
+            }
+        }else{
+            Log.e("We have permssion", "");
+        }
+    }
     public void triggerImageUpload() {
-        makeHTTPCall();
+
+        registrarUsuarioClient.registrarUsuario(oeUsuario);
     }
 
-    // Make Http call to upload Image to Php server
-    public void makeHTTPCall() {
-        prgDialog.setMessage(RegisterLoverActivity.this.getString(R.string.recording));
-        AsyncHttpClient client = new AsyncHttpClient();
 
-        client.post(registerurl,
-                params, new AsyncHttpResponseHandler() {
-                    // When the response returned by REST has Http
-                    // response code '200'
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                        try {
-                            prgDialog.hide();
-                            String str = new String(responseBody, "UTF-8");
-                            JsonObject(str); //Convierte respuesta en JSON y lo convierte a notificación.
-                            //Toast.makeText(getApplicationContext(), "Upload Success", Toast.LENGTH_LONG).show();
-                        } catch (UnsupportedEncodingException e) {
-                            e.printStackTrace();
-                        }
-                    }
 
-                    // When the response returned by REST has Http
-                    // response code other than '200' such as '404',
-                    // '500' or '403' etc
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        // Hide Progress Dialog
-                        prgDialog.hide();
-                        // When Http response code is '404'
-                        if (statusCode == 404) {
-                            Toast.makeText(getApplicationContext(),
-                                    "Requested resource not found",
-                                    Toast.LENGTH_LONG).show();
-                        }
-                        // When Http response code is '500'
-                        else if (statusCode == 500) {
-                            Toast.makeText(getApplicationContext(),
-                                    "Something went wrong at server end",
-                                    Toast.LENGTH_LONG).show();
-                        }
-                        // When Http response code other than 404, 500
-                        else {
-                            Toast.makeText(
-                                    getApplicationContext(),
-                                    "Device not connected to Internet. HTTP Status code : "
-                                            + statusCode, Toast.LENGTH_LONG)
-                                    .show();
-                        }
-                    }
-                });
-    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case READ_EXTERNAL_STORAGE_PERMISSION_GRANTED: {
+                Log.e("PERMISSION_GRANT", String.valueOf(grantResults.length));
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-    public void JsonObject(String json){
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = new JSONObject(json);
-            JSONArray jsonArray = jsonObject.getJSONArray("server_response");
+                    Log.e("READ PERMison GRANTED", "");
+                } else {
 
-            JSONObject JO = jsonArray.getJSONObject(0);
-            String code = JO.getString("code");
-            String message = JO.getString("message");
-            showDialog(RegisterLoverActivity.this.getString(R.string.notification),message,code);
-        } catch (JSONException e) {
-            e.printStackTrace();
+                    Log.e("NO PERMSISSION ", "");
+                }
+                return;
+            }
+
         }
     }
 
-    public void showDialog(String tittle, String message ,String code)
-    {
-       if(code.equals("reg_true") || code.equals("reg_false")) {
-           if(code.equals("reg_true"))
-               message = RegisterLoverActivity.this.getString(R.string.registersucces);
-           else
-               message = RegisterLoverActivity.this.getString(R.string.registerfailed);
 
+    public void showDialog(String tittle, String message)
+    {
            builder = new AlertDialog.Builder(RegisterLoverActivity.this);
            builder.setTitle(tittle);
            builder.setMessage(message);
@@ -318,7 +350,6 @@ String Name ,Email,Password; //info user
            });
            AlertDialog alertDialog = builder.create();
            alertDialog.show();
-       }
     }
 
 
