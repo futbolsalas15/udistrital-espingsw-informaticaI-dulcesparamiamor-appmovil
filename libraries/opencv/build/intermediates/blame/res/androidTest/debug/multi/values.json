@@ -1,29 +1,5 @@
 [
     {
-        "outputFile": "C:\\Users\\JulioS\\Documents\\dev-especializacion\\DulcesParaMiAmor\\libraries\\opencv\\build\\intermediates\\res\\merged\\androidTest\\debug\\values\\values.xml",
-        "map": [
-            {
-                "to": {
-                    "startLine": 3,
-                    "startColumn": 4,
-                    "startOffset": 349,
-                    "endColumn": 164,
-                    "endOffset": 509
-                },
-                "from": {
-                    "file": "C:\\Users\\JulioS\\Documents\\dev-especializacion\\DulcesParaMiAmor\\libraries\\opencv\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
-                    "position": {
-                        "startLine": 3,
-                        "startColumn": 4,
-                        "startOffset": 349,
-                        "endColumn": 164,
-                        "endOffset": 509
-                    }
-                }
-            }
-        ]
-    },
-    {
         "outputFile": "C:\\Users\\Jeison\\StudioProjects\\DulcesParaMiAmor\\libraries\\opencv\\build\\intermediates\\res\\merged\\androidTest\\debug\\values\\values.xml",
         "map": [
             {
@@ -36,6 +12,30 @@
                 },
                 "from": {
                     "file": "C:\\Users\\Jeison\\StudioProjects\\DulcesParaMiAmor\\libraries\\opencv\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 3,
+                        "startColumn": 4,
+                        "startOffset": 349,
+                        "endColumn": 164,
+                        "endOffset": 509
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "outputFile": "C:\\Users\\JulioS\\Documents\\dev-especializacion\\DulcesParaMiAmor\\libraries\\opencv\\build\\intermediates\\res\\merged\\androidTest\\debug\\values\\values.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 3,
+                    "startColumn": 4,
+                    "startOffset": 349,
+                    "endColumn": 164,
+                    "endOffset": 509
+                },
+                "from": {
+                    "file": "C:\\Users\\JulioS\\Documents\\dev-especializacion\\DulcesParaMiAmor\\libraries\\opencv\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
                     "position": {
                         "startLine": 3,
                         "startColumn": 4,

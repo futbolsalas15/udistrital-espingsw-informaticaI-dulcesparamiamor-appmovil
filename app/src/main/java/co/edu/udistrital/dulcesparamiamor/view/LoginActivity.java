@@ -39,6 +39,7 @@ import co.edu.udistrital.dulcesparamiamor.services.autenticarusuario.IWsdl2CodeE
 import co.edu.udistrital.dulcesparamiamor.services.autenticarusuario.OEAutenticar;
 import co.edu.udistrital.dulcesparamiamor.services.autenticarusuario.OSAutenticar;
 import co.edu.udistrital.dulcesparamiamor.services.autenticarusuario.WSAutenticarUsuario;
+import co.edu.udistrital.dulcesparamiamor.utils.Helper;
 import co.edu.udistrital.dulcesparamiamor.utils.WebServiceResponseListener;
 
 import com.crashlytics.android.Crashlytics;
@@ -82,7 +83,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                     LoginActivity.this.startActivity(intent);
-                } else if (response.getProperty(0).toString().equals("2")) {
+                } else if (!response.getProperty(0).toString().equals("")) { //Se cambio a 0 posiblemente lo hallan cambiado en el servidor.
                     showDialog(LoginActivity.this.getString(R.string.notification), response);
                 } else {
                     //show message   we get and unkown response from server
@@ -133,7 +134,21 @@ public class LoginActivity extends AppCompatActivity {
                     });
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();
-                } else {
+                }
+                if (!Helper.isValidEmailAddress(Email.getText().toString())) {
+                    builder = new AlertDialog.Builder(LoginActivity.this);
+                    builder.setTitle("Something went wrong");
+                    builder.setMessage("Incorrect mail ");
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                }
+                else {
 
                     SoapObject soapObject = new SoapObject();
                     soapObject.addProperty("correo", Email.getText().toString());

@@ -40,6 +40,7 @@ import co.edu.udistrital.dulcesparamiamor.R;
 import co.edu.udistrital.dulcesparamiamor.services.RegistrarUsuarioClient;
 import co.edu.udistrital.dulcesparamiamor.services.registrarusuario.OEUsuario;
 import co.edu.udistrital.dulcesparamiamor.services.registrarusuario.OSUsuario;
+import co.edu.udistrital.dulcesparamiamor.utils.Helper;
 import co.edu.udistrital.dulcesparamiamor.utils.WebServiceResponseListener;
 import cz.msebera.android.httpclient.Header;
 
@@ -140,6 +141,20 @@ String Name ,Email,Password; //info user
                     builder = new AlertDialog.Builder(RegisterLoverActivity.this);
                     builder.setTitle(RegisterLoverActivity.this.getString(R.string.somethingwentwrong));
                     builder.setMessage(RegisterLoverActivity.this.getString(R.string.pleaseselectanimage));
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                }
+                else  if(!Helper.isValidEmailAddress(LoverEmail.getText().toString()))
+                {
+                    builder = new AlertDialog.Builder(RegisterLoverActivity.this);
+                    builder.setTitle(RegisterLoverActivity.this.getString(R.string.somethingwentwrong));
+                    builder.setMessage("Email Invalid");
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
