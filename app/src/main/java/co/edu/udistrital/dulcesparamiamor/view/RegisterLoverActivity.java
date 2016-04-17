@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import java.io.ByteArrayOutputStream;
-import java.io.UnsupportedEncodingException;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -27,21 +26,16 @@ import android.provider.MediaStore;
 import android.util.Base64;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
+
 import com.loopj.android.http.RequestParams;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.ksoap2.serialization.SoapObject;
 
 import co.edu.udistrital.dulcesparamiamor.R;
-import co.edu.udistrital.dulcesparamiamor.services.RegistrarUsuarioClient;
-import co.edu.udistrital.dulcesparamiamor.services.registrarusuario.OEUsuario;
-import co.edu.udistrital.dulcesparamiamor.services.registrarusuario.OSUsuario;
+import co.edu.udistrital.dulcesparamiamor.presenter.webservices.RegistrarUsuarioClient;
+import co.edu.udistrital.dulcesparamiamor.model.webservices.registrarusuario.OEUsuario;
+import co.edu.udistrital.dulcesparamiamor.model.webservices.registrarusuario.OSUsuario;
 import co.edu.udistrital.dulcesparamiamor.utils.WebServiceResponseListener;
-import cz.msebera.android.httpclient.Header;
 
 public class RegisterLoverActivity extends AppCompatActivity {
 String Name ,Email,Password; //info user

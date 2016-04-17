@@ -1,14 +1,11 @@
-package co.edu.udistrital.dulcesparamiamor.services;
+package co.edu.udistrital.dulcesparamiamor.presenter.webservices;
 
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Base64;
-import android.util.Log;
 
 import org.ksoap2.serialization.SoapObject;
-import org.ksoap2.serialization.SoapPrimitive;
 import org.opencv.core.Mat;
-import org.opencv.objdetect.Objdetect;
 
 import java.util.HashMap;
 

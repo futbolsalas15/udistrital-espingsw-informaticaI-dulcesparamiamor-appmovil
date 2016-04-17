@@ -1,4 +1,4 @@
-package co.edu.udistrital.dulcesparamiamor.services.registrarusuario;
+package co.edu.udistrital.dulcesparamiamor.model.webservices.registrarusuario;
 
 
 //------------------------------------------------------------------------------

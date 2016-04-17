@@ -1,18 +1,9 @@
-package co.edu.udistrital.dulcesparamiamor.services;
+package co.edu.udistrital.dulcesparamiamor.presenter.webservices;
 
 import android.content.Context;
-import android.os.AsyncTask;
-import android.util.Log;
-
-import org.ksoap2.serialization.SoapObject;
-import org.opencv.core.Mat;
-import org.opencv.objdetect.Objdetect;
-
-import java.util.HashMap;
 
 import co.edu.udistrital.dulcesparamiamor.R;
-import co.edu.udistrital.dulcesparamiamor.services.registrarusuario.OEUsuario;
-import co.edu.udistrital.dulcesparamiamor.services.registrarusuario.OSUsuario;
+import co.edu.udistrital.dulcesparamiamor.model.webservices.registrarusuario.OEUsuario;
 import co.edu.udistrital.dulcesparamiamor.utils.ServiceClient;
 import co.edu.udistrital.dulcesparamiamor.utils.WebServiceResponseListener;
 

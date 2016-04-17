@@ -6,8 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.nfc.Tag;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,29 +14,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.ksoap2.serialization.SoapObject;
-import org.opencv.objdetect.Objdetect;
-
-import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
 
 import co.edu.udistrital.dulcesparamiamor.R;
 import co.edu.udistrital.dulcesparamiamor.model.UserProfile;
-import co.edu.udistrital.dulcesparamiamor.services.AutenticarUsuarioClient;
-import co.edu.udistrital.dulcesparamiamor.services.autenticarusuario.IWsdl2CodeEvents;
-import co.edu.udistrital.dulcesparamiamor.services.autenticarusuario.OEAutenticar;
-import co.edu.udistrital.dulcesparamiamor.services.autenticarusuario.OSAutenticar;
-import co.edu.udistrital.dulcesparamiamor.services.autenticarusuario.WSAutenticarUsuario;
+import co.edu.udistrital.dulcesparamiamor.presenter.webservices.AutenticarUsuarioClient;
+import co.edu.udistrital.dulcesparamiamor.model.webservices.autenticarusuario.OEAutenticar;
+import co.edu.udistrital.dulcesparamiamor.model.webservices.autenticarusuario.OSAutenticar;
 import co.edu.udistrital.dulcesparamiamor.utils.WebServiceResponseListener;
 
 import com.crashlytics.android.Crashlytics;
@@ -56,8 +41,6 @@ public class LoginActivity extends AppCompatActivity {
     SharedPreferences mPrefs;
     ProgressDialog prgDialog;
     Context currentContext;
-    WSAutenticarUsuario wsAutenticarUsuario;
-    WebServiceResponseListener wsAutenticarResponseListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

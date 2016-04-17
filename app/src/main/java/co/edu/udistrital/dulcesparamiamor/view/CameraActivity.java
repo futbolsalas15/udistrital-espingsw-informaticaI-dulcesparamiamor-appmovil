@@ -41,7 +41,7 @@ import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 
 import co.edu.udistrital.dulcesparamiamor.R;
-import co.edu.udistrital.dulcesparamiamor.services.ValidarAmorClient;
+import co.edu.udistrital.dulcesparamiamor.presenter.webservices.ValidarAmorClient;
 
 
 // Use the deprecated Camera class.

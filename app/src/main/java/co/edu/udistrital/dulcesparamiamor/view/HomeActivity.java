@@ -23,6 +23,10 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+    public  void openSendSMS(View view){
+        startActivity(new Intent(HomeActivity.this, MessageActivity.class));
+    }
+
     public void startValidation(View view)
     {
         startActivity(new Intent(HomeActivity.this, CameraActivity.class));

@@ -1,0 +1,5 @@
+projectKey=dulcesparamiamor
+serverUrl=http://54.87.196.187:9000
+dashboardUrl=http://54.87.196.187:9000/dashboard/index/dulcesparamiamor
+ceTaskId=AVQk7HGy734lgGLNvYMe
+ceTaskUrl=http://54.87.196.187:9000/api/ce/task?id=AVQk7HGy734lgGLNvYMe
