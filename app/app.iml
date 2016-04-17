@@ -1,5 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module external.linked.project.id=":app" external.linked.project.path="$MODULE_DIR$" external.root.project.path="$MODULE_DIR$/.." external.system.id="GRADLE" external.system.module.group="DulcesParaMiAmor" external.system.module.version="unspecified" type="JAVA_MODULE" version="4">
+  <component name="CloudCustomPersistentConfigurations">
+    <option name="myCloudPersistentConfigurations">
+      <list>
+        <CloudPersistentConfiguration>
+          <option name="name" value="Unnamed" />
+          <option name="devices">
+            <list>
+              <option value="condor_umts" />
+              <option value="flo" />
+              <option value="flounder" />
+              <option value="g3" />
+              <option value="falcon_umts" />
+              <option value="titan_umts" />
+              <option value="t03g" />
+              <option value="htc_m8" />
+            </list>
+          </option>
+          <option name="apiLevels">
+            <list>
+              <option value="23" />
+              <option value="22" />
+              <option value="21" />
+              <option value="19" />
+              <option value="18" />
+              <option value="17" />
+            </list>
+          </option>
+          <option name="languages">
+            <list>
+              <option value="en" />
+              <option value="es" />
+            </list>
+          </option>
+          <option name="orientations">
+            <list>
+              <option value="landscape" />
+              <option value="portrait" />
+            </list>
+          </option>
+        </CloudPersistentConfiguration>
+      </list>
+    </option>
+  </component>
   <component name="FacetManager">
     <facet type="android-gradle" name="Android-Gradle">
       <configuration>

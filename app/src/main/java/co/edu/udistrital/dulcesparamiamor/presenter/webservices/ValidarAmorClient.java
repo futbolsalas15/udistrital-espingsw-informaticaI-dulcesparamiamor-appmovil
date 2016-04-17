@@ -10,6 +10,7 @@ import org.opencv.core.Mat;
 import java.util.HashMap;
 
 import co.edu.udistrital.dulcesparamiamor.R;
+import co.edu.udistrital.dulcesparamiamor.model.webservices.Response;
 import co.edu.udistrital.dulcesparamiamor.utils.ServiceClient;
 
 /**
