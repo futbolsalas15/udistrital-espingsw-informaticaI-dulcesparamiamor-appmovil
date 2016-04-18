@@ -153,6 +153,7 @@ public class LoginActivity extends AppCompatActivity {
                     SoapObject soapObject = new SoapObject();
                     soapObject.addProperty("correo", Email.getText().toString());
                     soapObject.addProperty("clave", Password.getText().toString());
+                    soapObject.addProperty("token", "");
                     OEAutenticar autenticarInput = new OEAutenticar(soapObject);
                     Log.e("Autenticar usuario","..");
                     autenticarUsuarioClient.autenticarUsuario(autenticarInput);

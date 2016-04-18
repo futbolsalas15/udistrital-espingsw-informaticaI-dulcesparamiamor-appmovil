@@ -17,10 +17,9 @@ public class HomeActivity extends AppCompatActivity {
 
 
 
-    public void loadImagefromGallery(View view)
+    public void EditLove(View view)
     {
-        startActivity(new Intent(HomeActivity.this, UploadActivity.class));
-
+        startActivity(new Intent(HomeActivity.this, EditLoveActivity.class));
     }
 
     public void startValidation(View view)

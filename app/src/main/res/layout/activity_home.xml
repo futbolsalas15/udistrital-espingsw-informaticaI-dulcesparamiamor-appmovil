@@ -19,10 +19,10 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/upload_photo"
+        android:text="@string/btneditlove"
         android:textColor="@color/textorIcons"
         android:background="@drawable/button_selecter"
-        android:onClick="loadImagefromGallery"
+        android:onClick="EditLove"
         ></Button>
 
     <Button
