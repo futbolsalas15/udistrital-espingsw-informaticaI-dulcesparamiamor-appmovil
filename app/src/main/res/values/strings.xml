@@ -3,13 +3,15 @@
     <string name="logintext">LOGIN</string>
     <string name="singuptext">New User? Sing Up</string>
     <string name="btnsingup">SING UP</string>
+    <string name="btnsave">SAVE</string>
+    <string name="btneditlove">EDIT LOVE</string>
     <string name="btnsingupfirst">NEXT</string>
     <string name="lblemail">Email</string>
     <string name="lblpassword">Password</string>
     <string name="lblpasswordconfirm">Confirm Password</string>
     <string name="lblname">Name</string>
     <string name="lblphone">Phone</string>
-
+    <string name="lblmessage">Message </string>
     <string name="lblyourlove">Your Love</string>
     <string name="login">Login</string>
     <string name="loginsuccess">Welcome!</string>
@@ -18,7 +20,7 @@
     <string name="logintittlefailed">Login Failed</string>
     <string name="pleasewait">Please Wait</string>
     <string name="connectiontoserver">Connecting to Server</string>
-
+    <string name="sendtext" translatable="false">SEND</string>
     <string name="somethingwentwrong">Something went wrong</string>
     <string name="pleasefillallthefields">Please fill all the fields</string>
     <string name="confirmpasswordnotequal">Confirm password not equal</string>
@@ -33,5 +35,14 @@
     <string name="start_validation">Iniciar Validación</string>
     <string name="welcome_message">Bienvenido</string>
     <string name="gcm_SenderId">1064958769452</string>
+    <string name="services_namespace" translatable="false">http://servicesImpl.service.udistrital.edu.co/</string>
+    <string name="validar_amor_url" translatable="false">http://dulces-para-mi-amor-ws.herokuapp.com/ValidarAmor?wsdl</string>
+    <string name="validar_amor_method" translatable="false">validar</string>
+    <string name="ws_registrar_usuario_url" translatable="false">http://proyectoweb-5g07603u.cloudapp.net/ServiceWeb/registrarUsuario/ws_servidor_registrarUsuario.asmx?wsdl</string>
+    <string name="ws_namespace" translatable="false">http://tempuri.org/</string>
+    <string name="ws_registrar_usuario_method" translatable="false">agregarUsuario</string>
+    <string name="ws_autenticar_usuario_url" translatable="false">http://proyectoweb-5g07603u.cloudapp.net/ServiceWeb/autenticarUsuario/ws_servidor_autenticarUsuario.asmx?wsdl</string>
+    <string name="ws_autenticar_usuario_method" translatable="false">autenticarUsuario</string>
+
 
 </resources>

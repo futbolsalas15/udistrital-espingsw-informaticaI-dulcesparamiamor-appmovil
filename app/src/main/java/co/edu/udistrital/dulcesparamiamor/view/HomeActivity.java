@@ -1,4 +1,4 @@
-package co.edu.udistrital.dulcesparamiamor;
+package co.edu.udistrital.dulcesparamiamor.view;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -17,6 +17,8 @@ import android.widget.ProgressBar;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import java.io.IOException;
+
+import co.edu.udistrital.dulcesparamiamor.R;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -45,10 +47,9 @@ public class HomeActivity extends AppCompatActivity {
 
 
 
-    public void loadImagefromGallery(View view)
+    public void EditLove(View view)
     {
-        startActivity(new Intent(HomeActivity.this, UploadActivity.class));
-
+        startActivity(new Intent(HomeActivity.this, EditLoveActivity.class));
     }
 
     public void startValidation(View view)

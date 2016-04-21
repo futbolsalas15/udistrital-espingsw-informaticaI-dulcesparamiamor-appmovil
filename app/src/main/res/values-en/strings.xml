@@ -1,20 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Candies For My Love</string>
-    <string name="btnsingup">SING UP</string>
-    <string name="btnsingupfirst">NEXT</string>
     <string name="logintext">LOGIN</string>
     <string name="singuptext">New User? Sing Up</string>
+    <string name="btnsingup">SING UP</string>
+    <string name="btnsingupfirst">NEXT</string>
     <string name="lblemail">Email</string>
-    <string name="lblname">Name</string>
     <string name="lblpassword">Password</string>
     <string name="lblpasswordconfirm">Confirm Password</string>
+    <string name="lblname">Name</string>
     <string name="lblphone">Phone</string>
+
     <string name="lblyourlove">Your Love</string>
-    <string name="loginfailed">Try Again!</string>
+    <string name="login">Login</string>
     <string name="loginsuccess">Welcome!</string>
-    <string name="logintittlefailed">Login Failed</string>
     <string name="logintittlesuccess">Login Success</string>
+    <string name="loginfailed">Try Again!</string>
+    <string name="logintittlefailed">Login Failed</string>
+    <string name="pleasewait">Please Wait</string>
     <string name="connectiontoserver">Connecting to Server</string>
-    <string name="pleasewait">Please Wait!</string>
+
+    <string name="somethingwentwrong">Something went wrong</string>
+    <string name="pleasefillallthefields">Please fill all the fields</string>
+    <string name="confirmpasswordnotequal">Confirm password not equal</string>
+    <string name="btnuploadimage">Upload Image</string>
+    <string name="pleaseselectanimage">Please Select an Image</string>
+    <string name="lblmessage" >Message </string>
+    <string name="notification">Notification</string>
+    <string name="recording">Recording</string>
+    <string name="registersucces">Register Success</string>
+    <string name="registerfailed">Register Failed, User alredy Exists</string>
+    <string name="upload_photo">Upload photo</string>
+    <string name="start_validation">Start Validation</string>
+    <string name="welcome_message">Welcome</string>
+
+
 </resources>
