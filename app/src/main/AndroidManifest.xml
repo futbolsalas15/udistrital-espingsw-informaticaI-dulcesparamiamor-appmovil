@@ -20,28 +20,31 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-    <permission android:name="co.edu.udistrital.dulcesparamiamor.gcm.permission.C2D_MESSAGE"
-        android:protectionLevel="signature" />
-    <uses-permission android:name="co.edu.udistrital.dulcesparamiamor.gcm.permission.C2D_MESSAGE" />
-    <!-- GCM Permissions -->
 
+    <permission
+        android:name="co.edu.udistrital.dulcesparamiamor.gcm.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="co.edu.udistrital.dulcesparamiamor.gcm.permission.C2D_MESSAGE" />
+
+    <!-- GCM Permissions -->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.LoginActivity">
+        <activity android:name=".view.GCMActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".view.MainActivity" />
         <activity android:name=".view.RegisterActivity" />
         <activity android:name=".view.RegisterLoverActivity" />
-        <activity android:name=".view.HomeActivity" >
-        </activity>
+        <activity android:name=".view.HomeActivity"></activity>
         <activity android:name=".view.UploadActivity" />
         <activity
             android:name=".view.CameraActivity"
@@ -52,22 +55,25 @@
             android:name="io.fabric.ApiKey"
             android:value="d151faadc8e2c9ff8714e7c49d8ecfb2fba050b5" />
 
-        <activity android:name=".view.MessageActivity"></activity>
-        <activity android:name=".view.EditLoveActivity"></activity>
-
-
+        <activity android:name=".view.MessageActivity" />
+        <activity android:name=".view.EditLoveActivity" />
 
         <!-- GCM Services -->
         <receiver
             android:name=".gcm.GcmBroadcastReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND" >
+            android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
                 <category android:name="com.hmkcode.android.gcm" />
             </intent-filter>
         </receiver>
+
         <service android:name=".gcm.GcmMessageHandler" />
         <!-- GCM Services -->
+      <!--  <activity
+            android:name=".view.GCMActivity"
+            android:label="@string/title_activity_gcm"></activity>-->
     </application>
 
 </manifest>

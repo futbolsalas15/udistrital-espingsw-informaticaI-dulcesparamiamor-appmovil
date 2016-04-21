@@ -22,28 +22,11 @@ import co.edu.udistrital.dulcesparamiamor.R;
 
 public class HomeActivity extends AppCompatActivity {
 
-    Button btnRegId;
-    EditText etRegId;
-    GoogleCloudMessaging gcm;
-    String regid;
-    String PROJECT_NUMBER;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
-        btnRegId = (Button) findViewById(R.id.btnGetRegId);
-        etRegId = (EditText) findViewById(R.id.etRegId);
-
-        btnRegId.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                getRegId();
-            }
-        });
-    }
+          }
 
 
 
@@ -57,33 +40,4 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(new Intent(HomeActivity.this, CameraActivity.class));
 
     }
-
-    public void getRegId(){
-        new AsyncTask<Void, Void, String>() {
-            @Override
-            protected String doInBackground(Void... params) {
-                String msg = "";
-                try {
-                    PROJECT_NUMBER = getResources().getString(R.string.gcm_SenderId);
-                    if (gcm == null) {
-                        gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
-                    }
-                    regid = gcm.register(PROJECT_NUMBER);
-                    msg = "Device registered, registration ID=" + regid;
-                    Log.i("GCM", msg);
-
-                } catch (IOException ex) {
-                    msg = "Error :" + ex.getMessage();
-
-                }
-                return msg;
-            }
-
-            @Override
-            protected void onPostExecute(String msg) {
-                etRegId.setText(msg + "\n");
-            }
-        }.execute(null, null, null);
-    }
-
 }
