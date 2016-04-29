@@ -5,6 +5,9 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature
         android:name="android.hardware.camera.autofocus"
@@ -13,33 +16,35 @@
         android:name="android.hardware.camera.flash"
         android:required="false" />
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginActivity">
+        <activity android:name=".view.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".RegisterLoverActivity" />
-        <activity android:name=".HomeActivity" />
-        <activity android:name=".UploadActivity" />
-        <activity android:name=".CameraActivity"
-            android:screenOrientation="landscape">
+        <activity android:name=".view.MainActivity" />
+        <activity android:name=".view.RegisterActivity" />
+        <activity android:name=".view.RegisterLoverActivity" />
+        <activity android:name=".view.HomeActivity" >
         </activity>
+        <activity android:name=".view.UploadActivity" />
+        <activity
+            android:name=".view.CameraActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/ActionBarAppTheme" />
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="d151faadc8e2c9ff8714e7c49d8ecfb2fba050b5" />
+
+        <activity android:name=".view.MessageActivity"></activity>
+        <activity android:name=".view.EditLoveActivity"></activity>
     </application>
 
 </manifest>

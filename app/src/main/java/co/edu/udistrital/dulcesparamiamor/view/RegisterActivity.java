@@ -1,4 +1,4 @@
-package co.edu.udistrital.dulcesparamiamor;
+package co.edu.udistrital.dulcesparamiamor.view;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -8,7 +8,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+
+import co.edu.udistrital.dulcesparamiamor.R;
+import co.edu.udistrital.dulcesparamiamor.utils.Helper;
 
 public class RegisterActivity extends AppCompatActivity {
 Button buttonnext;
@@ -57,6 +59,21 @@ Button buttonnext;
                     builder = new AlertDialog.Builder(RegisterActivity.this);
                     builder.setTitle(RegisterActivity.this.getString(R.string.somethingwentwrong));
                     builder.setMessage(RegisterActivity.this.getString(R.string.confirmpasswordnotequal));
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+
+                    });
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                }
+                else if (!Helper.isValidEmailAddress(Email.getText().toString()))
+                {
+                    builder = new AlertDialog.Builder(RegisterActivity.this);
+                    builder.setTitle(RegisterActivity.this.getString(R.string.somethingwentwrong));
+                    builder.setMessage("Email Invalid");
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
