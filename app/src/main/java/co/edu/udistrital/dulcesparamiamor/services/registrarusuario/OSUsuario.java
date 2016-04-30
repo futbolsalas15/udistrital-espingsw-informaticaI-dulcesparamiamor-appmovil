@@ -23,13 +23,30 @@ public class OSUsuario implements KvmSerializable {
     
     public int codigoRespuesta;
     public String mensajeRespuesta;
-    
+
+    public String getMensajeRespuesta() {
+        return mensajeRespuesta;
+    }
+
+    public void setMensajeRespuesta(String mensajeRespuesta) {
+        this.mensajeRespuesta = mensajeRespuesta;
+    }
+
     public OSUsuario(){}
-    
+
+    public int getCodigoRespuesta() {
+        return codigoRespuesta;
+    }
+
+    public void setCodigoRespuesta(int codigoRespuesta) {
+        this.codigoRespuesta = codigoRespuesta;
+    }
+
     public OSUsuario(SoapObject soapObject)
     {
         if (soapObject == null)
             return;
+
         if (soapObject.hasProperty("codigoRespuesta"))
         {
             Object obj = soapObject.getProperty("codigoRespuesta");

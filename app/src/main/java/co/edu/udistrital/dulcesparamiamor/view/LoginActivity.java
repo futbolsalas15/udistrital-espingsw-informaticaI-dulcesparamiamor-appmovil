@@ -6,8 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.nfc.Tag;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,26 +14,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.ksoap2.serialization.SoapObject;
-import org.opencv.objdetect.Objdetect;
-
-import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
 
 import co.edu.udistrital.dulcesparamiamor.R;
 import co.edu.udistrital.dulcesparamiamor.model.UserProfile;
 import co.edu.udistrital.dulcesparamiamor.services.AutenticarUsuarioClient;
-import co.edu.udistrital.dulcesparamiamor.services.autenticarusuario.IWsdl2CodeEvents;
 import co.edu.udistrital.dulcesparamiamor.services.autenticarusuario.OEAutenticar;
 import co.edu.udistrital.dulcesparamiamor.services.autenticarusuario.OSAutenticar;
 import co.edu.udistrital.dulcesparamiamor.services.autenticarusuario.WSAutenticarUsuario;
@@ -73,22 +59,25 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onWebServiceResponse(SoapObject result) {
                 OSAutenticar response = new OSAutenticar(result);
-                Log.e("RES", response.getProperty(1).toString());
-                if (response.getProperty(0).toString().equals("1")) {
-                    Log.e("Response", "Autenticado " + response.getProperty(1));
-                    //showDialog(activity.getString(R.string.logintittlesuccess),activity.getString(R.string.loginsuccess),code);
-                    SharedPreferences.Editor prefsEditor = mPrefs.edit();
-                    prefsEditor.putString("UserProfile", "");
-                    prefsEditor.commit();
 
-                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                    LoginActivity.this.startActivity(intent);
-                } else if (!response.getProperty(0).toString().equals("")) { //Se cambio a 0 posiblemente lo hallan cambiado en el servidor.
-                    showDialog(LoginActivity.this.getString(R.string.notification), response);
-                } else {
-                    //show message   we get and unkown response from server
+
+                    if (response.getCodigoRespuesta() == 1) {
+                        Log.e("Response", "Autenticado " + response.getMensajeRespuesta());
+                        //showDialog(activity.getString(R.string.logintittlesuccess),activity.getString(R.string.loginsuccess),code);
+                        SharedPreferences.Editor prefsEditor = mPrefs.edit();
+                        prefsEditor.putString("UserProfile", "");
+                        prefsEditor.commit();
+
+                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                        LoginActivity.this.startActivity(intent);
+                    } else if (response.getCodigoRespuesta() == 0) { //Se cambio a 0 posiblemente lo hallan cambiado en el servidor.
+                        showDialog(LoginActivity.this.getString(R.string.notification), response.getMensajeRespuesta() != null  ? response.getMensajeRespuesta() :"Error trantado de conectar con el servidor");
+                    } else {
+                        showDialog(LoginActivity.this.getString(R.string.notification),"Se obtuvo una respuesta no esperada");
+                    }
                 }
-            }
+
+
         });
 
         lblsingup = (TextView) findViewById(R.id.lblsingup);
@@ -165,10 +154,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    public void showDialog(String tittle, OSAutenticar response) {
+    public void showDialog(String tittle, String message) {
         builder = new AlertDialog.Builder(LoginActivity.this);
         builder.setTitle(tittle);
-        builder.setMessage(response.getProperty(1).toString());
+        builder.setMessage(message);
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

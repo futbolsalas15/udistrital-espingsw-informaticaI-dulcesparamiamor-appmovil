@@ -22,7 +22,23 @@ public class OSAutenticar implements KvmSerializable {
     
     public int codigoRespuesta;
     public String mensajeRespuesta;
-    
+
+    public String getMensajeRespuesta() {
+        return mensajeRespuesta;
+    }
+
+    public void setMensajeRespuesta(String mensajeRespuesta) {
+        this.mensajeRespuesta = mensajeRespuesta;
+    }
+
+    public int getCodigoRespuesta() {
+        return codigoRespuesta;
+    }
+
+    public void setCodigoRespuesta(int codigoRespuesta) {
+        this.codigoRespuesta = codigoRespuesta;
+    }
+
     public OSAutenticar(){}
     
     public OSAutenticar(SoapObject soapObject)

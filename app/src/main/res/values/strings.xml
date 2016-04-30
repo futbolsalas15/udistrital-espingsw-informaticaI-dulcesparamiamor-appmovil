@@ -42,6 +42,7 @@
     <string name="ws_registrar_usuario_method" translatable="false">agregarUsuario</string>
     <string name="ws_autenticar_usuario_url" translatable="false">http://proyectoweb-5g07603u.cloudapp.net/ServiceWeb/autenticarUsuario/ws_servidor_autenticarUsuario.asmx?wsdl</string>
     <string name="ws_autenticar_usuario_method" translatable="false">autenticarUsuario</string>
-
+    <string name="gcm_SenderId" translatable="false">1064958769452</string>
+    <string name="title_activity_gcm" translatable="false">GCMActivity</string>
 
 </resources>

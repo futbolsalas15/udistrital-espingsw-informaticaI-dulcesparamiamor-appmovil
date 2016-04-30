@@ -86,6 +86,8 @@ public class ServiceClient implements Serializable {
         envelope.implicitTypes = true;
         envelope.setAddAdornments(false);
         envelope.addMapping(this.namespace, this.objectParameterName, objectInput.getClass());
+
+
         request.addProperty(objectParameterName, objectInput);
         //envelope.encodingStyle = SoapSerializationEnvelope.XSD;
         envelope.setOutputSoapObject(request);
