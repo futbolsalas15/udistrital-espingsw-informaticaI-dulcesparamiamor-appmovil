@@ -1,6 +1,6 @@
 [
     {
-        "outputFile": "C:\\Users\\JulioS\\Documents\\dev-especializacion\\DulcesParaMiAmor\\libraries\\opencv\\build\\intermediates\\res\\merged\\androidTest\\debug\\values\\values.xml",
+        "outputFile": "/Users/juliosaldana/u-development/DulcesParaMiAmor/C:\\Users\\JulioS\\Documents\\dev-especializacion\\DulcesParaMiAmor\\libraries\\opencv\\build\\intermediates\\res\\merged\\androidTest\\debug\\values\\values.xml",
         "map": [
             {
                 "to": {
@@ -11,7 +11,31 @@
                     "endOffset": 509
                 },
                 "from": {
-                    "file": "C:\\Users\\JulioS\\Documents\\dev-especializacion\\DulcesParaMiAmor\\libraries\\opencv\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "file": "/Users/juliosaldana/u-development/DulcesParaMiAmor/C:\\Users\\JulioS\\Documents\\dev-especializacion\\DulcesParaMiAmor\\libraries\\opencv\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 3,
+                        "startColumn": 4,
+                        "startOffset": 349,
+                        "endColumn": 164,
+                        "endOffset": 509
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "outputFile": "/Users/juliosaldana/u-development/DulcesParaMiAmor/libraries/opencv/build/intermediates/res/merged/androidTest/debug/values/values.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 3,
+                    "startColumn": 4,
+                    "startOffset": 349,
+                    "endColumn": 164,
+                    "endOffset": 509
+                },
+                "from": {
+                    "file": "/Users/juliosaldana/u-development/DulcesParaMiAmor/libraries/opencv/build/intermediates/bundles/debug/res/values/values.xml",
                     "position": {
                         "startLine": 3,
                         "startColumn": 4,

@@ -50,7 +50,6 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 
-
 // Use the deprecated Camera class.
 @SuppressWarnings("deprecation")
 public final class CameraActivity extends ActionBarActivity
@@ -345,7 +344,7 @@ public final class CameraActivity extends ActionBarActivity
     @Override
     public void onResume() {
         super.onResume();
-        OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_1_0,
+        OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0,
                 this, mLoaderCallback);
         mIsMenuLocked = false;
     }
