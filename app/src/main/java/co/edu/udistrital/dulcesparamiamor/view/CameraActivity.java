@@ -332,7 +332,7 @@ public final class CameraActivity extends ActionBarActivity
     @Override
     public void onResume() {
         super.onResume();
-        OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_1_0,
+        OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0,
                 this, mLoaderCallback);
         mIsMenuLocked = false;
     }

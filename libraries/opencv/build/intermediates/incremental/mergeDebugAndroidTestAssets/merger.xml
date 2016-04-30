@@ -1,2 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="debug"><source path="C:\Users\Jeison\StudioProjects\DulcesParaMiAmor\libraries\opencv\build\intermediates\bundles\debug\assets"><file name="crashlytics-build.properties" path="C:\Users\Jeison\StudioProjects\DulcesParaMiAmor\libraries\opencv\build\intermediates\bundles\debug\assets\crashlytics-build.properties"/></source></dataSet><dataSet config="main"><source path="C:\Users\Jeison\StudioProjects\DulcesParaMiAmor\libraries\opencv\src\androidTest\assets"/></dataSet></merger>
