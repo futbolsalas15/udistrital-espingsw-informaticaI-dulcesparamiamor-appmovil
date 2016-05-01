@@ -7,6 +7,7 @@ import java.util.List;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,12 +19,14 @@ import android.hardware.Camera.Size;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 
+import org.ksoap2.serialization.SoapObject;
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
@@ -42,6 +45,9 @@ import org.opencv.objdetect.CascadeClassifier;
 
 import co.edu.udistrital.dulcesparamiamor.R;
 import co.edu.udistrital.dulcesparamiamor.services.ValidarAmorClient;
+import co.edu.udistrital.dulcesparamiamor.services.validaramor.OEValidarAmor;
+import co.edu.udistrital.dulcesparamiamor.services.validaramor.OSValidarAmor;
+import co.edu.udistrital.dulcesparamiamor.utils.WebServiceResponseListener;
 
 
 // Use the deprecated Camera class.
@@ -182,6 +188,14 @@ public final class CameraActivity extends ActionBarActivity
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         validarAmorClient = new ValidarAmorClient(this.getBaseContext());
+        validarAmorClient.setListener(new WebServiceResponseListener() {
+            @Override
+            public void onWebServiceResponse(SoapObject result) {
+                OSValidarAmor osValidarAmor = new OSValidarAmor(result);
+                Log.e("ValidarAmor", osValidarAmor.getMensajeRespuesta());
+            }
+        });
+
         if (savedInstanceState != null) {
             mCameraIndex = savedInstanceState.getInt(
                     STATE_CAMERA_INDEX, 0);
@@ -378,7 +392,11 @@ public final class CameraActivity extends ActionBarActivity
         //if there are any hands validate love
         if(handsArray.length > 0 && validarAmorClient != null && sendingImage == false){
             sendingImage = true;
-            validarAmorClient.execute(rgba);
+            OEValidarAmor oeValidarAmor = new OEValidarAmor();
+            SharedPreferences sharedpreferences =   getSharedPreferences("PREFERENCES", Context.MODE_PRIVATE);
+            oeValidarAmor.setCorreo(sharedpreferences.getString("email", null));
+            oeValidarAmor.setImagenAmor(matImageToString(rgba));
+            validarAmorClient.validarAmor(oeValidarAmor);
 
         }
 
@@ -397,6 +415,16 @@ public final class CameraActivity extends ActionBarActivity
         return rgba;
     }
 
+
+    private String matImageToString(Mat image) {
+        int cols = image.cols();
+        int rows = image.rows();
+        int elemSize = (int) image.elemSize();
+        byte[] data = new byte[cols * rows * elemSize];
+        image.get(0, 0, data);
+        String dataString = new String(Base64.encode(data, Base64.DEFAULT));
+        return dataString;
+    }
 
 
     @Override
@@ -427,6 +455,7 @@ public final class CameraActivity extends ActionBarActivity
         }
         switch (item.getItemId()) {
             case R.id.menu_next_camera:
+                mIsMenuLocked = true;
                 mIsMenuLocked = true;
 
                 // With another camera index, recreate the activity.
