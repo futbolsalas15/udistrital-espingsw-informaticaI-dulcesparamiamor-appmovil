@@ -7,25 +7,15 @@ package co.edu.udistrital.dulcesparamiamor.utils;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import org.ksoap2.HeaderProperty;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.SoapFault;
-import org.ksoap2.serialization.MarshalFloat;
 import org.ksoap2.serialization.SoapObject;
-import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
-import org.ksoap2.transport.HttpResponseException;
 import org.ksoap2.transport.HttpTransportSE;
-import org.opencv.objdetect.Objdetect;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.HashMap;
-
-import co.edu.udistrital.dulcesparamiamor.services.Response;
-import co.edu.udistrital.dulcesparamiamor.services.autenticarusuario.OEAutenticar;
-import co.edu.udistrital.dulcesparamiamor.services.autenticarusuario.OSAutenticar;
 
 public class ServiceClient implements Serializable {
 
@@ -86,6 +76,8 @@ public class ServiceClient implements Serializable {
         envelope.implicitTypes = true;
         envelope.setAddAdornments(false);
         envelope.addMapping(this.namespace, this.objectParameterName, objectInput.getClass());
+
+
         request.addProperty(objectParameterName, objectInput);
         //envelope.encodingStyle = SoapSerializationEnvelope.XSD;
         envelope.setOutputSoapObject(request);

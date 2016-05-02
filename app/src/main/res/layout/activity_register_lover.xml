@@ -103,32 +103,14 @@
                 android:inputType="textEmailAddress"
                 >
             </EditText>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/btnuploadimage"
-                android:id="@+id/btnuploadimage"
-                android:gravity="center"
-                android:layout_marginTop="10dp"
-                android:layout_below="@+id/txtfacebook"
-                android:background="@drawable/button_selecter"
-                android:textColor="@color/textorIcons"
-                android:onClick="loadImagefromGallery"
-                />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/image_selector"
-                android:textColor="@color/textorIcons"
-                android:layout_below="@+id/btnuploadimage"
-                />
+
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/btnsingup"
                 android:id="@+id/button"
                 android:gravity="center"
-                android:layout_below="@+id/image_selector"
+                android:layout_below="@id/txtfacebook"
                 android:background="@drawable/button_selecter"
                 android:textColor="@color/textorIcons"
                 />

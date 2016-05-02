@@ -1,38 +1,26 @@
 package co.edu.udistrital.dulcesparamiamor.services;
 
 import android.content.Context;
-import android.os.AsyncTask;
-import android.util.Base64;
 import android.util.Log;
 
-import org.ksoap2.serialization.SoapObject;
-import org.ksoap2.serialization.SoapPrimitive;
-import org.opencv.core.Mat;
-import org.opencv.objdetect.Objdetect;
-
-import java.util.HashMap;
-
 import co.edu.udistrital.dulcesparamiamor.R;
+import co.edu.udistrital.dulcesparamiamor.services.autenticarusuario.OEAutenticar;
 import co.edu.udistrital.dulcesparamiamor.services.generartoken.OEToken;
-import co.edu.udistrital.dulcesparamiamor.services.validaramor.OEValidarAmor;
 import co.edu.udistrital.dulcesparamiamor.utils.ServiceClient;
 import co.edu.udistrital.dulcesparamiamor.utils.WebServiceResponseListener;
 
 /**
- * Created by JulioS on 03/04/2016.
+ * Created by JulioS on 01/05/2016.
  */
-public class ValidarAmorClient {
+public class GenerarTokenClient {
 
     WebServiceResponseListener listener;
     private ServiceClient serviceClient;
 
-    public ValidarAmorClient(Context context){
-            serviceClient  = new ServiceClient(context.getString(R.string.ws_validar_amor_url),context.getString(R.string.ws_namespace) ,context.getString(R.string.ws_validar_amor_method), "u" );
+    public GenerarTokenClient(Context context){
+        serviceClient  = new ServiceClient(context.getString(R.string.ws_generar_token_url),context.getString(R.string.ws_namespace) ,context.getString(R.string.ws_generar_token_method) , "a");
 
     }
-
-
-
 
     public WebServiceResponseListener getListener() {
         return listener;
@@ -44,7 +32,9 @@ public class ValidarAmorClient {
         serviceClient.setWsListener(listener);
     }
 
-    public void validarAmor(OEValidarAmor oeValidarAmor){
-        serviceClient.requestAsync(oeValidarAmor);
+    public void generarToken(OEToken oeToken){
+        serviceClient.requestAsync(oeToken);
     }
+
+
 }
