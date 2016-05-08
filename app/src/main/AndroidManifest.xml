@@ -16,6 +16,18 @@
         android:name="android.hardware.camera.flash"
         android:required="false" />
 
+    <!-- GCM Permissions -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+    <permission
+        android:name="co.edu.udistrital.dulcesparamiamor.gcm.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="co.edu.udistrital.dulcesparamiamor.gcm.permission.C2D_MESSAGE" />
+
+    <!-- GCM Permissions -->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -45,6 +57,19 @@
 
         <activity android:name=".view.MessageActivity"></activity>
         <activity android:name=".view.EditLoveActivity"></activity>
+        <!-- GCM Services -->
+        <receiver
+            android:name=".gcm.GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
+                <category android:name="com.hmkcode.android.gcm" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".gcm.GcmMessageHandler" />
+        <!-- GCM Services -->
     </application>
 
 </manifest>
