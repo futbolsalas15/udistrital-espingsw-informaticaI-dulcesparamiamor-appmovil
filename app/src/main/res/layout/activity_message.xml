@@ -63,6 +63,16 @@
         android:background="@drawable/button_selecter"
         android:textColor="@color/textorIcons"
         />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Send Facebook"
+            android:id="@+id/btnsendfase"
+            android:gravity="center"
+            android:layout_below="@+id/btnsend"
+            android:background="@drawable/button_selecter"
+            android:textColor="@color/textorIcons"
+            />
     </RelativeLayout>
 
 </LinearLayout>
