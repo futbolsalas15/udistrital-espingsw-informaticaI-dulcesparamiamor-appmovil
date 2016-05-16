@@ -19,6 +19,9 @@ import co.edu.udistrital.dulcesparamiamor.interfaces.IMessageActivityPresenter;
 import co.edu.udistrital.dulcesparamiamor.interfaces.IMessageView;
 import co.edu.udistrital.dulcesparamiamor.presenter.MessageActivityPresenter;
 
+import co.edu.udistrital.dulcesparamiamor.presenter.messages.FacebookMessage;
+import co.edu.udistrital.dulcesparamiamor.presenter.messages.MessageContent;
+import co.edu.udistrital.dulcesparamiamor.presenter.messages.MessageHandler;
 import cz.msebera.android.httpclient.Header;
 
 public class MessageActivity extends AppCompatActivity implements IMessageView {
@@ -30,7 +33,7 @@ public class MessageActivity extends AppCompatActivity implements IMessageView {
     private EditText txtmessage;
     private EditText txtphone;
     private String message;
-
+    private MessageHandler msgHandler;
 
 
     @Override
@@ -38,6 +41,7 @@ public class MessageActivity extends AppCompatActivity implements IMessageView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
         handler = new Handler();
+        initMsgHandlers();
         presenter.onCreate(this, handler);
         sendmesagge = (Button) findViewById(R.id.btnsend);
         sendmesagge.setOnClickListener(new View.OnClickListener() {
@@ -58,16 +62,27 @@ public class MessageActivity extends AppCompatActivity implements IMessageView {
         btnsendfase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*
                 RequestParams params = new RequestParams();
                 params.put("token","FHFJF83638464");
                 params.put("email","jeisontriananr14@hotmail.com");
                 params.put("msg","Hola from app v2! !");
                 presenter.setParams(params);
                 presenter.makeHTTPCallFace();
+                */
+                MessageContent msgContent = new MessageContent();
+                msgContent.setEmail("futbolsalas15@gmail.com");
+                msgContent.setTextOfMsg("Hola from app! v3!");
+                msgHandler.handle(msgContent);
             }
         });
 
 
+    }
+
+    private void initMsgHandlers(){
+        msgHandler = new MessageHandler();
+        msgHandler.addMessageSender(new FacebookMessage(handler));
     }
 
     @Override

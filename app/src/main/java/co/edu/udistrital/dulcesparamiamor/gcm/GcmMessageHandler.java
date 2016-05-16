@@ -16,6 +16,9 @@ package co.edu.udistrital.dulcesparamiamor.gcm;
     import co.edu.udistrital.dulcesparamiamor.interfaces.IMessageActivityPresenter;
     import co.edu.udistrital.dulcesparamiamor.interfaces.IMessageView;
     import co.edu.udistrital.dulcesparamiamor.presenter.MessageActivityPresenter;
+    import co.edu.udistrital.dulcesparamiamor.presenter.messages.FacebookMessage;
+    import co.edu.udistrital.dulcesparamiamor.presenter.messages.MessageContent;
+    import co.edu.udistrital.dulcesparamiamor.presenter.messages.MessageHandler;
 
 public class GcmMessageHandler extends IntentService implements IMessageView {
 
@@ -25,6 +28,7 @@ public class GcmMessageHandler extends IntentService implements IMessageView {
     public GcmMessageHandler() {
         super("GcmMessageHandler");
     }
+    private MessageHandler msgHandler;
 
     @Override
     public void onCreate() {
@@ -32,6 +36,11 @@ public class GcmMessageHandler extends IntentService implements IMessageView {
         super.onCreate();
         handler = new Handler();
         presenter.onCreate(getApplicationContext(), handler);
+    }
+
+    private void initMsgHandlers(){
+        msgHandler = new MessageHandler();
+        msgHandler.addMessageSender(new FacebookMessage(handler));
     }
 
     @Override
@@ -49,13 +58,21 @@ public class GcmMessageHandler extends IntentService implements IMessageView {
         presenter.setMessage("Hola Mundo!!");
         presenter.sendSMS();
         // Fin Envio Msg de Texto
+
+        MessageContent msgContent = new MessageContent();
+        msgContent.setEmail("jeisontriananr14@hotmail.com");
+        msgContent.setTextOfMsg("Hola from app! !");
+        msgHandler.handle(msgContent);
+
         //Envio Msg al Face
+        /*
         RequestParams params = new RequestParams();
         params.put("token","FHFJF83638464");
         params.put("email","jeisontriananr14@hotmail.com");
         params.put("msg","Hola from app! !");
         presenter.setParams(params);
         presenter.makeHTTPCallFace();
+        */
         //Fin Envio Msg al Face
 
         showToast();

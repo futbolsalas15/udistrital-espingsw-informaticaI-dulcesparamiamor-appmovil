@@ -55,7 +55,9 @@
             android:name="io.fabric.ApiKey"
             android:value="d151faadc8e2c9ff8714e7c49d8ecfb2fba050b5" />
 
-        <activity android:name=".view.MessageActivity"></activity>
+        <activity android:name=".view.MessageActivity">
+
+        </activity>
         <activity android:name=".view.EditLoveActivity"></activity>
         <!-- GCM Services -->
         <receiver
