@@ -38,4 +38,5 @@ dependencies {
         transitive = true;
     }
     compile "com.google.android.gms:play-services-gcm:8.4.0"
+    compile 'com.google.android.gms:play-services-vision:8.4.0'
 }

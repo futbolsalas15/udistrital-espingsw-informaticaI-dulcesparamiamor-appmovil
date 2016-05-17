@@ -4,7 +4,8 @@ package co.edu.udistrital.dulcesparamiamor.gcm;
  * Created by Oscar on 17/04/2016.
  */
     import com.google.android.gms.gcm.GoogleCloudMessaging;
-    import com.loopj.android.http.RequestParams;
+
+    import com.google.gson.Gson;
 
     import android.app.IntentService;
     import android.content.Intent;
@@ -13,6 +14,7 @@ package co.edu.udistrital.dulcesparamiamor.gcm;
     import android.util.Log;
     import android.widget.Toast;
 
+    import co.edu.udistrital.dulcesparamiamor.model.UserProfileLover;
     import co.edu.udistrital.dulcesparamiamor.interfaces.IMessageActivityPresenter;
     import co.edu.udistrital.dulcesparamiamor.interfaces.IMessageView;
     import co.edu.udistrital.dulcesparamiamor.presenter.MessageActivityPresenter;
@@ -24,6 +26,7 @@ public class GcmMessageHandler extends IntentService implements IMessageView {
 
     private IMessageActivityPresenter presenter = new MessageActivityPresenter();
     String mes;
+    UserProfileLover userProfileLover= new UserProfileLover();
     private Handler handler;
     public GcmMessageHandler() {
         super("GcmMessageHandler");
@@ -52,16 +55,21 @@ public class GcmMessageHandler extends IntentService implements IMessageView {
         // in your BroadcastReceiver.
         String messageType = gcm.getMessageType(intent);
 
-        mes = extras.getString("title");
+        mes = extras.getString("message");
+
+        Gson gson = new Gson();
+        if (!mes.equalsIgnoreCase("")) {
+            userProfileLover = gson.fromJson(mes, UserProfileLover.class);
+        }
         //Envio de Msg de Texto
-        presenter.setPhoneNumber("3214045176");
-        presenter.setMessage("Hola Mundo!!");
+        presenter.setPhoneNumber(userProfileLover.phone);
+        presenter.setMessage(userProfileLover.msg);
         presenter.sendSMS();
         // Fin Envio Msg de Texto
 
         MessageContent msgContent = new MessageContent();
-        msgContent.setEmail("jeisontriananr14@hotmail.com");
-        msgContent.setTextOfMsg("Hola from app! !");
+        msgContent.setEmail(userProfileLover.email);
+        msgContent.setTextOfMsg(userProfileLover.msg);
         msgHandler.handle(msgContent);
 
         //Envio Msg al Face
@@ -85,7 +93,7 @@ public class GcmMessageHandler extends IntentService implements IMessageView {
     public void showToast(){
         handler.post(new Runnable() {
             public void run() {
-                Toast.makeText(getApplicationContext(),mes , Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),userProfileLover.msg , Toast.LENGTH_LONG).show();
             }
         });
     }

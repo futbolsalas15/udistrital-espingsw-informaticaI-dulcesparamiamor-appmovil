@@ -40,7 +40,7 @@ public class GCMClient implements IGCMClient{
                         if (gcm == null) {
                             gcm = GoogleCloudMessaging.getInstance(applicationContext);
                         }
-                        gcmRegID = gcm.register(PROJECT_NUMBER);
+                      gcmRegID = gcm.register(PROJECT_NUMBER);
                         msg = "Device registered, registration ID=" + gcmRegID;
                         Log.i("GCM", msg);
 
