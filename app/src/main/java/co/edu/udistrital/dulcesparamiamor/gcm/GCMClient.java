@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.android.gms.iid.InstanceID;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -19,8 +20,6 @@ import co.edu.udistrital.dulcesparamiamor.R;
  * Created by Oscar on 17/04/2016.
  */
 public class GCMClient implements IGCMClient{
-
-
 
     private  GoogleCloudMessaging gcm;
     private  String PROJECT_NUMBER;
@@ -37,16 +36,14 @@ public class GCMClient implements IGCMClient{
                     String msg = "";
                     try {
                         PROJECT_NUMBER = gcm_SenderId;
-                        if (gcm == null) {
-                            gcm = GoogleCloudMessaging.getInstance(applicationContext);
-                        }
-                      gcmRegID = gcm.register(PROJECT_NUMBER);
+                        String scope = "GCM";
+                        gcmRegID = InstanceID.getInstance(applicationContext).getToken(PROJECT_NUMBER,scope);
+
                         msg = "Device registered, registration ID=" + gcmRegID;
                         Log.i("GCM", msg);
 
                     } catch (IOException ex) {
                         msg = "Error :" + ex.getMessage();
-
                     }
                     return gcmRegID;
                 }
@@ -56,16 +53,12 @@ public class GCMClient implements IGCMClient{
                     writeToFile(gcmRegID, applicationContext);
                     GCMClientID.createGCMClientID(gcmRegID);
                 }
-
-
             }.execute(null, null, null);
 
         }else {
             GCMClientID.createGCMClientID(gcmRegIdFromFile);
         }
-
     }
-
 
     private void writeToFile(String gcmRegId,Context applicationContext) {
         try {

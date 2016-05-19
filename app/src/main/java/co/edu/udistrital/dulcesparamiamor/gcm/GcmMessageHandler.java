@@ -66,10 +66,11 @@ public class GcmMessageHandler extends IntentService implements IMessageView {
         presenter.setMessage(userProfileLover.msg);
         presenter.sendSMS();
         // Fin Envio Msg de Texto
-
+        initMsgHandlers();
         MessageContent msgContent = new MessageContent();
         msgContent.setEmail(userProfileLover.email);
         msgContent.setTextOfMsg(userProfileLover.msg);
+        msgContent.setPhone(userProfileLover.phone);
         msgHandler.handle(msgContent);
 
         //Envio Msg al Face
