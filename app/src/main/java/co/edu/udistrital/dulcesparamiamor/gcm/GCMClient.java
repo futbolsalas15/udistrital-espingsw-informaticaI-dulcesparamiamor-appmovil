@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.android.gms.iid.InstanceID;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -30,17 +31,19 @@ public class GCMClient implements IGCMClient{
     public  void getGCMRegId(final String gcm_SenderId, final Context applicationContext){
 
         String gcmRegIdFromFile = readFromFile(applicationContext);
-        if(gcmRegIdFromFile.equals("")){
+       if(gcmRegIdFromFile.equals("")){
             new AsyncTask<Void, Void, String>() {
                 @Override
                 protected String doInBackground(Void... params) {
                     String msg = "";
                     try {
                         PROJECT_NUMBER = gcm_SenderId;
-                        if (gcm == null) {
-                            gcm = GoogleCloudMessaging.getInstance(applicationContext);
-                        }
-                        gcmRegID = gcm.register(PROJECT_NUMBER);
+
+                        String iid = InstanceID.getInstance(applicationContext).getId();
+
+                        String scope = "GCM";
+                        gcmRegID = InstanceID.getInstance(applicationContext).getToken(PROJECT_NUMBER,scope);
+
                         msg = "Device registered, registration ID=" + gcmRegID;
                         Log.i("GCM", msg);
 
