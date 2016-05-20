@@ -32,7 +32,7 @@
     <string name="registersucces">Register Success</string>
     <string name="registerfailed">Register Failed, User alredy Exists</string>
     <string name="upload_photo">Subir foto</string>
-    <string name="start_validation">Iniciar Validación</string>
+    <string name="start_validation">Iniciar Deteteción</string>
     <string name="welcome_message">Bienvenido</string>
     <string name="services_namespace" translatable="false">http://servicesImpl.service.udistrital.edu.co/</string>
     <string name="validar_amor_url" translatable="false">http://dulces-para-mi-amor-ws.herokuapp.com/ValidarAmor?wsdl</string>

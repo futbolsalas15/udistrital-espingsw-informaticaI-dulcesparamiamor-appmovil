@@ -84,7 +84,7 @@ public class TokenTracker {
         FileInputStream fis = null;
         StringBuilder sb = new StringBuilder();
         try {
-            fis = context.openFileInput("hello");
+            fis = context.openFileInput(FILENAME);
             InputStreamReader isr = new InputStreamReader(fis);
             BufferedReader bufferedReader = new BufferedReader(isr);
 

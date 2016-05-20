@@ -1,7 +1,9 @@
 package co.edu.udistrital.dulcesparamiamor.view;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
@@ -47,6 +49,7 @@ import co.edu.udistrital.dulcesparamiamor.R;
 import co.edu.udistrital.dulcesparamiamor.services.ValidarAmorClient;
 import co.edu.udistrital.dulcesparamiamor.services.validaramor.OEValidarAmor;
 import co.edu.udistrital.dulcesparamiamor.services.validaramor.OSValidarAmor;
+import co.edu.udistrital.dulcesparamiamor.utils.GestureDetector;
 import co.edu.udistrital.dulcesparamiamor.utils.WebServiceResponseListener;
 
 
@@ -90,6 +93,7 @@ public final class CameraActivity extends ActionBarActivity
     // The camera view.
     private CameraBridgeViewBase mCameraView;
 
+    private GestureDetector gestureDetector;
     // Whether the next camera frame should be saved as a photo.
     private boolean mIsPhotoPending;
 
@@ -129,55 +133,51 @@ public final class CameraActivity extends ActionBarActivity
 
 
         try {
-            // Copy the resource into a temp file so OpenCV can load it
-          /*  InputStream is = getResources().openRawResource(R.raw.palm);
-            File cascadeDir = getDir("cascade", Context.MODE_PRIVATE);
-            File mCascadeFile = new File(cascadeDir, "palm.xml");
-            FileOutputStream os = new FileOutputStream(mCascadeFile);*/
-            if (cascadeClassifier == null) {
+            if(gestureDetector == null){
+                gestureDetector = new GestureDetector();
                 File cascadeDir = getDir("cascade", Context.MODE_PRIVATE);
+                saveClassifier(cascadeDir , getResources().openRawResource(R.raw.fist_classifier), "fist_classifier");
+                saveClassifier(cascadeDir, getResources().openRawResource(R.raw.palm_classifier), "palm__classifier");
+                saveClassifier(cascadeDir, getResources().openRawResource(R.raw.thumbup_classifier), "thump_classifier");
+                gestureDetector.createDetector(cascadeDir.getAbsolutePath());
 
-                InputStream is = getResources().openRawResource(R.raw.palm);
-                File mCascadeFile = new File(cascadeDir, "palm.xml");
-
-
-                if(!mCascadeFile.exists()){
-                    //handler error here
-                    Log.e("OpenCVActivity", "No existe" + mCascadeFile.getAbsolutePath());
-                }else{
-                    Log.e("OpenCVActivity", "OK Path existe : " + mCascadeFile.getAbsolutePath().toString());
-                }
-
-
-                FileOutputStream os = new FileOutputStream(mCascadeFile);
-                byte[] buffer = new byte[4096];
-                int bytesRead;
-                while ((bytesRead = is.read(buffer)) != -1) {
-                    os.write(buffer, 0, bytesRead);
-                }
-                is.close();
-                os.close();
-
-
-                // cascadeDir.delete();
-
-                cascadeClassifier = new CascadeClassifier(mCascadeFile.getAbsolutePath());
-                cascadeClassifier.load(mCascadeFile.getAbsolutePath());
-                // Load the cascade classifier
-                if (cascadeClassifier.empty()) {
-                    //handler error here
-                    Log.e("OpenCVActivity", "No Classifier path" + mCascadeFile.getAbsolutePath().toString());
-                }else{
-                    Log.e("OpenCVActivity", "OK Path: " + mCascadeFile.getAbsolutePath().toString());
-                }
-
-                // cascadeClassifier = new CascadeClassifier(mCascadeFile.getAbsolutePath());
             }
 
 
         } catch (Exception e) {
             Log.e("OpenCVActivity", "Error loading cascade", e);
         }
+
+    }
+
+    private void saveClassifier(File directory, InputStream classifierStream, String fileName){
+
+        File mCascadeFile = new File(directory, fileName);
+
+
+        if(!mCascadeFile.exists()){
+            //handler error here
+            Log.e("OpenCVActivity", "No existe" + mCascadeFile.getAbsolutePath());
+        }else{
+            Log.e("OpenCVActivity", "OK Path existe : " + mCascadeFile.getAbsolutePath().toString());
+        }
+
+        try {
+        FileOutputStream os = new FileOutputStream(mCascadeFile);
+        byte[] buffer = new byte[4096];
+        int bytesRead;
+        while ((bytesRead = classifierStream.read(buffer)) != -1) {
+
+            os.write(buffer, 0, bytesRead);
+           }
+            classifierStream.close();
+            os.close();
+        } catch (IOException e) {
+                e.printStackTrace();
+
+        }
+
+
 
     }
 
@@ -379,18 +379,23 @@ public final class CameraActivity extends ActionBarActivity
         Imgproc.cvtColor(rgba, grayscaleImage, Imgproc.COLOR_RGBA2RGB);
         MatOfRect hands = new MatOfRect();
 
+        if(gestureDetector != null){
+          String detections =  gestureDetector.detectGesture(grayscaleImage);
+            Log.e("Detections", detections);
+        }
+
 
         // Use the classifier to detect hands
-        if (cascadeClassifier != null && !cascadeClassifier.empty()) {
+        /*if (cascadeClassifier != null && !cascadeClassifier.empty()) {
             cascadeClassifier.detectMultiScale(grayscaleImage, hands, 1.1, 2, 2,
                     //  new Size(absoluteHandSize, absoluteHandSize), new Size());
                     new org.opencv.core.Size(200 , 200), new org.opencv.core.Size(300,300));
-        }
+        }*
 
 
         Rect[] handsArray = hands.toArray();
         //if there are any hands validate love
-        if(handsArray.length > 0 && validarAmorClient != null && sendingImage == false){
+      /*  if(handsArray.length > 0 && validarAmorClient != null && sendingImage == false){
             sendingImage = true;
             OEValidarAmor oeValidarAmor = new OEValidarAmor();
             SharedPreferences sharedpreferences =   getSharedPreferences("PREFERENCES", Context.MODE_PRIVATE);
@@ -405,8 +410,9 @@ public final class CameraActivity extends ActionBarActivity
             Log.e("OpenCVActivity", "Palms" + handsArray.toString());
             Imgproc.rectangle(rgba, handsArray[i].tl(), handsArray[i].br(), new Scalar(0, 255, 0, 255), 3);
 
-        }
+        }*/
 
+        Log.e("Native", "native version");
         if (mIsCameraFrontFacing) {
             // Mirror (horizontally flip) the preview.
             Core.flip(rgba, rgba, 1);
