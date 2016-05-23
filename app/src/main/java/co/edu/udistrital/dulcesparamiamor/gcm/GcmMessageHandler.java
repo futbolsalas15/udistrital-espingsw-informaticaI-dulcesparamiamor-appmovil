@@ -18,6 +18,7 @@ package co.edu.udistrital.dulcesparamiamor.gcm;
     import co.edu.udistrital.dulcesparamiamor.interfaces.IMessageActivityPresenter;
     import co.edu.udistrital.dulcesparamiamor.interfaces.IMessageView;
     import co.edu.udistrital.dulcesparamiamor.presenter.MessageActivityPresenter;
+    import co.edu.udistrital.dulcesparamiamor.presenter.emailsender.SendMail;
     import co.edu.udistrital.dulcesparamiamor.presenter.messages.FacebookMessage;
     import co.edu.udistrital.dulcesparamiamor.presenter.messages.MessageContent;
     import co.edu.udistrital.dulcesparamiamor.presenter.messages.MessageHandler;
@@ -64,8 +65,18 @@ public class GcmMessageHandler extends IntentService implements IMessageView {
         //Envio de Msg de Texto
         presenter.setPhoneNumber(userProfileLover.phone);
         presenter.setMessage(userProfileLover.msg);
+        presenter.setEmail(userProfileLover.email);
+        presenter.sendEMAIL();
         presenter.sendSMS();
         // Fin Envio Msg de Texto
+
+        //envio correo
+        //Creating SendMail object
+        // SendMail sm = new SendMail(getApplicationContext(), userProfileLover.email, "HI", userProfileLover.msg);
+
+        //Executing sendmail to send email
+        //sm.execute();
+        //fin envio correo
         initMsgHandlers();
         MessageContent msgContent = new MessageContent();
         msgContent.setEmail(userProfileLover.email);

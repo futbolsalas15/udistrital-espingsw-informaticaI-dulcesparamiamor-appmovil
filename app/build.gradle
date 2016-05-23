@@ -39,4 +39,7 @@ dependencies {
     }
     compile 'com.google.android.gms:play-services-gcm:9.0.0'
     compile 'com.google.android.gms:play-services-vision:9.0.0'
+    compile files('libs/activation.jar')
+    compile files('libs/additionnal.jar')
+    compile files('libs/mail.jar')
 }

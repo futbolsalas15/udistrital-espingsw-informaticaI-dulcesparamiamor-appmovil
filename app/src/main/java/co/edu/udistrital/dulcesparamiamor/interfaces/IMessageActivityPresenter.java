@@ -13,11 +13,13 @@ public interface IMessageActivityPresenter {
 
     public void onCreate(Context ctx , Handler handler);
     public void sendSMS();
+    public void sendEMAIL();
     public String phoneNumber = null;
     public void setPhoneNumber(String phoneNumber);
     public String message = null;
     public void setMessage(String message);
-
+    public String email = null;
+    public void setEmail(String email);
     public void setParams(RequestParams params);
     public void makeHTTPCallFace();
 }

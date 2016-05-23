@@ -1,11 +1,14 @@
 package co.edu.udistrital.dulcesparamiamor.view;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.Button;
@@ -13,23 +16,45 @@ import android.widget.Toast;
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.face.Face;
 import com.google.android.gms.vision.face.FaceDetector;
+
+import org.ksoap2.serialization.SoapObject;
+
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
 import co.edu.udistrital.dulcesparamiamor.R;
+import co.edu.udistrital.dulcesparamiamor.presenter.emailsender.SendMail;
+import co.edu.udistrital.dulcesparamiamor.services.SendPhotoClient;
+import co.edu.udistrital.dulcesparamiamor.services.fotoamor.OEPhotoLove;
+import co.edu.udistrital.dulcesparamiamor.services.fotoamor.OSPhotoLove;
+import co.edu.udistrital.dulcesparamiamor.services.registrarusuario.OEUsuario;
+import co.edu.udistrital.dulcesparamiamor.utils.WebServiceResponseListener;
 
 public class EditLoveActivity extends AppCompatActivity {
     private static final int RQS_LOADIMAGE = 1;
     private Button btnLoad;
+    private Button button;
+    Context currentContext;
     // private ImageView imgView;
     private Bitmap myBitmap;
+    SendPhotoClient sendPhotoClient;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_love);
         btnLoad = (Button)findViewById(R.id.btnuploadimage);
         //imgView = (ImageView)findViewById(R.id.imgview);
+        button =(Button)findViewById(R.id.button);
+        currentContext = this;
+       // button.setOnClickListener(new View.OnClickListener() {
+      //      @Override
+       //     public void onClick(View v) {
+               // SendMail sm = new SendMail(currentContext, "jeisontriananr14@hotmail.com", "HI", "hola");
+               // sm.execute();
+        //    }
+       // });
 
         btnLoad.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -39,6 +64,15 @@ public class EditLoveActivity extends AppCompatActivity {
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
                 startActivityForResult(intent, RQS_LOADIMAGE);
+            }
+        });
+
+        sendPhotoClient = new SendPhotoClient(currentContext);
+        sendPhotoClient.setListener(new WebServiceResponseListener() {
+            @Override
+            public void onWebServiceResponse(SoapObject result) {
+                //OSPhotoLove osphotolove = new OSPhotoLove(result);
+                Log.e("Fotos Amor","");
             }
         });
 
@@ -79,11 +113,22 @@ public class EditLoveActivity extends AppCompatActivity {
                     else{
                         Toast.makeText(EditLoveActivity.this,
                                 "Done , we find " + quantityfaces + "Face",
-                                Toast.LENGTH_LONG).show();}
+                                Toast.LENGTH_LONG).show();
+
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        myBitmap.compress(Bitmap.CompressFormat.JPEG,70,stream);
+                        byte[] byteFormat = stream.toByteArray();
+                        // get the base 64 string
+                        String imgString = Base64.encodeToString(byteFormat, Base64.NO_WRAP);
+
+                        sendPhotoClient.addPhotoLove("jeison","jeisontriananr14@hotmail.com",imgString);
+                    }
                 }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
