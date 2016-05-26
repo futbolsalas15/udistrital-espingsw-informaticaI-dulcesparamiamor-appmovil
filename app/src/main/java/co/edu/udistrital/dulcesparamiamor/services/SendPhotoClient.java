@@ -3,6 +3,7 @@ package co.edu.udistrital.dulcesparamiamor.services;
 import android.content.Context;
 import android.util.Log;
 
+import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
 
 import co.edu.udistrital.dulcesparamiamor.R;
@@ -33,7 +34,7 @@ public class SendPhotoClient {
         serviceClient.setWsListener(listener);
     }
 
-    public void addPhotoLove(final String name,final String email,final String img ){
-        serviceClient.requestAsyncaddphoto(name,email,img);
+    public void addPhotoLove(final PropertyInfo[] properties ){
+        serviceClient.requestAsync(properties);
     }
 }

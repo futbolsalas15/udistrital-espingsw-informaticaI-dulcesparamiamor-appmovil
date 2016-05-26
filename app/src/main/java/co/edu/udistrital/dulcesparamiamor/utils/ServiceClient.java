@@ -10,6 +10,7 @@ import android.util.Log;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.SoapFault;
+import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
@@ -82,7 +83,6 @@ public class ServiceClient implements Serializable {
         envelope.setAddAdornments(false);
         envelope.addMapping(this.namespace, this.objectParameterName, objectInput.getClass());
 
-
         request.addProperty(objectParameterName, objectInput);
 
         //envelope.encodingStyle = SoapSerializationEnvelope.XSD;
@@ -119,50 +119,6 @@ public class ServiceClient implements Serializable {
         }
         return null;
     }
-    public String requestaddphoto(String name, String email,String img) {
-
-        SoapObject soapReq = new SoapObject(this.namespace, this.methodName);
-
-        SoapSerializationEnvelope soapEnvelope = new SoapSerializationEnvelope(SoapEnvelope.VER12);
-        soapEnvelope.implicitTypes = true;
-        soapEnvelope.dotNet = isDotNet;
-
-        //soapEnvelope.encodingStyle = SoapSerializationEnvelope.XSD;
-        //soapReq.addProperty("img", Base64.encodeToString(img.getBytes(), Base64.NO_WRAP));
-        soapReq.addProperty("img", img);
-        soapReq.addProperty("name",name);
-        soapReq.addProperty("email",email);
-        soapEnvelope.setOutputSoapObject(soapReq);
-        HttpTransportSE httpTransport = new HttpTransportSE(this.requestURL);
-       // httpTransport.setXmlVersionTag("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
-
-        try{
-            httpTransport.call("http://tempuri.org/addImage", soapEnvelope);
-            Object retObj = soapEnvelope.bodyIn;
-            if (retObj instanceof SoapFault){
-                SoapFault fault = (SoapFault)retObj;
-                Exception ex = new Exception(fault.faultstring);
-
-            }else{
-                SoapObject result=(SoapObject)retObj;
-                if (result.getPropertyCount() > 0){
-                    Object obj = result.getProperty(0);
-                    if (obj != null && obj.getClass().equals(SoapPrimitive.class)){
-                        SoapPrimitive j =(SoapPrimitive) obj;
-                        String resultVariable = j.toString();
-                        return resultVariable;
-                    }else if (obj!= null && obj instanceof String){
-                        String resultVariable = (String) obj;
-                        return resultVariable;
-                    }
-                }
-            }
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
-
 
     public  void requestAsync(final Object object){
         new AsyncTask<Void, Void, SoapObject>(){
@@ -185,12 +141,52 @@ public class ServiceClient implements Serializable {
             }
         }.execute();
     }
-    public  void requestAsyncaddphoto(final String name,final String email,final String img ){
+
+    public String request(PropertyInfo[] properties) {
+        if(properties.length>0) {
+            SoapObject soapReq = new SoapObject(this.namespace, this.methodName);
+            SoapSerializationEnvelope soapEnvelope = new SoapSerializationEnvelope(SoapEnvelope.VER12);
+            soapEnvelope.implicitTypes = true;
+            soapEnvelope.dotNet = isDotNet;
+            for (int i = 0; i < properties.length; i++) {
+                soapReq.addProperty(properties[i]);
+            }
+            soapEnvelope.setOutputSoapObject(soapReq);
+            HttpTransportSE httpTransport = new HttpTransportSE(this.requestURL);
+            try {
+                httpTransport.call(this.namespace + this.methodName, soapEnvelope);
+                Object retObj = soapEnvelope.bodyIn;
+                if (retObj instanceof SoapFault) {
+                    SoapFault fault = (SoapFault) retObj;
+                    Exception ex = new Exception(fault.faultstring);
+
+                } else {
+                    SoapObject result = (SoapObject) retObj;
+                    if (result.getPropertyCount() > 0) {
+                        Object obj = result.getProperty(0);
+                        if (obj != null && obj.getClass().equals(SoapPrimitive.class)) {
+                            SoapPrimitive j = (SoapPrimitive) obj;
+                            String resultVariable = j.toString();
+                            return resultVariable;
+                        } else if (obj != null && obj instanceof String) {
+                            String resultVariable = (String) obj;
+                            return resultVariable;
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return "";
+    }
+
+    public  void requestAsync(final PropertyInfo[] properties){
         new AsyncTask<Void, Void, String>(){
 
             @Override
             protected String doInBackground(Void... params) {
-                return requestaddphoto(name,email,img);
+                return request(properties);
             }
 
 
@@ -201,5 +197,6 @@ public class ServiceClient implements Serializable {
             }
         }.execute();
     }
+
 
 }
