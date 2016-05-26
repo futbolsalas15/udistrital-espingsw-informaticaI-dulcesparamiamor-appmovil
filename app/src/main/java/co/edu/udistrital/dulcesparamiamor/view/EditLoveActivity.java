@@ -121,7 +121,8 @@ public class EditLoveActivity extends AppCompatActivity {
                                 Toast.LENGTH_LONG).show();
 
                         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                        myBitmap.compress(Bitmap.CompressFormat.PNG,100,stream);
+                        Bitmap converted = myBitmap.copy(Bitmap.Config.RGB_565, false);
+                        converted.compress(Bitmap.CompressFormat.JPEG,70,stream);
                         byte[] byteFormat = stream.toByteArray();
                         // get the base 64 string
                         String imgString = Base64.encodeToString(byteFormat, Base64.NO_WRAP);
@@ -188,8 +189,8 @@ public class EditLoveActivity extends AppCompatActivity {
             float y1 = thisFace.getPosition().y;
             float x2 = thisFace.getWidth();
             float y2 = thisFace.getHeight();
-            myBitmap = Bitmap.createBitmap(myBitmap, (int)Math.round(x1), (int)Math.round(y1),(int)Math.round(x2) ,(int)Math.round(y2));
-            myBitmap = Bitmap.createScaledBitmap(myBitmap, 100, 100, true);
+            //myBitmap = Bitmap.createBitmap(myBitmap, (int)Math.round(x1), (int)Math.round(y1),(int)Math.round(x2) ,(int)Math.round(y2));
+            //myBitmap = Bitmap.createScaledBitmap(myBitmap, 400, 400, true);
         }
 
         return faces.size();
