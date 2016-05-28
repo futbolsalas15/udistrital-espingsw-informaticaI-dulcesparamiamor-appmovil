@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/lblname"
                 android:id="@+id/txtname"
-                android:text="Andrea"
+                android:text=""
                 android:textColor="@color/textorIcons"
                 />
             <TextView
@@ -64,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/lblphone"
                 android:id="@+id/txtphone"
-                android:text="3124606233"
+                android:text=""
                 android:inputType="phone"
                 android:textColor="@color/textorIcons"
                 />
@@ -80,7 +80,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/lblemail"
-                android:text="andrea2007@hotmail.com"
+                android:text=""
                 android:id="@+id/txtemail"
                 android:inputType="textEmailAddress"
                 android:textColor="@color/textorIcons"
@@ -98,12 +98,11 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/txtfacebook"
                 android:layout_below="@id/lblfacebook"
-                android:text="andrea2007@hotmail.com"
+                android:text=""
                 android:textColor="@color/textorIcons"
-                android:inputType="textEmailAddress"
+                android:inputType="text"
                 >
             </EditText>
-
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
