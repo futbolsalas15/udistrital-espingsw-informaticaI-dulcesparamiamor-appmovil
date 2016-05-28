@@ -80,6 +80,7 @@ String name ,email,password; //info user
                      showDialog("Registro", response.getProperty(1).toString());
                  }else{
                      //unknown response
+                     showDialog("Registro", response.getProperty(1).toString());
                  }
              }
          });
@@ -152,7 +153,7 @@ String name ,email,password; //info user
                     oeUsuario.setTelefono(12345);
                     oeUsuario.setNombreAmor(loverName.getText().toString());
                     oeUsuario.setCorreoAmor(loverEmail.getText().toString());
-                    oeUsuario.setTelefonoAmor(Integer.getInteger(loverPhone.getText().toString()));
+                    oeUsuario.setTelefonoAmor(loverPhone.getText().toString());
                     oeUsuario.setFacebookAmor(loverFacebook.getText().toString());
                     registrarUsuarioClient.registrarUsuario(oeUsuario);
                 }

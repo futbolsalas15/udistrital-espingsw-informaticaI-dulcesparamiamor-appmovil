@@ -35,7 +35,7 @@ public class OEUsuario implements KvmSerializable {
         this.correoAmor = correoAmor;
     }
 
-    public void setTelefonoAmor(int telefonoAmor) {
+    public void setTelefonoAmor(String telefonoAmor) {
         this.telefonoAmor = telefonoAmor;
     }
 
@@ -50,7 +50,7 @@ public class OEUsuario implements KvmSerializable {
     public int telefono;
     public String nombreAmor;
     public String correoAmor;
-    public int telefonoAmor;
+    public String telefonoAmor;
     public String facebookAmor;
 
     public OEUsuario(){}
@@ -134,9 +134,9 @@ public class OEUsuario implements KvmSerializable {
             Object obj = soapObject.getProperty("telefonoAmor");
             if (obj != null && obj.getClass().equals(SoapPrimitive.class)){
                 SoapPrimitive j =(SoapPrimitive) obj;
-                telefonoAmor = Integer.parseInt(j.toString());
+                telefonoAmor = j.toString();
             }else if (obj!= null && obj instanceof Number){
-                telefonoAmor = (Integer) obj;
+                telefonoAmor = (String) obj;
             }
         }
         if (soapObject.hasProperty("facebookAmor"))
@@ -212,7 +212,7 @@ public class OEUsuario implements KvmSerializable {
                 info.name = "correoAmor";
                 break;
             case 7:
-                info.type = PropertyInfo.INTEGER_CLASS;
+                info.type = PropertyInfo.STRING_CLASS;
                 info.name = "telefonoAmor";
                 break;
             case 8:
