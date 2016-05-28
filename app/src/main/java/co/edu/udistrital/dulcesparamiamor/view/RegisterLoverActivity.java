@@ -151,6 +151,7 @@ String name ,email,password; //info user
                     oeUsuario.setToken(tokenTracker.getToken(getBaseContext()));
                     oeUsuario.setCorreo(email);
                     oeUsuario.setTelefono(12345);
+                    oeUsuario.setNombre(name);
                     oeUsuario.setNombreAmor(loverName.getText().toString());
                     oeUsuario.setCorreoAmor(loverEmail.getText().toString());
                     oeUsuario.setTelefonoAmor(loverPhone.getText().toString());
