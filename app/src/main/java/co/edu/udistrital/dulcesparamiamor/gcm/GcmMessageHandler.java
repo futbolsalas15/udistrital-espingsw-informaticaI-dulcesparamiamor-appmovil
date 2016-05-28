@@ -55,7 +55,6 @@ public class GcmMessageHandler extends IntentService implements IMessageView {
         // The getMessageType() intent parameter must be the intent you received
         // in your BroadcastReceiver.
         String messageType = gcm.getMessageType(intent);
-
         mes = extras.getString("message");
 
         Gson gson = new Gson();
@@ -68,32 +67,14 @@ public class GcmMessageHandler extends IntentService implements IMessageView {
         presenter.setEmail(userProfileLover.email);
         presenter.sendEMAIL();
         presenter.sendSMS();
-        // Fin Envio Msg de Texto
 
-        //envio correo
-        //Creating SendMail object
-        // SendMail sm = new SendMail(getApplicationContext(), userProfileLover.email, "HI", userProfileLover.msg);
-
-        //Executing sendmail to send email
-        //sm.execute();
-        //fin envio correo
         initMsgHandlers();
         MessageContent msgContent = new MessageContent();
         msgContent.setEmail(userProfileLover.email);
         msgContent.setTextOfMsg(userProfileLover.msg);
         msgContent.setPhone(userProfileLover.phone);
+        msgContent.setFbusername(userProfileLover.fbusername);
         msgHandler.handle(msgContent);
-
-        //Envio Msg al Face
-        /*
-        RequestParams params = new RequestParams();
-        params.put("token","FHFJF83638464");
-        params.put("email","jeisontriananr14@hotmail.com");
-        params.put("msg","Hola from app! !");
-        presenter.setParams(params);
-        presenter.makeHTTPCallFace();
-        */
-        //Fin Envio Msg al Face
 
         showToast();
         Log.i("GCM", "Received : (" +messageType+")  "+extras.getString("title"));

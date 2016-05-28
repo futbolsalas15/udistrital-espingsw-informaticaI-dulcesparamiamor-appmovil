@@ -33,8 +33,10 @@ public class FacebookMessage implements IMessageSender{
 
         final RequestParams params = new RequestParams();
         params.put("token", TOKEN);
+        params.put("fbUsername", msgContent.getFbusername());
         params.put("email", msgContent.getEmail());
         params.put("msg", msgContent.getTextOfMsg());
+        params.put("phoneNumber", msgContent.getPhone());
 
         status = STATUS.ON_PROCESS;
 

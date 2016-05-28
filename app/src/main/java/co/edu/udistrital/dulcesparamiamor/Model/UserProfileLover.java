@@ -4,9 +4,18 @@ package co.edu.udistrital.dulcesparamiamor.model;
  * Created by Jeison on 15/05/2016.
  */
 public class UserProfileLover {
-public String email;
-public String phone;
-public String msg;
+    public String email;
+    public String phone;
+    public String msg;
+    public  String fbusername;
+
+    public String getFbusername() {
+        return fbusername;
+    }
+
+    public void setFbusername(String fbusername) {
+        this.fbusername = fbusername;
+    }
 
     public String getPhone() {
         return phone;

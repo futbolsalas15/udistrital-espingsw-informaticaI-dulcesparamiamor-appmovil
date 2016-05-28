@@ -36,7 +36,7 @@ import co.edu.udistrital.dulcesparamiamor.utils.WebServiceResponseListener;
 public class EditLoveActivity extends AppCompatActivity {
     private static final int RQS_LOADIMAGE = 1;
     private Button btnLoad;
-    private Button button;
+
     Context currentContext;
     SharedPreferences mPrefs;
     UserProfile userProfile;
@@ -51,16 +51,7 @@ public class EditLoveActivity extends AppCompatActivity {
         btnLoad = (Button)findViewById(R.id.btnuploadimage);
         //imgView = (ImageView)findViewById(R.id.imgview);
         txtname = (EditText) findViewById(R.id.txtname);
-        button =(Button)findViewById(R.id.button);
         currentContext = this;
-       // button.setOnClickListener(new View.OnClickListener() {
-      //      @Override
-       //     public void onClick(View v) {
-               // SendMail sm = new SendMail(currentContext, "jeisontriananr14@hotmail.com", "HI", "hola");
-               // sm.execute();
-        //    }
-       // });
-
         btnLoad.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -77,7 +68,8 @@ public class EditLoveActivity extends AppCompatActivity {
             @Override
             public void onWebServiceResponse(SoapObject result) {
                 //OSPhotoLove osphotolove = new OSPhotoLove(result);
-                Log.e("Fotos Amor","");
+                Log.e("Fotos Amor", result.getProperty(0).toString());
+                Toast.makeText(getApplicationContext() ,result.getProperty(1).toString(), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -116,9 +108,7 @@ public class EditLoveActivity extends AppCompatActivity {
                                 Toast.LENGTH_LONG).show();
                     }
                     else{
-                        Toast.makeText(EditLoveActivity.this,
-                                "Done , we find " + quantityfaces + "Face",
-                                Toast.LENGTH_LONG).show();
+                        //Toast.makeText(EditLoveActivity.this, "Done , we find " + quantityfaces + "Face", Toast.LENGTH_LONG).show();
 
                         ByteArrayOutputStream stream = new ByteArrayOutputStream();
                         Bitmap converted = myBitmap.copy(Bitmap.Config.RGB_565, false);
@@ -132,23 +122,23 @@ public class EditLoveActivity extends AppCompatActivity {
                         String email = mPrefs.getString("email","");
                         if (!email.equalsIgnoreCase("")) {
                           //  userProfile = gson.fromJson(json, UserProfile.class);
-                            PropertyInfo[] propertyinfos = new PropertyInfo[3];
+                            PropertyInfo[] propertyinfos = new PropertyInfo[2];
 
                             PropertyInfo property = new PropertyInfo();
                             property.setName("img");
                             property.setValue(imgString);
                             property.setType(String.class);
                             propertyinfos[0] =property;
-                            property = new PropertyInfo();
-                            property.setName("name");
-                            property.setValue(txtname.getText().toString());
-                            property.setType(String.class);
-                            propertyinfos[1] =property;
+                            //property = new PropertyInfo();
+                            //property.setName("name");
+                            //property.setValue(txtname.getText().toString());
+                            //property.setType(String.class);
+                            //propertyinfos[1] =property;
                             property = new PropertyInfo();
                             property.setName("email");
                             property.setValue(email);
                             property.setType(String.class);
-                            propertyinfos[2] =property;
+                            propertyinfos[1] =property;
                             sendPhotoClient.addPhotoLove(propertyinfos);
                         }
 

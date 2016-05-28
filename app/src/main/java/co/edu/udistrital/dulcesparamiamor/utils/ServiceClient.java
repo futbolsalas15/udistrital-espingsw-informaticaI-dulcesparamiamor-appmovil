@@ -142,7 +142,7 @@ public class ServiceClient implements Serializable {
         }.execute();
     }
 
-    public String request(PropertyInfo[] properties) {
+    public SoapObject request(PropertyInfo[] properties) {
         if(properties.length>0) {
             SoapObject soapReq = new SoapObject(this.namespace, this.methodName);
             SoapSerializationEnvelope soapEnvelope = new SoapSerializationEnvelope(SoapEnvelope.VER12);
@@ -164,36 +164,43 @@ public class ServiceClient implements Serializable {
                     SoapObject result = (SoapObject) retObj;
                     if (result.getPropertyCount() > 0) {
                         Object obj = result.getProperty(0);
-                        if (obj != null && obj.getClass().equals(SoapPrimitive.class)) {
-                            SoapPrimitive j = (SoapPrimitive) obj;
-                            String resultVariable = j.toString();
-                            return resultVariable;
-                        } else if (obj != null && obj instanceof String) {
-                            String resultVariable = (String) obj;
-                            return resultVariable;
-                        }
+                        SoapObject soapObject = (SoapObject) obj;
+                        return soapObject;
+                        //if (obj != null && obj.getClass().equals(SoapPrimitive.class)) {
+                        //    SoapPrimitive j = (SoapPrimitive) obj;
+                        //    String resultVariable = j.toString();
+                        //    return resultVariable;
+                        //} else if (obj != null && obj instanceof String) {
+                        //    String resultVariable = (String) obj;
+                        //    return resultVariable;
+                        //}
                     }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        return "";
+        SoapObject soapObject1 = null;
+    return soapObject1;
     }
 
     public  void requestAsync(final PropertyInfo[] properties){
-        new AsyncTask<Void, Void, String>(){
+        new AsyncTask<Void, Void, SoapObject>(){
 
             @Override
-            protected String doInBackground(Void... params) {
+            protected SoapObject doInBackground(Void... params) {
                 return request(properties);
             }
 
 
             @Override
-            protected void onPostExecute(String result)
+            protected void onPostExecute(SoapObject result)
             {
-
+                if (wsListener != null){
+                    wsListener.onWebServiceResponse(result);
+                }else{
+                    Log.e("serviceclient", "NO WSListener");
+                }
             }
         }.execute();
     }

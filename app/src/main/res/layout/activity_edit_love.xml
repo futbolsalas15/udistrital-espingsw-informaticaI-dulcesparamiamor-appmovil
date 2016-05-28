@@ -37,20 +37,6 @@
             android:layout_marginLeft="25dp"
             android:layout_marginRight="25dp"
             >
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/lblname"
-                android:id="@+id/lblname"
-                android:textColor="@color/textorIcons"
-                />
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/lblname"
-                android:id="@+id/txtname"
-                android:textColor="@color/textorIcons"
-                />
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -58,7 +44,6 @@
                 android:id="@+id/btnuploadimage"
                 android:gravity="center"
                 android:layout_marginTop="10dp"
-                android:layout_below="@+id/txtname"
                 android:background="@drawable/button_selecter"
                 android:textColor="@color/textorIcons"
                 />
@@ -68,16 +53,6 @@
                 android:id="@+id/image_selector"
                 android:textColor="@color/textorIcons"
                 android:layout_below="@+id/btnuploadimage"
-                />
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/btnsave"
-                android:id="@+id/button"
-                android:gravity="center"
-                android:layout_below="@+id/image_selector"
-                android:background="@drawable/button_selecter"
-                android:textColor="@color/textorIcons"
                 />
         </RelativeLayout>
     </LinearLayout>

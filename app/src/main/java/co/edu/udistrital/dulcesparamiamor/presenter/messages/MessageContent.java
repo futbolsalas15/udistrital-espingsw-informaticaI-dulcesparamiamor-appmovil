@@ -8,6 +8,15 @@ public class MessageContent {
     private String email;
     private String phone;
     private String textOfMsg;
+    private String fbusername;
+
+    public String getFbusername() {
+        return fbusername;
+    }
+
+    public void setFbusername(String fbusername) {
+        this.fbusername = fbusername;
+    }
 
     public String getEmail() {
         return email;
