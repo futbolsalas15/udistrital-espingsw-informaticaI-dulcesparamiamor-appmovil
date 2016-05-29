@@ -40,12 +40,16 @@ import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.JavaCameraView;
 import org.opencv.android.OpenCVLoader;
+import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfByte;
+import org.opencv.core.MatOfInt;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
+import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 
@@ -203,7 +207,8 @@ public final class CameraActivity extends ActionBarActivity
                 //OSValidarAmor osValidarAmor = new OSValidarAmor(result);
                 //System.out.println(result.toString());
                 //Log.e("ValidarAmor", osValidarAmor.getMensajeRespuesta());
-                //Toast.makeText(getApplicationContext(), result.getProperty(1).toString(), Toast.LENGTH_LONG).show();
+                if(result.getProperty(0)!=null)
+                Toast.makeText(getApplicationContext(), result.getProperty(0).toString(), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -401,13 +406,14 @@ public final class CameraActivity extends ActionBarActivity
 
         Rect[] handsArray = hands.toArray();
         //if there are any hands validate love
-        if(handsArray.length > 0 && validarAmorClient != null && sendingImage == false){
-            sendingImage = true;
+        //if(handsArray.length > 0 && validarAmorClient != null && sendingImage == false){
+        if(handsArray.length > 0 && validarAmorClient != null){
+
             //OEValidarAmor oeValidarAmor = new OEValidarAmor();
             IGCMClient igcmClient = new GCMClient();
             igcmClient.getGCMRegId(getResources().getString(R.string.gcm_SenderId),getApplicationContext());
             String idDevice = GCMClientID.createGCMClientID("").getGcmRegId();
-            SharedPreferences sharedpreferences =   getSharedPreferences("PREFERENCES", Context.MODE_PRIVATE);
+            SharedPreferences sharedpreferences =  getSharedPreferences("PREFERENCES", Context.MODE_PRIVATE);
             //oeValidarAmor.setEmail(sharedpreferences.getString("email", null));
             //oeValidarAmor.setImg(matImageToString(rgba));
             //oeValidarAmor.setIdDevice(idDevice);
@@ -416,7 +422,11 @@ public final class CameraActivity extends ActionBarActivity
 
             PropertyInfo property = new PropertyInfo();
             property.setName("img");
-            property.setValue(matImageToString(rgba));
+            MatOfByte mob = new MatOfByte();
+            MatOfInt moi = new MatOfInt(70);
+            moi.fromArray(Imgcodecs.CV_IMWRITE_JPEG_QUALITY, 70);
+            Imgcodecs.imencode(".jpg", rgba, mob, moi);
+            property.setValue(matImageToString(mob));
             property.setType(String.class);
             propertyinfos[0] = property;
             property = new PropertyInfo();
@@ -457,6 +467,7 @@ public final class CameraActivity extends ActionBarActivity
         String dataString = new String(Base64.encode(data, Base64.DEFAULT));
         return dataString;
     }
+
 
 
     @Override
