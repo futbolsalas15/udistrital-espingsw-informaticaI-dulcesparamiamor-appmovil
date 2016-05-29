@@ -1,5 +1,6 @@
 package co.edu.udistrital.dulcesparamiamor.view;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -9,6 +10,8 @@ import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.annotation.SuppressLint;
@@ -26,7 +29,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
+import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
@@ -195,9 +200,10 @@ public final class CameraActivity extends ActionBarActivity
         validarAmorClient.setListener(new WebServiceResponseListener() {
             @Override
             public void onWebServiceResponse(SoapObject result) {
-                OSValidarAmor osValidarAmor = new OSValidarAmor(result);
-                System.out.println(result.toString());
+                //OSValidarAmor osValidarAmor = new OSValidarAmor(result);
+                //System.out.println(result.toString());
                 //Log.e("ValidarAmor", osValidarAmor.getMensajeRespuesta());
+                //Toast.makeText(getApplicationContext(), result.getProperty(1).toString(), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -397,16 +403,33 @@ public final class CameraActivity extends ActionBarActivity
         //if there are any hands validate love
         if(handsArray.length > 0 && validarAmorClient != null && sendingImage == false){
             sendingImage = true;
-            OEValidarAmor oeValidarAmor = new OEValidarAmor();
+            //OEValidarAmor oeValidarAmor = new OEValidarAmor();
             IGCMClient igcmClient = new GCMClient();
             igcmClient.getGCMRegId(getResources().getString(R.string.gcm_SenderId),getApplicationContext());
             String idDevice = GCMClientID.createGCMClientID("").getGcmRegId();
             SharedPreferences sharedpreferences =   getSharedPreferences("PREFERENCES", Context.MODE_PRIVATE);
-            oeValidarAmor.setEmail(sharedpreferences.getString("email", null));
-            oeValidarAmor.setImg(matImageToString(rgba));
-            oeValidarAmor.setIdDevice(idDevice);
-            validarAmorClient.validarAmor(oeValidarAmor);
+            //oeValidarAmor.setEmail(sharedpreferences.getString("email", null));
+            //oeValidarAmor.setImg(matImageToString(rgba));
+            //oeValidarAmor.setIdDevice(idDevice);
+            //validarAmorClient.validarAmor(oeValidarAmor);
+            PropertyInfo[] propertyinfos = new PropertyInfo[3];
 
+            PropertyInfo property = new PropertyInfo();
+            property.setName("img");
+            property.setValue(matImageToString(rgba));
+            property.setType(String.class);
+            propertyinfos[0] = property;
+            property = new PropertyInfo();
+            property.setName("email");
+            property.setValue(sharedpreferences.getString("email", null));
+            property.setType(String.class);
+            propertyinfos[1] =property;
+            property = new PropertyInfo();
+            property.setName("idDevice");
+            property.setValue(idDevice);
+            property.setType(String.class);
+            propertyinfos[2] = property;
+            validarAmorClient.validarAmor(propertyinfos);
         }
 
         // If there are any hands found, draw a rectangle around it

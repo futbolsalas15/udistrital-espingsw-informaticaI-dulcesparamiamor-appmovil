@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.util.Base64;
 import android.util.Log;
 
+import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 import org.opencv.core.Mat;
@@ -41,7 +42,7 @@ public class ValidarAmorClient {
         serviceClient.setWsListener(listener);
     }
 
-    public void validarAmor(OEValidarAmor oeValidarAmor) {
-        serviceClient.requestAsync(oeValidarAmor);
+    public void validarAmor(final PropertyInfo[] properties ) {
+        serviceClient.requestAsync(properties);
     }
 }

@@ -20,7 +20,7 @@ import com.google.gson.Gson;
 import org.ksoap2.serialization.SoapObject;
 
 import co.edu.udistrital.dulcesparamiamor.R;
-import co.edu.udistrital.dulcesparamiamor.Model.UserProfile;
+import co.edu.udistrital.dulcesparamiamor.model.UserProfile;
 import co.edu.udistrital.dulcesparamiamor.services.AutenticarUsuarioClient;
 import co.edu.udistrital.dulcesparamiamor.services.GenerarTokenClient;
 import co.edu.udistrital.dulcesparamiamor.services.autenticarusuario.OEAutenticar;

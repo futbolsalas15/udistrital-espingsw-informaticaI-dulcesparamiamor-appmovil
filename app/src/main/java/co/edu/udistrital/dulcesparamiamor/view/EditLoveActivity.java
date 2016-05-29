@@ -30,7 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import co.edu.udistrital.dulcesparamiamor.R;
-import co.edu.udistrital.dulcesparamiamor.Model.UserProfile;
+import co.edu.udistrital.dulcesparamiamor.model.UserProfile;
 import co.edu.udistrital.dulcesparamiamor.services.SendPhotoClient;
 import co.edu.udistrital.dulcesparamiamor.utils.WebServiceResponseListener;
 
@@ -165,17 +165,13 @@ public class EditLoveActivity extends AppCompatActivity {
         Bitmap tempBitmap = Bitmap.createBitmap(myBitmap.getWidth(), myBitmap.getHeight(), Bitmap.Config.RGB_565);
         Canvas tempCanvas = new Canvas(tempBitmap);
         tempCanvas.drawBitmap(myBitmap, 0, 0, null);
-
         int numberOfFaces = 1;
-
         try {
 
-            /*
             //Detect the Faces
             FaceDetector faceDetector = new FaceDetector.Builder(getApplicationContext())
                     .setTrackingEnabled(false)
                     .build();
-
             Frame frame = new Frame.Builder().setBitmap(myBitmap).build();
             SparseArray<Face> faces = faceDetector.detect(frame);
             if(faces.size()==1)
@@ -188,14 +184,11 @@ public class EditLoveActivity extends AppCompatActivity {
                 //myBitmap = Bitmap.createBitmap(myBitmap, (int)Math.round(x1), (int)Math.round(y1),(int)Math.round(x2) ,(int)Math.round(y2));
                 //myBitmap = Bitmap.createScaledBitmap(myBitmap, 400, 400, true);
             }
-
             numberOfFaces = faces.size();
-            */
         } catch (Exception e) {
             Log.e("FACE_RECOGNITION", e.getLocalizedMessage());
             numberOfFaces = 1;
         }
-
         return numberOfFaces;
     }
 }
