@@ -33,6 +33,8 @@
     <string name="upload_photo">Upload photo</string>
     <string name="start_validation">Start Validation</string>
     <string name="welcome_message">Welcome</string>
+    <string name="btneditlove">Edit Love</string>
+    <string name="btnsave">Save</string>
 
 
 </resources>
