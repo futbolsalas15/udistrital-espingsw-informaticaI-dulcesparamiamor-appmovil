@@ -1,12 +1,16 @@
 package co.edu.udistrital.dulcesparamiamor.view;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -50,6 +54,7 @@ public class LoginActivity extends AppCompatActivity {
     TokenTracker tokenTracker = TokenTracker.getInstance(getBaseContext());
     String token = "";
 
+    private static final int SEND_SMS_PERMISSION_GRANTED = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -193,6 +198,16 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
         }
+
+        int permissionCheck = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.SEND_SMS);
+        checkAndRequestPermision();
+        if(PackageManager.PERMISSION_GRANTED == permissionCheck){
+            Log.e("Permission SEND_SMS", "OK");
+        }else{
+            Log.e("Permission SEND_SMS", "No permission");
+        }
+
     }
 
 
@@ -221,5 +236,35 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    private void checkAndRequestPermision() {
+
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.SEND_SMS)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.SEND_SMS)) {
+
+                // Show an expanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+            } else {
+
+                // No explanation needed, we can request the permission.
+
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.SEND_SMS},
+                        // MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+                        SEND_SMS_PERMISSION_GRANTED);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        }
+    }
 
 }
