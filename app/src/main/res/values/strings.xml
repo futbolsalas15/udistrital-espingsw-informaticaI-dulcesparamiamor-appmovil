@@ -46,8 +46,8 @@
     <string name="title_activity_gcm" translatable="false">GCMActivity</string>
     <string name="ws_generar_token_url" translatable="false">http://proyectoweb-5g07603u.cloudapp.net/ServiceWeb/crearLoginToken/ws_servidor_crearLoginToken.asmx?WSDL</string>
     <string name="ws_generar_token_method" translatable="false">GetTokenForApp</string>
-    <string name="ws_validar_amor_url" translatable="false">http://proyectoweb-5g07603u.cloudapp.net/ServiceWeb/validarAmor/ws_servidor_validarAmor.asmx?wsdl</string>
-    <string name="ws_validar_amor_method">validarAmor</string>
+    <string name="ws_validar_amor_url" translatable="false">http://proyectoweb-5g07603u.cloudapp.net/FACE/CheckLove.asmx?wsdl</string>
+    <string name="ws_validar_amor_method">CheckLovePhoto</string>
     <string name="ws_enviarfoto_amor_url" translatable="false">http://proyectoweb-5g07603u.cloudapp.net/FACE/Registro.asmx?wsdl</string>
     <string name="ws_validar_amor__method">addImage</string>
     <string name="app_client_name">APPMOVIL</string>

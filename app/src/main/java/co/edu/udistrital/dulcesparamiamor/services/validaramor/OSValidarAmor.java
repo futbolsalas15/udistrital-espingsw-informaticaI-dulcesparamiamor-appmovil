@@ -19,7 +19,7 @@ import org.ksoap2.serialization.SoapPrimitive;
 
 public class OSValidarAmor implements KvmSerializable {
     
-    public int codigoRespuesta;
+    public String codigoRespuesta;
     public String mensajeRespuesta;
     
     public OSValidarAmor(){}
@@ -28,19 +28,19 @@ public class OSValidarAmor implements KvmSerializable {
     {
         if (soapObject == null)
             return;
-        if (soapObject.hasProperty("codigoRespuesta"))
+        if (soapObject.hasProperty("Estate"))
         {
-            Object obj = soapObject.getProperty("codigoRespuesta");
+            Object obj = soapObject.getProperty("Estate");
             if (obj != null && obj.getClass().equals(SoapPrimitive.class)){
                 SoapPrimitive j =(SoapPrimitive) obj;
-                codigoRespuesta = Integer.parseInt(j.toString());
-            }else if (obj!= null && obj instanceof Number){
-                codigoRespuesta = (Integer) obj;
+                codigoRespuesta = j.toString();
+            }else if (obj!= null && obj instanceof String){
+                codigoRespuesta = (String) obj;
             }
         }
-        if (soapObject.hasProperty("mensajeRespuesta"))
+        if (soapObject.hasProperty("Description"))
         {
-            Object obj = soapObject.getProperty("mensajeRespuesta");
+            Object obj = soapObject.getProperty("Description");
             if (obj != null && obj.getClass().equals(SoapPrimitive.class)){
                 SoapPrimitive j =(SoapPrimitive) obj;
                 mensajeRespuesta = j.toString();
@@ -70,16 +70,16 @@ public class OSValidarAmor implements KvmSerializable {
         switch(index){
             case 0:
                 info.type = PropertyInfo.INTEGER_CLASS;
-                info.name = "codigoRespuesta";
+                info.name = "Estate";
                 break;
             case 1:
                 info.type = PropertyInfo.STRING_CLASS;
-                info.name = "mensajeRespuesta";
+                info.name = "Description";
                 break;
         }
     }
 
-    public int getCodigoRespuesta() {
+    public String getCodigoRespuesta() {
         return codigoRespuesta;
     }
 

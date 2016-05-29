@@ -26,13 +26,10 @@ public class ValidarAmorClient {
     WebServiceResponseListener listener;
     private ServiceClient serviceClient;
 
-    public ValidarAmorClient(Context context){
-            serviceClient  = new ServiceClient(context.getString(R.string.ws_validar_amor_url),context.getString(R.string.ws_namespace) ,context.getString(R.string.ws_validar_amor_method), "u" );
+    public ValidarAmorClient(Context context) {
+        serviceClient = new ServiceClient(context.getString(R.string.ws_validar_amor_url), context.getString(R.string.ws_namespace), context.getString(R.string.ws_validar_amor_method), "u");
 
     }
-
-
-
 
     public WebServiceResponseListener getListener() {
         return listener;
@@ -44,7 +41,7 @@ public class ValidarAmorClient {
         serviceClient.setWsListener(listener);
     }
 
-    public void validarAmor(OEValidarAmor oeValidarAmor){
+    public void validarAmor(OEValidarAmor oeValidarAmor) {
         serviceClient.requestAsync(oeValidarAmor);
     }
 }

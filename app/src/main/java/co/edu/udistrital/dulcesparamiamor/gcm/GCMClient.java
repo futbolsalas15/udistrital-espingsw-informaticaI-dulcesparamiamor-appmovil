@@ -103,4 +103,7 @@ public class GCMClient implements IGCMClient{
         return gcmRegId;
     }
 
+    public String getGcmRegID() {
+        return gcmRegID;
+    }
 }

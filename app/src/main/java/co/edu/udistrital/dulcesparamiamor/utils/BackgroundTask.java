@@ -28,7 +28,7 @@ import java.net.URLEncoder;
 
 import co.edu.udistrital.dulcesparamiamor.view.HomeActivity;
 import co.edu.udistrital.dulcesparamiamor.R;
-import co.edu.udistrital.dulcesparamiamor.model.UserProfile;
+import co.edu.udistrital.dulcesparamiamor.Model.UserProfile;
 
 /**
  * Created by Jeison on 21/03/2016.

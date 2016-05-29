@@ -1,4 +1,4 @@
-package co.edu.udistrital.dulcesparamiamor.model;
+package co.edu.udistrital.dulcesparamiamor.Model;
 
 /**
  * Created by Jeison on 23/03/2016.

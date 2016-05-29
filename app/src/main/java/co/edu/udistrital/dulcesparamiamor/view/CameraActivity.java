@@ -19,6 +19,7 @@ import android.hardware.Camera.Size;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBarActivity;
+import android.telephony.TelephonyManager;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
@@ -44,6 +45,9 @@ import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 
 import co.edu.udistrital.dulcesparamiamor.R;
+import co.edu.udistrital.dulcesparamiamor.gcm.GCMClient;
+import co.edu.udistrital.dulcesparamiamor.gcm.GCMClientID;
+import co.edu.udistrital.dulcesparamiamor.gcm.IGCMClient;
 import co.edu.udistrital.dulcesparamiamor.services.ValidarAmorClient;
 import co.edu.udistrital.dulcesparamiamor.services.validaramor.OEValidarAmor;
 import co.edu.udistrital.dulcesparamiamor.services.validaramor.OSValidarAmor;
@@ -192,7 +196,8 @@ public final class CameraActivity extends ActionBarActivity
             @Override
             public void onWebServiceResponse(SoapObject result) {
                 OSValidarAmor osValidarAmor = new OSValidarAmor(result);
-                Log.e("ValidarAmor", osValidarAmor.getMensajeRespuesta());
+                System.out.println(result.toString());
+                //Log.e("ValidarAmor", osValidarAmor.getMensajeRespuesta());
             }
         });
 
@@ -393,9 +398,13 @@ public final class CameraActivity extends ActionBarActivity
         if(handsArray.length > 0 && validarAmorClient != null && sendingImage == false){
             sendingImage = true;
             OEValidarAmor oeValidarAmor = new OEValidarAmor();
+            IGCMClient igcmClient = new GCMClient();
+            igcmClient.getGCMRegId(getResources().getString(R.string.gcm_SenderId),getApplicationContext());
+            String idDevice = GCMClientID.createGCMClientID("").getGcmRegId();
             SharedPreferences sharedpreferences =   getSharedPreferences("PREFERENCES", Context.MODE_PRIVATE);
-            oeValidarAmor.setCorreo(sharedpreferences.getString("email", null));
-            oeValidarAmor.setImagenAmor(matImageToString(rgba));
+            oeValidarAmor.setEmail(sharedpreferences.getString("email", null));
+            oeValidarAmor.setImg(matImageToString(rgba));
+            oeValidarAmor.setIdDevice(idDevice);
             validarAmorClient.validarAmor(oeValidarAmor);
 
         }

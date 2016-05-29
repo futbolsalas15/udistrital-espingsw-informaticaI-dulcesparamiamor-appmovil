@@ -14,7 +14,7 @@ package co.edu.udistrital.dulcesparamiamor.gcm;
     import android.util.Log;
     import android.widget.Toast;
 
-    import co.edu.udistrital.dulcesparamiamor.model.UserProfileLover;
+    import co.edu.udistrital.dulcesparamiamor.Model.UserProfileLover;
     import co.edu.udistrital.dulcesparamiamor.interfaces.IMessageActivityPresenter;
     import co.edu.udistrital.dulcesparamiamor.interfaces.IMessageView;
     import co.edu.udistrital.dulcesparamiamor.presenter.MessageActivityPresenter;
