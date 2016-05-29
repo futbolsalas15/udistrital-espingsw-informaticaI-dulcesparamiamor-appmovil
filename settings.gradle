@@ -1,2 +1,2 @@
-include ':app', ':openCVLibrary3-release'
+include ':app', ':openCVLibrary3-release', ':gestureAI'
 include ':libraries:opencv'
