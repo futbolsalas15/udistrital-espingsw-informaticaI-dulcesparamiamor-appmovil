@@ -4,7 +4,7 @@ buildscript {
     repositories {
         jcenter()
         maven { url 'https://maven.fabric.io/public' }
-        maven { url 'http://ksoap2-android.googlecode.com/svn/m2-repo' }
+        maven { url 'https://oss.sonatype.org/content/repositories/ksoap2-android-releases' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.1.0'
@@ -18,7 +18,7 @@ allprojects {
     repositories {
         jcenter()
         maven { url 'https://maven.fabric.io/public' }
-        maven { url 'http://ksoap2-android.googlecode.com/svn/m2-repo' }
+        maven { url 'https://oss.sonatype.org/content/repositories/ksoap2-android-releases' }
     }
 }
 
