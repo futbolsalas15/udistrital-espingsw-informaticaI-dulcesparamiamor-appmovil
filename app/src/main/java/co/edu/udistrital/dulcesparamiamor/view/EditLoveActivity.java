@@ -172,19 +172,23 @@ public class EditLoveActivity extends AppCompatActivity {
             FaceDetector faceDetector = new FaceDetector.Builder(getApplicationContext())
                     .setTrackingEnabled(false)
                     .build();
-            Frame frame = new Frame.Builder().setBitmap(myBitmap).build();
-            SparseArray<Face> faces = faceDetector.detect(frame);
-            if(faces.size()==1)
-            {
-                Face thisFace = faces.valueAt(0);
-                float x1 = thisFace.getPosition().x;
-                float y1 = thisFace.getPosition().y;
-                float x2 = thisFace.getWidth();
-                float y2 = thisFace.getHeight();
-                //myBitmap = Bitmap.createBitmap(myBitmap, (int)Math.round(x1), (int)Math.round(y1),(int)Math.round(x2) ,(int)Math.round(y2));
-                //myBitmap = Bitmap.createScaledBitmap(myBitmap, 400, 400, true);
+
+            if(faceDetector.isOperational()) {
+                Frame frame = new Frame.Builder().setBitmap(myBitmap).build();
+                SparseArray<Face> faces = faceDetector.detect(frame);
+                if (faces.size() == 1) {
+                    Face thisFace = faces.valueAt(0);
+                    float x1 = thisFace.getPosition().x;
+                    float y1 = thisFace.getPosition().y;
+                    float x2 = thisFace.getWidth();
+                    float y2 = thisFace.getHeight();
+                    //myBitmap = Bitmap.createBitmap(myBitmap, (int)Math.round(x1), (int)Math.round(y1),(int)Math.round(x2) ,(int)Math.round(y2));
+                    //myBitmap = Bitmap.createScaledBitmap(myBitmap, 400, 400, true);
+                }
+                numberOfFaces = faces.size();
             }
-            numberOfFaces = faces.size();
+            else
+                numberOfFaces=-1;
         } catch (Exception e) {
             Log.e("FACE_RECOGNITION", e.getLocalizedMessage());
             numberOfFaces = 1;
