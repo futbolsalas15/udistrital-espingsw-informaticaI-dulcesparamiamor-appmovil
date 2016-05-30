@@ -34,4 +34,6 @@
     <string name="recording">Recording</string>
     <string name="registersucces">Register Success</string>
     <string name="registerfailed">Register Failed, User alredy Exists</string>
+    <string name="btneditlove">Editar amor</string>
+    <string name="btnsave">Guardar</string>
 </resources>

@@ -19,7 +19,6 @@ import android.widget.Toast;
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.face.Face;
 import com.google.android.gms.vision.face.FaceDetector;
-import com.google.gson.Gson;
 
 import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
@@ -30,7 +29,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import co.edu.udistrital.dulcesparamiamor.R;
-import co.edu.udistrital.dulcesparamiamor.model.UserProfile;
 import co.edu.udistrital.dulcesparamiamor.services.SendPhotoClient;
 import co.edu.udistrital.dulcesparamiamor.utils.WebServiceResponseListener;
 
@@ -40,7 +38,6 @@ public class EditLoveActivity extends AppCompatActivity {
 
     Context currentContext;
     SharedPreferences mPrefs;
-    UserProfile userProfile;
     // private ImageView imgView;
     private Bitmap myBitmap;
     SendPhotoClient sendPhotoClient;

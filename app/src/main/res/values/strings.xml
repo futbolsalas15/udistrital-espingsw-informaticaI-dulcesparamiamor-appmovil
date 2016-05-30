@@ -47,10 +47,10 @@
     <string name="ws_generar_token_url" translatable="false">http://proyectoweb-5g07603u.cloudapp.net/ServiceWeb/crearLoginToken/ws_servidor_crearLoginToken.asmx?WSDL</string>
     <string name="ws_generar_token_method" translatable="false">GetTokenForApp</string>
     <string name="ws_validar_amor_url" translatable="false">http://proyectoweb-5g07603u.cloudapp.net/FACE/CheckLove.asmx?wsdl</string>
-    <string name="ws_validar_amor_method">CheckLovePhoto</string>
+    <string name="ws_validar_amor_method" translatable="false">CheckLovePhoto</string>
     <string name="ws_enviarfoto_amor_url" translatable="false">http://proyectoweb-5g07603u.cloudapp.net/FACE/Registro.asmx?wsdl</string>
-    <string name="ws_validar_amor__method">addImage</string>
-    <string name="app_client_name">APPMOVIL</string>
-    <string name="app_client_passwod">APPMOVIL</string>
+    <string name="ws_validar_amor__method" translatable="false">addImage</string>
+    <string name="app_client_name" translatable="false">APPMOVIL</string>
+    <string name="app_client_passwod" translatable="false">APPMOVIL</string>
 
 </resources>
