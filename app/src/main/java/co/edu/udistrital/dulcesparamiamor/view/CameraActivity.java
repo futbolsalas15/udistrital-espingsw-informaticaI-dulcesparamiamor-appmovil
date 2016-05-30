@@ -3,6 +3,7 @@ package co.edu.udistrital.dulcesparamiamor.view;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
@@ -31,6 +32,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
 import org.opencv.android.BaseLoaderCallback;
@@ -47,6 +51,7 @@ import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
 import org.opencv.core.MatOfInt;
 import org.opencv.core.MatOfRect;
+import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgcodecs.Imgcodecs;
@@ -63,11 +68,12 @@ import co.edu.udistrital.dulcesparamiamor.services.validaramor.OEValidarAmor;
 import co.edu.udistrital.dulcesparamiamor.services.validaramor.OSValidarAmor;
 import co.edu.udistrital.dulcesparamiamor.utils.WebServiceResponseListener;
 
-
 // Use the deprecated Camera class.
 @SuppressWarnings("deprecation")
 public final class CameraActivity extends ActionBarActivity
         implements CvCameraViewListener2 {
+
+    private static final Scalar    FACE_RECT_COLOR     = new Scalar(0, 255, 0, 255);
 
     static{ System.loadLibrary("opencv_java3"); }
     // A tag for log output.
@@ -77,7 +83,12 @@ public final class CameraActivity extends ActionBarActivity
     // A key for storing the index of the active camera.
     private static final String STATE_CAMERA_INDEX = "cameraIndex";
     private static final int CAMERA_PERMISSION_GRANTED = 1;
+    private Mat mRgba;
+    private Mat mGray;
 
+    private int framesCount = 0;
+
+    private DetectionBasedTracker  mNativeDetector;
     // A key for storing the index of the active image size.
     private static final String STATE_IMAGE_SIZE_INDEX =
             "imageSizeIndex";
@@ -114,8 +125,6 @@ public final class CameraActivity extends ActionBarActivity
     // If so, menu interaction should be disabled.
     private boolean mIsMenuLocked;
     private boolean managerConneted;
-    private CascadeClassifier cascadeClassifier;
-    private Mat grayscaleImage;
     private ValidarAmorClient validarAmorClient;
     // The OpenCV loader callback.
     private BaseLoaderCallback mLoaderCallback =
@@ -127,7 +136,7 @@ public final class CameraActivity extends ActionBarActivity
                             Log.d(TAG, "OpenCV loaded successfully");
                             managerConneted = true;
                             initializeOpenCVDependencies();
-                            mBgr = new Mat();
+
 
                             break;
                         default:
@@ -140,58 +149,51 @@ public final class CameraActivity extends ActionBarActivity
 
 
     private void initializeOpenCVDependencies() {
+        File cascadeDir = getDir("cascade", Context.MODE_PRIVATE);        Log.i(TAG, "OpenCV loaded successfully");
 
+        // Load native library after(!) OpenCV initialization
+        System.loadLibrary("detection_based_tracker");
+
+
+            saveClassifier(cascadeDir , getResources().openRawResource(R.raw.fist_classifier), "fist_classifier");
+            saveClassifier(cascadeDir, getResources().openRawResource(R.raw.palm_classifier), "palm_classifier");
+            saveClassifier(cascadeDir, getResources().openRawResource(R.raw.thumbup_classifier), "thump_classifier");
+
+            mNativeDetector = new DetectionBasedTracker(cascadeDir.getAbsolutePath() , 0);
+
+            cascadeDir.delete();
+
+
+    }
+
+
+    private void saveClassifier(File directory, InputStream classifierStream, String fileName){
+
+        File mCascadeFile = new File(directory, fileName);
+
+
+        if(!mCascadeFile.exists()){
+            //handler error here
+            Log.e("OpenCVActivity", "No existe" + mCascadeFile.getAbsolutePath());
+        }else{
+            Log.e("OpenCVActivity", "OK Path existe : " + mCascadeFile.getAbsolutePath().toString());
+        }
 
         try {
-            // Copy the resource into a temp file so OpenCV can load it
-          /*  InputStream is = getResources().openRawResource(R.raw.palm);
-            File cascadeDir = getDir("cascade", Context.MODE_PRIVATE);
-            File mCascadeFile = new File(cascadeDir, "palm.xml");
-            FileOutputStream os = new FileOutputStream(mCascadeFile);*/
-            if (cascadeClassifier == null) {
-                File cascadeDir = getDir("cascade", Context.MODE_PRIVATE);
+            FileOutputStream os = new FileOutputStream(mCascadeFile);
+            byte[] buffer = new byte[2048000];
+            int bytesRead;
+            while ((bytesRead = classifierStream.read(buffer)) != -1) {
 
-                InputStream is = getResources().openRawResource(R.raw.palm);
-                File mCascadeFile = new File(cascadeDir, "palm.xml");
-
-
-                if(!mCascadeFile.exists()){
-                    //handler error here
-                    Log.e("OpenCVActivity", "No existe" + mCascadeFile.getAbsolutePath());
-                }else{
-                    Log.e("OpenCVActivity", "OK Path existe : " + mCascadeFile.getAbsolutePath().toString());
-                }
-
-
-                FileOutputStream os = new FileOutputStream(mCascadeFile);
-                byte[] buffer = new byte[4096];
-                int bytesRead;
-                while ((bytesRead = is.read(buffer)) != -1) {
-                    os.write(buffer, 0, bytesRead);
-                }
-                is.close();
-                os.close();
-
-
-                // cascadeDir.delete();
-
-                cascadeClassifier = new CascadeClassifier(mCascadeFile.getAbsolutePath());
-                cascadeClassifier.load(mCascadeFile.getAbsolutePath());
-                // Load the cascade classifier
-                if (cascadeClassifier.empty()) {
-                    //handler error here
-                    Log.e("OpenCVActivity", "No Classifier path" + mCascadeFile.getAbsolutePath().toString());
-                }else{
-                    Log.e("OpenCVActivity", "OK Path: " + mCascadeFile.getAbsolutePath().toString());
-                }
-
-                // cascadeClassifier = new CascadeClassifier(mCascadeFile.getAbsolutePath());
+                os.write(buffer, 0, bytesRead);
             }
+            classifierStream.close();
+            os.close();
+        } catch (IOException e) {
+            e.printStackTrace();
 
-
-        } catch (Exception e) {
-            Log.e("OpenCVActivity", "Error loading cascade", e);
         }
+
 
     }
 
@@ -213,7 +215,7 @@ public final class CameraActivity extends ActionBarActivity
             }
         });
 
-        if (savedInstanceState != null) {
+        if (savedInstanceState != null){
             mCameraIndex = savedInstanceState.getInt(
                     STATE_CAMERA_INDEX, 0);
             mImageSizeIndex = savedInstanceState.getInt(
@@ -373,6 +375,8 @@ public final class CameraActivity extends ActionBarActivity
         if (mCameraView != null) {
             mCameraView.disableView();
         }
+        mGray.release();
+        mRgba.release();
         super.onDestroy();
     }
 
@@ -381,7 +385,8 @@ public final class CameraActivity extends ActionBarActivity
 
     @Override
     public void onCameraViewStarted(int width, int height) {
-        grayscaleImage = new Mat(height, width, CvType.CV_8UC4);
+        mGray = new Mat();
+        mRgba = new Mat();
     }
 
     @Override
@@ -390,73 +395,56 @@ public final class CameraActivity extends ActionBarActivity
 
     @Override
     public Mat onCameraFrame(final CvCameraViewFrame inputFrame) {
-        final Mat rgba = inputFrame.rgba();
-
-        // Create a grayscale image
-        Imgproc.cvtColor(rgba, grayscaleImage, Imgproc.COLOR_RGBA2RGB);
-        MatOfRect hands = new MatOfRect();
 
 
-        // Use the classifier to detect hands
-        if (cascadeClassifier != null && !cascadeClassifier.empty()) {
-            cascadeClassifier.detectMultiScale(grayscaleImage, hands, 1.1, 2, 2,
-                    //  new Size(absoluteHandSize, absoluteHandSize), new Size());
-                    new org.opencv.core.Size(200 , 200), new org.opencv.core.Size(300,300));
-        }
+        mRgba = inputFrame.rgba();
+        mGray = inputFrame.gray();
+
+        //Escalar la imagen a 640 x 480
+        org.opencv.core.Size sz = new org.opencv.core.Size(640, 480);
+        Imgproc.resize( mGray , mGray, sz );
+
+        //Mejorar el contraste
+        Imgproc.equalizeHist(mGray , mGray);
+
+        //proporcion entre la imagen original y la que se envia para ser procesada
+        double factor = 1.5;
+        String hands  = mNativeDetector.trackingDetectGesture(mGray);
+
+        Log.e("Hands",hands);
+        try {
+//            JSONObject jsonObject = new JSONObject(hands);
+            JSONArray jsonarray = new JSONArray(hands);
+            if(jsonarray.length() > 0){
+                framesCount++;
+                if(framesCount == 20) {
+                    Log.e("Frames", "20 Frames!!!");
+                    framesCount = 0;
+                    sendValidar(mRgba.clone());
+                }
+                JSONObject hand = jsonarray.getJSONObject(0);
+
+                Imgproc.rectangle(mRgba, new Point(hand.getDouble("x") * factor, hand.getDouble("y") * factor),
+                        new Point(hand.getDouble("x")* factor + hand.getDouble("width") * factor, hand.getDouble("y") * factor + hand.getDouble("height") * factor), FACE_RECT_COLOR, 3);
 
 
-        Rect[] handsArray = hands.toArray();
-        //if there are any hands validate love
-        //if(handsArray.length > 0 && validarAmorClient != null && sendingImage == false){
-        if(handsArray.length > 0 && validarAmorClient != null){
 
-            //OEValidarAmor oeValidarAmor = new OEValidarAmor();
-            IGCMClient igcmClient = new GCMClient();
-            igcmClient.getGCMRegId(getResources().getString(R.string.gcm_SenderId),getApplicationContext());
-            String idDevice = GCMClientID.createGCMClientID("").getGcmRegId();
-            SharedPreferences sharedpreferences =  getSharedPreferences("PREFERENCES", Context.MODE_PRIVATE);
-            //oeValidarAmor.setEmail(sharedpreferences.getString("email", null));
-            //oeValidarAmor.setImg(matImageToString(rgba));
-            //oeValidarAmor.setIdDevice(idDevice);
-            //validarAmorClient.validarAmor(oeValidarAmor);
-            PropertyInfo[] propertyinfos = new PropertyInfo[3];
-
-            PropertyInfo property = new PropertyInfo();
-            property.setName("img");
-            MatOfByte mob = new MatOfByte();
-            MatOfInt moi = new MatOfInt(70);
-            moi.fromArray(Imgcodecs.CV_IMWRITE_JPEG_QUALITY, 70);
-            Imgcodecs.imencode(".jpg", rgba, mob, moi);
-            property.setValue(matImageToString(mob));
-            property.setType(String.class);
-            propertyinfos[0] = property;
-            property = new PropertyInfo();
-            property.setName("email");
-            property.setValue(sharedpreferences.getString("email", null));
-            property.setType(String.class);
-            propertyinfos[1] =property;
-            property = new PropertyInfo();
-            property.setName("idDevice");
-            property.setValue(idDevice);
-            property.setType(String.class);
-            propertyinfos[2] = property;
-            validarAmorClient.validarAmor(propertyinfos);
-        }
-
-        // If there are any hands found, draw a rectangle around it
-        for (int i = 0; i < handsArray.length; i++) {
-            Log.e("OpenCVActivity", "Palms" + handsArray.toString());
-            Imgproc.rectangle(rgba, handsArray[i].tl(), handsArray[i].br(), new Scalar(0, 255, 0, 255), 3);
-
+            }else {
+                framesCount = 0;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
         if (mIsCameraFrontFacing) {
             // Mirror (horizontally flip) the preview.
-            Core.flip(rgba, rgba, 1);
+            Core.flip(mRgba, mRgba, 1);
         }
 
-        return rgba;
+
+        return mRgba;
     }
+
 
 
     private String matImageToString(Mat image) {
@@ -469,7 +457,39 @@ public final class CameraActivity extends ActionBarActivity
         return dataString;
     }
 
+   private void sendValidar(Mat rgba){
+       //OEValidarAmor oeValidarAmor = new OEValidarAmor();
+       IGCMClient igcmClient = new GCMClient();
+       igcmClient.getGCMRegId(getResources().getString(R.string.gcm_SenderId),getApplicationContext());
+       String idDevice = GCMClientID.createGCMClientID("").getGcmRegId();
+       SharedPreferences sharedpreferences =  getSharedPreferences("PREFERENCES", Context.MODE_PRIVATE);
+       //oeValidarAmor.setEmail(sharedpreferences.getString("email", null));
+       //oeValidarAmor.setImg(matImageToString(rgba));
+       //oeValidarAmor.setIdDevice(idDevice);
+       //validarAmorClient.validarAmor(oeValidarAmor);
+       PropertyInfo[] propertyinfos = new PropertyInfo[3];
 
+       PropertyInfo property = new PropertyInfo();
+       property.setName("img");
+       MatOfByte mob = new MatOfByte();
+       MatOfInt moi = new MatOfInt(70);
+       moi.fromArray(Imgcodecs.CV_IMWRITE_JPEG_QUALITY, 70);
+       Imgcodecs.imencode(".jpg", rgba, mob, moi);
+       property.setValue(matImageToString(mob));
+       property.setType(String.class);
+       propertyinfos[0] = property;
+       property = new PropertyInfo();
+       property.setName("email");
+       property.setValue(sharedpreferences.getString("email", null));
+       property.setType(String.class);
+       propertyinfos[1] =property;
+       property = new PropertyInfo();
+       property.setName("idDevice");
+       property.setValue(idDevice);
+       property.setType(String.class);
+       propertyinfos[2] = property;
+       validarAmorClient.validarAmor(propertyinfos);
+   }
 
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
