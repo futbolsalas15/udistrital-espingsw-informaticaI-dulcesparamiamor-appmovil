@@ -459,9 +459,9 @@ public final class CameraActivity extends ActionBarActivity
 
    private void sendValidar(Mat rgba){
        //OEValidarAmor oeValidarAmor = new OEValidarAmor();
-       IGCMClient igcmClient = new GCMClient();
-       igcmClient.getGCMRegId(getResources().getString(R.string.gcm_SenderId),getApplicationContext());
-       String idDevice = GCMClientID.createGCMClientID("").getGcmRegId();
+       //IGCMClient igcmClient = new GCMClient();
+       //igcmClient.getGCMRegId(getResources().getString(R.string.gcm_SenderId),getApplicationContext());
+       //String idDevice = GCMClientID.createGCMClientID("").getGcmRegId();
        SharedPreferences sharedpreferences =  getSharedPreferences("PREFERENCES", Context.MODE_PRIVATE);
        //oeValidarAmor.setEmail(sharedpreferences.getString("email", null));
        //oeValidarAmor.setImg(matImageToString(rgba));
@@ -483,12 +483,8 @@ public final class CameraActivity extends ActionBarActivity
        property.setValue(sharedpreferences.getString("email", null));
        property.setType(String.class);
        propertyinfos[1] =property;
-       property = new PropertyInfo();
-       property.setName("idDevice");
-       property.setValue(idDevice);
-       property.setType(String.class);
-       propertyinfos[2] = property;
-       validarAmorClient.validarAmor(propertyinfos);
+
+       validarAmorClient.validarAmor(propertyinfos,getResources().getString(R.string.gcm_SenderId),getApplicationContext());
    }
 
     @Override
